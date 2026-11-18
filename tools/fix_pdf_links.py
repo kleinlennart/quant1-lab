@@ -9,7 +9,7 @@ import sys
 import pikepdf
 
 src, dst = sys.argv[1], sys.argv[2]
-base = sys.argv[3] if len(sys.argv) > 3 else "https://kleinlennart.github.io/quant1-lab/"
+base = sys.argv[3] if len(sys.argv) > 3 else "https://quant1.kleinbutsignificant.com/"
 if not base.endswith("/"):
     base += "/"
 

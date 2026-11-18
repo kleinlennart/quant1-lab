@@ -9,6 +9,7 @@ project:
   resources:
     - "data/*.csv"    # the data extracts (not make_data.R, not other data/ folders)
     - slides.pdf      # printed from _site/slides.html?print-pdf (re-print after changing the slides)
+    - CNAME           # custom domain for GitHub Pages; must be in every publish
     # - downloads/labexam.zip   # starter project: hidden for now (page + zip kept in downloads/)
   render:
     - "*.qmd"         # only the site pages (not downloads/labexam/README.txt etc.)
@@ -19,7 +20,7 @@ project:
 website:
   title: "QM1 Lab Exam: R Guide"
   description: "Slides, cheat sheet and mock exam for the R lab exercise in Introduction to Quantitative Methods (Sciences Po, Autumn 2026)."
-  site-url: "https://kleinlennart.github.io/quant1-lab/"
+  site-url: "https://quant1.kleinbutsignificant.com/"
   llms-txt: true                 # llms.txt + a .llms.md (Markdown) version of every page, for LLMs
   page-navigation: true          # previous / next links at the bottom of each page
   back-to-top-navigation: true

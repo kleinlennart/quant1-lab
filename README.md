@@ -2,7 +2,7 @@
 
 Study guide, cheat sheet, mock exam and slides for the R lab exercise in *Introduction to Quantitative Methods* (Sciences Po, Autumn 2026). A Quarto website, published with GitHub Pages.
 
-**Site:** https://kleinlennart.github.io/quant1-lab/
+**Site:** https://quant1.kleinbutsignificant.com/
 
 ## Build
 
