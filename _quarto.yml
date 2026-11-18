@@ -13,10 +13,14 @@ project:
   render:
     - "*.qmd"         # only the site pages (not downloads/labexam/README.txt etc.)
     - "!downloads.qmd"  # hidden for now; remove this line and the two "# -" comments to bring it back
+    - "!0[1-5]-*.qmd"   # the guide pages: hidden for now (being aligned with the slides)
+    - "!guide-index.qmd" # the guide's old home page, kept for when the guide comes back
 
 website:
   title: "QM1 Lab Exam: R Guide"
-  description: "Study guide and cheat sheet for the R lab exercise in Introduction to Quantitative Methods (Sciences Po, Autumn 2026)."
+  description: "Slides, cheat sheet and mock exam for the R lab exercise in Introduction to Quantitative Methods (Sciences Po, Autumn 2026)."
+  site-url: "https://kleinlennart.github.io/quant1-lab/"
+  llms-txt: true                 # llms.txt + a .llms.md (Markdown) version of every page, for LLMs
   page-navigation: true          # previous / next links at the bottom of each page
   back-to-top-navigation: true
   reader-mode: true              # hides the sidebar for focused reading
@@ -28,13 +32,13 @@ website:
     contents:
       - text: "Start here"
         href: index.qmd
-      - section: "The guide"
-        contents:
-          - 01-start-clean.qmd
-          - 02-describe.qmd
-          - 03-two-variables.qmd
-          - 04-regression.qmd
-          - 05-logit-interactions.qmd
+      # - section: "The guide"   # hidden for now (see render list)
+      #   contents:
+      #     - 01-start-clean.qmd
+      #     - 02-describe.qmd
+      #     - 03-two-variables.qmd
+      #     - 04-regression.qmd
+      #     - 05-logit-interactions.qmd
       - section: "Practice"
         contents:
           - mock-exam.qmd

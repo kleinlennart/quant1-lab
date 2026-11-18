@@ -6,7 +6,7 @@ execute:
   eval: false
 ---
 
-Replace `dataset`, `y`, `x`, `z` and `group` with your own names. The [guide pages](01-start-clean.qmd) have the worked examples.
+Replace `dataset`, `y`, `x`, `z` and `group` with your own names. The [slides](slides.qmd) have worked examples with their output.
 
 ## Start
 

@@ -666,8 +666,6 @@ table(dataset$lrscale_clean, useNA = "ifany")
 | Input data | "the input or question that we are interested to find a response for" | your code and the full error message |
 | Output indicator | "the type or format of the output" | one sentence per line of code |
 
-"You do not need all the four elements for a prompt and the format depends on the task at hand."
-
 [Source: DAIR.AI, [*Prompt Engineering Guide*, "Elements of a Prompt"](https://www.promptingguide.ai/introduction/elements)]{.figure-credit}
 
 ## Asking AI for help
@@ -823,7 +821,7 @@ modelsummary(
 )
 ```
 
-[Made with the modelsummary package, which also writes Word and LaTeX tables.]{.figure-credit}
+[Made with the [modelsummary](https://modelsummary.com) package, which also writes Word and LaTeX tables.]{.figure-credit}
 
 ## Tuesday {.center}
 
@@ -831,7 +829,7 @@ Expect the steps from the labs, applied to variables you haven't seen: inspect, 
 
 [Mock exam](mock-exam.html) · [Cheat sheet](cheatsheet.html)
 
-To keep learning: [R for Data Science](https://r4ds.hadley.nz) (free online), the [Posit cheat sheets](https://posit.co/resources/cheatsheets/), and [this guide](index.html).
+To keep learning (all free online): [Hands-On Programming with R](https://rstudio-education.github.io/hopr/) for R itself, then [R for Data Science](https://r4ds.hadley.nz) for data analysis, and the [Posit cheat sheets](https://posit.co/resources/cheatsheets/).
 
 ## Appendix: Every Lab Function {.center background-color="#444"}
 

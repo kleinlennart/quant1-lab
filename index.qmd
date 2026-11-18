@@ -15,40 +15,14 @@ toc: true
 
 You get a dataset and run an analysis from start to finish: clean the variables, describe them, test associations, estimate models, and say in words what the results mean. The lab sessions prepare you for it, and Lab 6 (week 12) goes through the correction.
 
-## How to use this guide
+## What's here
 
-The pages follow the steps of an analysis, in the order you'd run them in the exam. Every section has the same four parts:
-
-1. **Recipe:** the general code, with placeholders (`dataset`, `y`, `x`, `group`). The exam dataset may not be one from the labs, so start from the recipe.
-2. **Example from the labs:** the lab code with its real output.
-3. **How to read it:** what the numbers mean, and a sentence you can adapt for your answer.
-4. **Your turn:** the labs' own exercises. Write the code yourself before you open the solution. Recalling it yourself sticks better than rereading it.
-
-The [cheat sheet](cheatsheet.qmd) puts all the recipes on one page, to keep open during the exam.
-
-## An analysis in five steps
-
-This is the workflow from the labs:
-
-| Step | Question | Typical commands | Page |
-|---|---|---|---|
-| 1. Inspect | What values does the raw variable contain? Which codes mean "missing"? | `table(x, useNA = "ifany")`, `summary(x)`, `sort(unique(x))` | [Start and clean](01-start-clean.qmd) |
-| 2. Clean | Make a new variable; keep the original unchanged | `ifelse()`, `case_when()`, `factor()` | [Start and clean](01-start-clean.qmd) |
-| 3. Verify | Did the recode work? | `table(new, useNA = "ifany")`, `table(old, new)` | [Start and clean](01-start-clean.qmd) |
-| 4. Describe | What does the clean variable look like? | `table()`, `prop.table()`, `mean()`, `sd()`, `median()`, `hist()` | [Describe one variable](02-describe.qmd) |
-| 5. Analyse | Which test or model fits the variable types? | `chisq.test()`, `t.test()`, `cor()`, `lm()`, `glm()` | pages 3–5 |
-
-## Which test or model?
-
-| Your variables | Use | Page |
-|---|---|---|
-| Two categorical variables | Crosstab with percentages, chi-square test | [Two variables](03-two-variables.qmd#two-categorical-variables) |
-| A continuous variable and a binary group | Group means, t-test, boxplot | [Two variables](03-two-variables.qmd#a-continuous-variable-by-group) |
-| Two continuous variables | Correlation, scatter plot | [Two variables](03-two-variables.qmd#two-continuous-variables) |
-| Continuous outcome, several predictors | Linear regression (OLS) | [Regression](04-regression.qmd) |
-| Binary outcome (0/1) | Logistic regression, marginal effects | [Logit and interactions](05-logit-interactions.qmd#logistic-regression) |
-| Categorical outcome with 3+ categories | Multinomial logistic regression | [Logit and interactions](05-logit-interactions.qmd#multinomial-logistic-regression) |
-| "Does the effect of x depend on z?" | Interaction term `x * z` | [Logit and interactions](05-logit-interactions.qmd#interactions) |
+| | |
+|---|---|
+| [Slides](slides.qmd) · [PDF](slides.pdf) | The recap session: how R reads code, every lab calculation with its output and an example interpretation, fixing errors, using AI |
+| [Cheat sheet](cheatsheet.qmd) | All the commands and sentence templates on one page, to keep open during the exam |
+| [Mock lab exam](mock-exam.qmd) | Practice tasks in the style of the labs, with solutions |
+| [AI that helps you learn](ai-setup.qmd) | From chat to an agent in your project folder, with setup steps |
 
 ## The data
 
@@ -60,7 +34,7 @@ n_ess <- format(nrow(ess), big.mark = ",")
 n_cntry <- length(unique(ess$cntry))
 ```
 
-The examples and exercises use the two datasets from the labs. The site uses small extracts with only the lab variables, and the values are unchanged:
+The slides and the mock exam use the two datasets from the labs. The site uses small extracts with only the lab variables, and the values are unchanged:
 
 - [anes_lab.csv](data/anes_lab.csv): **ANES 2024**, US election survey, `r n_anes` respondents (Labs 1–3).
 - [ess_lab.csv](data/ess_lab.csv): **European Social Survey round 11**, `r n_ess` respondents in `r n_cntry` countries (Labs 4–5).
