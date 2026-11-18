@@ -1,0 +1,264 @@
+---
+title: "5 · Logit, multinomial logit and interactions"
+description: "Logistic regression with marginal effects, multinomial logistic regression, and interaction terms (moderating effects). Lab 5."
+---
+
+```{r}
+#| code-fold: true
+#| code-summary: "Setup: load the ESS data and clean the variables (as in Labs 4–5)"
+dataset <- read.csv("data/ess_lab.csv")
+dataset$lrscale <- ifelse(dataset$lrscale %in% c(77, 88, 99), NA, dataset$lrscale)   # left-right, 0-10
+dataset$agea <- ifelse(dataset$agea == 999, NA, dataset$agea)
+dataset$eduyrs <- ifelse(dataset$eduyrs %in% c(77, 88, 99), NA, dataset$eduyrs)
+# Feeling about household income: 1 = living comfortably ... 4 = very difficult
+dataset$income_feeling <- ifelse(dataset$hincfel >= 1 & dataset$hincfel <= 4, dataset$hincfel, NA)
+dataset$trust_police <- ifelse(dataset$trstplc >= 0 & dataset$trstplc <= 10, dataset$trstplc, NA)
+```
+
+```{r}
+#| include: false
+source("_common.R")   # p_txt(), sig_txt(), b(), p(), sig(): wording from the course
+```
+
+## Logistic regression
+
+You need this when the outcome is **binary** (0/1).
+
+**Recipe**
+
+```{r}
+#| eval: false
+model <- glm(y ~ x1 + factor(x2) + x3, data = dataset, family = binomial)
+summary(model)                      # read only the signs
+library(margins)
+summary(margins(model))             # average marginal effects
+```
+
+**Example from the labs** (Lab 5: who places themselves on the far right, 8–10?)
+
+```{r}
+dataset$far_right <- ifelse(dataset$lrscale >= 8 & dataset$lrscale <= 10, 1,
+                            ifelse(dataset$lrscale >= 0 & dataset$lrscale <= 7, 0, NA))
+table(dataset$far_right, useNA = "ifany")
+
+logit1 <- glm(far_right ~ agea + factor(gndr) + eduyrs + factor(cntry),
+              data = dataset, family = binomial)
+summary(logit1)$coefficients[1:4, ]    # the first rows; summary(logit1) shows everything
+```
+
+```{r}
+library(margins)
+summary(margins(logit1, variables = c("agea", "gndr", "eduyrs")))   # <1>
+```
+
+1. Lab 5 runs `summary(margins(logit1))`, which also lists every country. `variables =` keeps the rows you want.
+
+```{r}
+#| include: false
+me <- summary(margins(logit1, variables = c("agea", "gndr", "eduyrs")))
+ame <- setNames(me$AME, me$factor)
+```
+
+**How to read it**
+
+- **Coefficients** cannot be directly interpreted, except their sign: a positive sign means a higher probability that y = 1, a negative sign a lower one. `z value` and `Pr(>|z|)` work like `t value` and `Pr(>|t|)` in OLS.
+- **Marginal effects** (`AME`) give the size: the increase in percentage points of the predicted probability. Multiply by 100: a marginal effect of -0.13 means that the probability decreases by 13 percentage points.
+
+::: {.callout-note collapse="true"}
+## Beyond the course: odds ratios
+
+The TA's R summary also shows odds ratios, `exp(coef(model))`: above 1 means higher odds, below 1 lower odds. The course interprets logits with the sign and the marginal effects, so use those in the exam.
+:::
+
+> The coefficient for women is negative, so women are less likely than men to place themselves on the far right. The marginal effect is `r round(ame[["gndr2"]], 2)`: net of age, education and the country fixed effects, the probability is `r round(abs(100 * ame[["gndr2"]]), 1)` percentage points lower for women than for men (`r sig_txt(me$p[me$factor == "gndr2"])`). When age increases by one year, the probability increases by `r round(100 * ame[["agea"]], 2)` percentage points, so about `r round(1000 * ame[["agea"]], 1)` points over ten years.
+
+## Multinomial logistic regression
+
+You need this when the outcome is **categorical with three or more categories**.
+
+**Recipe**
+
+```{r}
+#| eval: false
+library(nnet)
+model <- multinom(y ~ x1 + factor(x2) + x3, data = dataset)
+summary(model)
+round(coef(model), 3)               # the coefficients alone, easier to read
+exp(coef(model))                    # relative risk ratios
+```
+
+**Example from the labs** (Lab 5: left 0–3, centre 4–6, right 7–10)
+
+```{r}
+dataset$left_right_3cat <- NA
+dataset$left_right_3cat[dataset$lrscale >= 0 & dataset$lrscale <= 3] <- 1
+dataset$left_right_3cat[dataset$lrscale >= 4 & dataset$lrscale <= 6] <- 2
+dataset$left_right_3cat[dataset$lrscale >= 7 & dataset$lrscale <= 10] <- 3
+
+library(nnet)
+mlogit1 <- multinom(left_right_3cat ~ agea + factor(gndr) + eduyrs + factor(cntry),
+                    data = dataset, trace = FALSE)   # <1>
+round(coef(mlogit1)[, 1:4], 3)                       # <2>
+```
+
+1. `trace = FALSE` hides the "iter 10 value …" lines that `multinom()` prints while it estimates. Lab 5 shows them.
+2. `summary(mlogit1)` is very wide with 26 coefficients and becomes hard to read. This shows the first 4 columns: intercept, age, gender, education.
+
+`summary()` gives coefficients and standard errors but no p-values. You can compute them yourself:
+
+```{r}
+s <- summary(mlogit1)
+z <- s$coefficients / s$standard.errors
+round(2 * (1 - pnorm(abs(z)))[, 1:4], 4)            # p-values (two-sided z-test)
+```
+
+**How to read it**
+
+- **The reference category** is the first one, 1 = left. Row `2` compares centre with left, and row `3` compares right with left.
+- **Women:**
+  - `r round(coef(mlogit1)["3", "factor(gndr)2"], 2)` in row `3`: compared with men, women have lower log-odds of placing themselves on the right rather than the left.
+  - `r round(coef(mlogit1)["2", "factor(gndr)2"], 2)` in row `2`: a small difference between centre and left, `r sig_txt((2 * (1 - pnorm(abs(z))))["2", "factor(gndr)2"])` only (p = `r round((2 * (1 - pnorm(abs(z))))["2", "factor(gndr)2"], 3)`), not at the 0.05 level.
+- **To change the reference category,** reorder the levels first. The TA's R summary does this to make the centre the reference:
+
+  ```{r}
+  #| eval: false
+  dataset$left_right_3cat <- factor(dataset$left_right_3cat, levels = c(2, 1, 3),
+                                    labels = c("Centre", "Left", "Right"))
+  ```
+
+  The coefficients then compare left and right with the centre, so they differ from the ones above.
+
+## Interactions
+
+You need this when the effect of one variable **depends on** another: "Is the effect of education different for women and men?"
+
+**Recipe:** `x * z` in the formula adds `x`, `z` and their product `x:z`.
+
+```{r}
+#| eval: false
+model <- lm(y ~ x * z + other_controls, data = dataset)
+```
+
+### A categorical × a continuous variable
+
+**Example from the labs** (Lab 5: does the effect of education on left-right differ by gender?)
+
+```{r}
+model_int1 <- lm(lrscale ~ agea + factor(gndr) * eduyrs + factor(cntry), data = dataset)
+summary(model_int1)$coefficients[c("agea", "factor(gndr)2", "eduyrs", "factor(gndr)2:eduyrs"), ]
+```
+
+**How to read it**
+
+- `eduyrs` = `r b(model_int1, "eduyrs")` is the effect of education for **men**, the reference group.
+- `factor(gndr)2:eduyrs` = `r b(model_int1, "factor(gndr)2:eduyrs")` is how much the effect of education **differs for women**. So for women it is `r b(model_int1, "eduyrs")` + (`r b(model_int1, "factor(gndr)2:eduyrs")`) = `r round(coef(model_int1)[["eduyrs"]] + coef(model_int1)[["factor(gndr)2:eduyrs"]], 3)` per year.
+- `factor(gndr)2` is now the gender gap at 0 years of education, not the average gap.
+- The p-value of the interaction tests whether gender **moderates** the effect of education, that is, whether the two slopes differ. If the interaction is not statistically significant, we cannot conclude that there is a moderating effect.
+
+> When education increases by one year, left-right self-placement decreases by `r abs(b(model_int1, "eduyrs"))` points for men and by `r abs(round(coef(model_int1)[["eduyrs"]] + coef(model_int1)[["factor(gndr)2:eduyrs"]], 3))` points for women. The interaction is `r sig(model_int1, "factor(gndr)2:eduyrs")` (`r p(model_int1, "factor(gndr)2:eduyrs")`) but not at the 0.05 level, so the evidence that gender moderates the effect of education is weak.
+
+### Two continuous variables
+
+**Example from the labs** (Lab 5: does the effect of education depend on how people feel about their income?)
+
+```{r}
+model_int2 <- lm(lrscale ~ agea + factor(gndr) + eduyrs * income_feeling + factor(cntry),
+                 data = dataset)
+summary(model_int2)$coefficients[c("eduyrs", "income_feeling", "eduyrs:income_feeling"), ]
+```
+
+The effect of education at each value of `income_feeling` is `eduyrs` + `eduyrs:income_feeling` × value:
+
+```{r}
+k <- 1:4
+data.frame(income_feeling = k,
+           effect_of_education = coef(model_int2)[["eduyrs"]] + k * coef(model_int2)[["eduyrs:income_feeling"]])
+```
+
+::: {.callout-warning}
+## `income_feeling` runs "backwards"
+
+1 = living comfortably, 4 = very difficult. A higher value means *harder* to get by.
+:::
+
+```{r}
+#| include: false
+slope <- function(k) round(coef(model_int2)[["eduyrs"]] + k * coef(model_int2)[["eduyrs:income_feeling"]], 3)
+```
+
+> The interaction is `r b(model_int2, "eduyrs:income_feeling", 4)`, `r sig(model_int2, "eduyrs:income_feeling")`: income feeling moderates the effect of education. When income feeling increases by one unit (harder to get by), the effect of education changes by `r b(model_int2, "eduyrs:income_feeling", 4)`. Among those living comfortably, each year of education moves the score `r abs(slope(1))` points to the left; among those who find it very difficult, only `r abs(slope(4))` points.
+
+## Your turn
+
+::: {.callout-note icon=false}
+## Exercise 5.1 · Lab 5
+
+Using trust in the police (`trust_police`, cleaned in the setup):
+
+1. Create `high_trust_police`: 0 = 5 or less, 1 = 6 or more.
+2. Estimate a logistic regression of `high_trust_police` on age, gender, education and country fixed effects.
+3. Calculate the marginal effects and interpret the one for gender.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+dataset$high_trust_police <- ifelse(dataset$trust_police >= 6, 1,
+                                    ifelse(dataset$trust_police <= 5, 0, NA))
+logit_trust <- glm(high_trust_police ~ agea + factor(gndr) + eduyrs + factor(cntry),
+                   data = dataset, family = binomial)
+summary(logit_trust)$coefficients[1:4, ]
+summary(margins(logit_trust, variables = c("agea", "gndr", "eduyrs")))
+```
+
+```{r}
+#| include: false
+me_t <- summary(margins(logit_trust, variables = c("agea", "gndr", "eduyrs")))
+ame_t <- setNames(me_t$AME, me_t$factor)
+```
+
+> The marginal effect for women is `r round(ame_t[["gndr2"]], 3)`: net of the other variables and the country fixed effects, the probability of high trust in the police is `r round(100 * ame_t[["gndr2"]], 1)` percentage points higher for women than for men (`r sig_txt(me_t$p[me_t$factor == "gndr2"])`).
+:::
+
+::: {.callout-note icon=false}
+## Exercise 5.2 · Lab 5
+
+Estimate an OLS regression of `trust_police` with an interaction between gender and education (plus age and country fixed effects). What is the effect of education for men and for women?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+model_t1 <- lm(trust_police ~ agea + factor(gndr) * eduyrs + factor(cntry), data = dataset)
+summary(model_t1)$coefficients[c("factor(gndr)2", "eduyrs", "factor(gndr)2:eduyrs"), ]
+```
+
+> For men, each year of education raises trust in the police by `r b(model_t1, "eduyrs")` points. For women, by `r b(model_t1, "eduyrs")` + (`r b(model_t1, "factor(gndr)2:eduyrs")`) = `r round(coef(model_t1)[["eduyrs"]] + coef(model_t1)[["factor(gndr)2:eduyrs"]], 3)`. The interaction is `r sig(model_t1, "factor(gndr)2:eduyrs")`, so gender moderates the effect of education: education matters much less for women's trust in the police.
+:::
+
+::: {.callout-note icon=false}
+## Exercise 5.3 · Lab 5
+
+Estimate an OLS regression of `trust_police` with an interaction between income feeling and education (plus age, gender and country fixed effects). How does the effect of education change with income feeling?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+model_t2 <- lm(trust_police ~ agea + factor(gndr) + eduyrs * income_feeling + factor(cntry),
+               data = dataset)
+summary(model_t2)$coefficients[c("eduyrs", "income_feeling", "eduyrs:income_feeling"), ]
+data.frame(income_feeling = 1:4,
+           effect_of_education = coef(model_t2)[["eduyrs"]] + (1:4) * coef(model_t2)[["eduyrs:income_feeling"]])
+```
+
+```{r}
+#| include: false
+slope_t <- function(k) round(coef(model_t2)[["eduyrs"]] + k * coef(model_t2)[["eduyrs:income_feeling"]], 3)
+```
+
+> The interaction is `r b(model_t2, "eduyrs:income_feeling", 4)`, `r sig(model_t2, "eduyrs:income_feeling")`, so income feeling moderates the effect of education. Among those living comfortably, education slightly raises trust in the police (`r slope_t(1)` per year). Among those who find it very difficult, it slightly lowers it (`r slope_t(4)` per year).
+:::

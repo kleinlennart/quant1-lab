@@ -1,0 +1,279 @@
+---
+title: "3 · Two variables"
+description: "Crosstab and chi-square test, group means and t-test, correlation. Labs 2–3."
+---
+
+```{r}
+#| code-fold: true
+#| code-summary: "Setup: load the ANES data and clean the variables (page 1)"
+dataset <- read.csv("data/anes_lab.csv")
+dataset$voted_2024 <- ifelse(dataset$V242065 == 4, 1, ifelse(dataset$V242065 %in% c(1, 2, 3), 0, NA))
+dataset$like_democrat <- ifelse(dataset$V242432 >= 0 & dataset$V242432 <= 10, dataset$V242432, NA)
+dataset$like_trump <- ifelse(dataset$V242435 >= 0 & dataset$V242435 <= 10, dataset$V242435, NA)
+dataset$gender <- ifelse(dataset$V241551 %in% c(1, 2, 3, 4), dataset$V241551, NA)
+dataset$age <- ifelse(dataset$V241458x >= 18 & dataset$V241458x <= 80, dataset$V241458x, NA)
+
+# Satisfaction with democracy: 1 = very, 2 = fairly, 4 = not very, 5 = not at all satisfied
+dataset$swd <- ifelse(dataset$V242439 %in% c(1, 2, 4, 5), dataset$V242439, NA)
+dataset$swd_binary <- ifelse(dataset$swd %in% c(1, 2), 1, ifelse(dataset$swd %in% c(4, 5), 0, NA))
+
+dataset$age_category <- NA
+dataset$age_category[dataset$age <= 30] <- 0
+dataset$age_category[dataset$age >= 31 & dataset$age <= 60] <- 1
+dataset$age_category[dataset$age >= 61] <- 2
+```
+
+```{r}
+#| include: false
+source("_common.R")   # p_txt(), sig_txt(), r_label(): wording from the course
+```
+
+## Choose the test
+
+| Variables | Describe with | Test |
+|---|---|---|
+| Categorical × categorical | crosstab with percentages | chi-square test: `chisq.test()` |
+| Continuous by a binary group | the mean in each group, boxplot | t-test: `t.test()` |
+| Continuous × continuous | scatter plot | correlation: `cor()`, `cor.test()` |
+
+All three tests start from the same **null hypothesis** (H0): there is no relationship between the two variables in the population. The p-value is the probability of finding an association at least as strong as the one in the sample if H0 were true. If it is below 0.10, 0.05 or 0.01, the result is **statistically significant** at that level and you **reject H0**. The course reports these three levels.
+
+The p-value is what you mainly read for these tests. It does not tell you how strong the relationship is. The chi-square test doesn't give a direction either, so look at the percentages for that.
+
+## Two categorical variables
+
+**Recipe**
+
+```{r}
+#| eval: false
+tab <- table(dataset$x, dataset$y)    # rows = x, columns = y
+tab
+prop.table(tab, margin = 1) * 100     # row percentages: each row adds up to 100
+prop.table(tab, margin = 2) * 100     # column percentages: each column adds up to 100
+chisq.test(tab)
+```
+
+**Example from the labs** (Lab 3: are voters more often satisfied with democracy?)
+
+```{r}
+tab <- table(dataset$swd_binary, dataset$voted_2024)   # <1>
+tab
+round(prop.table(tab, margin = 2) * 100, 1)            # <2>
+chisq.test(tab)                                        # <3>
+```
+
+1. Rows: satisfied with democracy (1) or not (0). Columns: voted (1) or not (0).
+2. Column percentages, because we compare the columns, non-voters with voters: the share of each group that is satisfied.
+3. The output gives `X-squared`, the chi-square statistic; `df`, which is (rows − 1) × (columns − 1); and the p-value.
+
+```{r}
+#| include: false
+chi <- chisq.test(tab)
+pct <- round(prop.table(tab, margin = 2) * 100)
+```
+
+**How to read it**
+
+> The chi-square test gives X² = `r round(chi$statistic, 1)` (df = `r chi$parameter`, `r p_txt(chi$p.value)`). The association is `r sig_txt(chi$p.value)`, so we reject the null hypothesis of no association between voting and satisfaction with democracy. The test doesn't show the direction, but the percentages do: `r pct["1", "1"]`% of voters are satisfied, compared with `r pct["1", "0"]`% of non-voters.
+
+::: {.callout-note collapse="true"}
+## Notes on the output
+
+- On a 2 × 2 table, R applies Yates' continuity correction by default, and the output says so ("with Yates' continuity correction"). On larger tables it doesn't.
+- A warning "Chi-squared approximation may be incorrect" means some expected cell counts are small. Look at them with `chisq.test(tab)$expected`.
+:::
+
+## A continuous variable by group
+
+**Recipe**
+
+```{r}
+#| eval: false
+aggregate(y ~ group, data = dataset, FUN = mean)   # the mean of y in each group
+t.test(y ~ group, data = dataset)                  # group must have exactly two values
+boxplot(y ~ group, data = dataset)
+```
+
+**Example from the labs** (Lab 2: mean rating of the Democratic Party by vote)
+
+```{r}
+aggregate(like_democrat ~ voted_2024, data = dataset, FUN = mean)
+```
+
+```{r}
+#| include: false
+gm <- aggregate(like_democrat ~ voted_2024, data = dataset, FUN = mean)
+```
+
+> Non-voters: `r round(gm$like_democrat[gm$voted_2024 == 0], 2)`. Voters: `r round(gm$like_democrat[gm$voted_2024 == 1], 2)`. There is therefore a difference in the means, suggesting an association between voting and the rating of the Democratic Party in this sample. Whether it holds in the population is what the t-test below checks.
+
+**Example from the labs** (Lab 3: is satisfaction with democracy different for voters and non-voters?)
+
+```{r}
+t.test(swd ~ voted_2024, data = dataset)
+boxplot(swd ~ voted_2024, data = dataset,
+        names = c("Didn't vote", "Voted"), ylab = "1 = very satisfied ... 5 = not at all")
+```
+
+```{r}
+#| include: false
+tt <- t.test(swd ~ voted_2024, data = dataset)
+```
+
+**How to read it**
+
+- `t` is the test statistic, and `df` is the degrees of freedom. R runs Welch's t-test by default, so `df` can have decimals.
+- `p-value`: the test of H0 that the two means are equal.
+- `95 percent confidence interval`: for the difference between the means, group 0 minus group 1.
+- `sample estimates`: the two group means, which give you the direction.
+
+> Non-voters have a mean satisfaction score of `r round(tt$estimate[1], 2)` and voters `r round(tt$estimate[2], 2)` (t = `r round(tt$statistic, 2)`, `r p_txt(tt$p.value)`). The difference is `r sig_txt(tt$p.value)`, so we reject the null hypothesis that the means are not different. A lower score means more satisfied, so voters are more satisfied with democracy than non-voters.
+
+::: {.callout-warning}
+## Two traps in this example
+
+- **The scale runs backwards:** 1 = very satisfied, 5 = not at all. A *lower* mean means *more* satisfied.
+- **There is no code 3,** so the t-test treats the step from "fairly" (2) to "not very" (4) as two points. The labs use the t-test this way anyway.
+:::
+
+::: {.callout-warning}
+## Error: "grouping factor must have exactly 2 levels"
+
+`t.test()` needs a group variable with exactly two values. Check it with `table(dataset$group)`.
+
+- **One value:** the recode went wrong. In the Lab 3 script, the line that creates `voted_2024` uses `V242066`. Change it to `V242065`, as in Lab 2.
+- **More than two values** (e.g. gender with four categories): use a chi-square test, or keep only two groups.
+:::
+
+## Two continuous variables
+
+**Recipe**
+
+```{r}
+#| eval: false
+cor(dataset$x, dataset$y, use = "complete.obs")   # use only rows where both are not NA
+cor.test(dataset$x, dataset$y)                    # adds a p-value
+plot(dataset$x, dataset$y)
+```
+
+**Example from the labs** (Lab 2: rating of the Democratic Party and age)
+
+```{r}
+cor(dataset$like_democrat, dataset$age, use = "complete.obs")
+cor.test(dataset$like_democrat, dataset$age)
+plot(dataset$age, dataset$like_democrat, xlab = "Age", ylab = "Rating of the Democratic Party")
+```
+
+```{r}
+#| include: false
+ct <- cor.test(dataset$like_democrat, dataset$age)
+```
+
+**How to read it**
+
+- The correlation r runs from −1 to +1. The sign gives the direction (positive or negative), and the course's labels give the strength of the *linear* association: |r| below 0.10 negligible, from 0.10 weak, from 0.30 moderate, from 0.50 strong, from 0.75 very strong.
+- Then say what it means in a plain sentence, as in the course's model answer: "a positive, moderate association between Grade and Left-right, so that the more right-wing someone is, the higher their grade".
+
+> Correlation: `r round(ct$estimate, 2)`. There is a `r r_dir(ct$estimate)`, `r r_label(ct$estimate)` association between age and the rating of the Democratic Party: older respondents rate the party only very slightly higher. It is `r sig_txt(ct$p.value)` (`r p_txt(ct$p.value)`), but a statistically significant association is not always a strong one.
+
+The ratings take only 11 values, so many points sit on top of each other. `plot(jitter(dataset$age), jitter(dataset$like_democrat))` spreads them out a little.
+
+## Your turn
+
+::: {.callout-note icon=false}
+## Exercise 3.1 · Lab 2
+
+What is the correlation between the rating of Donald Trump (`like_trump`) and age?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+cor(dataset$like_trump, dataset$age, use = "complete.obs")
+```
+
+> Correlation: `r round(cor(dataset$like_trump, dataset$age, use = "complete.obs"), 2)`. There is a `r r_dir(cor(dataset$like_trump, dataset$age, use = "complete.obs"))`, `r r_label(cor(dataset$like_trump, dataset$age, use = "complete.obs"))` association between age and the rating of Trump: age makes almost no difference to how much respondents like him.
+:::
+
+::: {.callout-note icon=false}
+## Exercise 3.2 · Lab 3
+
+Is satisfaction with democracy (`swd_binary`) associated with gender (`gender`)? Give the percentages and the test.
+:::
+
+::: {.callout-tip collapse="true"}
+## Hint
+
+Both variables are categorical. To compare the genders, take percentages within each gender.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+tab_g <- table(dataset$swd_binary, dataset$gender)
+round(prop.table(tab_g, margin = 2) * 100, 1)   # within each gender (columns)
+chisq.test(tab_g)
+```
+
+```{r}
+#| include: false
+chi_g <- chisq.test(tab_g)
+pg <- round(prop.table(tab_g, margin = 2) * 100)
+```
+
+> X² = `r round(chi_g$statistic, 1)` (df = `r chi_g$parameter`, `r p_txt(chi_g$p.value)`). The association is `r sig_txt(chi_g$p.value)`, so we reject the null hypothesis of no association between gender and satisfaction with democracy. `r pg["1", "1"]`% of men and `r pg["1", "2"]`% of women are satisfied.
+:::
+
+::: {.callout-note icon=false}
+## Exercise 3.3 · Lab 3
+
+Is satisfaction with democracy (`swd_binary`) associated with age, treating age as continuous?
+:::
+
+::: {.callout-tip collapse="true"}
+## Hint
+
+Age is continuous and `swd_binary` is a binary group: compare the mean age of the two groups.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+t.test(age ~ swd_binary, data = dataset)
+boxplot(age ~ swd_binary, data = dataset, names = c("Dissatisfied", "Satisfied"), ylab = "Age")
+```
+
+```{r}
+#| include: false
+ta <- t.test(age ~ swd_binary, data = dataset)
+```
+
+> The dissatisfied are `r round(ta$estimate[1], 2)` years old on average, and the satisfied `r round(ta$estimate[2], 2)` (`r p_txt(ta$p.value)`). The difference is `r sig_txt(ta$p.value)`, so we reject the null hypothesis that the means are not different: people who are satisfied with democracy are older on average.
+:::
+
+::: {.callout-note icon=false}
+## Exercise 3.4 · Lab 3
+
+Is satisfaction with democracy (`swd_binary`) associated with the age categories (`age_category`: 0 = 30 or younger, 1 = 31–60, 2 = 61 or older)?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+tab_a <- table(dataset$age_category, dataset$swd_binary)
+round(prop.table(tab_a, margin = 1) * 100, 1)   # within each age group (rows)
+chisq.test(tab_a)
+```
+
+```{r}
+#| include: false
+chi_a <- chisq.test(tab_a)
+pa <- round(prop.table(tab_a, margin = 1) * 100)
+```
+
+> X² = `r round(chi_a$statistic, 1)` (df = `r chi_a$parameter`, `r p_txt(chi_a$p.value)`). The association is `r sig_txt(chi_a$p.value)`, so we reject the null hypothesis of no association. Dissatisfaction falls with age: `r pa["0", "0"]`% of those aged 30 or younger are dissatisfied, against `r pa["2", "0"]`% of those aged 61 or older.
+:::

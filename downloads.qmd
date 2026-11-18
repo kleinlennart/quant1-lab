@@ -1,0 +1,38 @@
+---
+title: "Downloads"
+description: "A ready-made RStudio project for the lab exam."
+---
+
+## Starter project
+
+[Download labexam.zip](downloads/labexam.zip){.btn .btn-primary}
+
+The zip has an empty RStudio project with this structure:
+
+```
+labexam/
+├── labexam.Rproj                   ← double-click to open the project
+├── Lastname_Firstname_labexam.R    ← rename it; headers only, you write the code
+├── README.txt
+├── data/                           ← put ess.csv and the ANES file from Moodle here
+└── output/
+```
+
+1. Unzip it somewhere you'll find it again, e.g. `Documents/QM1/labexam`.
+2. Copy the data from Moodle into `data/`. The zip has no data.
+3. Double-click `labexam.Rproj`, then `read.csv("data/ess.csv")` works without `setwd()`.
+4. Install the packages once, in the Console:
+
+   ```r
+   install.packages(c("dplyr", "lmtest", "car", "margins", "nnet"))
+   ```
+
+The template only has section headers and `# Interpretation:` prompts. The code and the sentences are yours, so no two submissions look the same.
+
+## The data used on this site
+
+Small extracts with only the lab variables (values unchanged), built from the lab files:
+
+- [anes_lab.csv](data/anes_lab.csv) (ANES 2024)
+- [ess_lab.csv](data/ess_lab.csv) (ESS round 11)
+- [students.csv](data/students.csv) (Lab 1)

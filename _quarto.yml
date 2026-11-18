@@ -1,0 +1,84 @@
+# Study guide and cheat sheet for the R lab exercise (QM1, Sciences Po, Autumn 2026).
+# Preview:  quarto preview R/guide        Render:  quarto render R/guide
+# Data extracts in data/ are built by data/make_data.R from the full files in the repo's data/.
+# After rebuilding the data, delete _freeze/ before rendering: freeze reuses old results until a .qmd changes.
+
+project:
+  type: website
+  output-dir: _site
+  resources:
+    - "data/*.csv"    # the data extracts (not make_data.R, not other data/ folders)
+    - slides.pdf      # printed from _site/slides.html?print-pdf (re-print after changing the slides)
+    # - downloads/labexam.zip   # starter project: hidden for now (page + zip kept in downloads/)
+  render:
+    - "*.qmd"         # only the site pages (not downloads/labexam/README.txt etc.)
+    - "!downloads.qmd"  # hidden for now; remove this line and the two "# -" comments to bring it back
+
+website:
+  title: "QM1 Lab Exam: R Guide"
+  description: "Study guide and cheat sheet for the R lab exercise in Introduction to Quantitative Methods (Sciences Po, Autumn 2026)."
+  page-navigation: true          # previous / next links at the bottom of each page
+  back-to-top-navigation: true
+  reader-mode: true              # hides the sidebar for focused reading
+  search:
+    location: sidebar
+    type: textbox
+  sidebar:
+    style: docked
+    contents:
+      - text: "Start here"
+        href: index.qmd
+      - section: "The guide"
+        contents:
+          - 01-start-clean.qmd
+          - 02-describe.qmd
+          - 03-two-variables.qmd
+          - 04-regression.qmd
+          - 05-logit-interactions.qmd
+      - section: "Practice"
+        contents:
+          - mock-exam.qmd
+      - text: "Cheat sheet"
+        href: cheatsheet.qmd
+      - section: "Recap session"
+        contents:
+          - text: "Slides"
+            href: slides.qmd
+          - text: "Slides (PDF)"
+            href: slides.pdf
+          - ai-setup.qmd
+          # - downloads.qmd   # hidden for now
+  page-footer:
+    left: "Data: ANES 2024 Time Series Study; European Social Survey round 11 (CC BY-NC-SA 4.0)."
+    right: "Made with [Quarto](https://quarto.org)"
+
+format:
+  html:
+    theme: [flatly, site.scss]   # site.scss matches the slides (font, colours); light only, like the slides
+    toc: true
+    toc-depth: 3
+    toc-title: "On this page"
+    code-copy: true                # copy button on every code block
+    code-overflow: wrap
+    code-annotations: below        # numbered notes under annotated code
+    syntax-highlighting: a11y
+    anchor-sections: true
+    smooth-scroll: true
+    link-external-newwindow: true
+    lightbox: true                 # click a plot to enlarge it
+    fig-align: left
+
+engine: knitr                      # keep knitr: quarto-live (webR) needs it
+
+execute:
+  freeze: auto                     # re-run a page only when its source changes
+  message: false                   # hides package start-up messages
+  warning: true
+
+knitr:
+  opts_chunk:
+    comment: "#>"
+    collapse: true
+    fig.width: 6
+    fig.asp: 0.6
+    out.width: "75%"

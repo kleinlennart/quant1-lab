@@ -1,0 +1,316 @@
+---
+title: "1 · Start and clean"
+description: "Start a script, import a CSV, inspect a variable, recode it into a clean variable, and check the result. Labs 1–3, 5."
+---
+
+## Start a script
+
+**Recipe**
+
+```{r}
+#| eval: false
+# ------------------------------------------------------------
+# Lab exam · <your name> · <date>
+# ------------------------------------------------------------
+
+# Packages: install once per computer (in the console), load in every session
+# install.packages(c("dplyr", "lmtest", "car", "margins", "nnet"))
+library(dplyr)
+
+# Data: set the working directory to the folder that holds the file
+# (RStudio: Session > Set Working Directory > Choose Directory...)
+getwd()                            # where R is looking now
+list.files()                       # is the file there?
+dataset <- read.csv("file.csv")
+```
+
+- Write everything in the script, not the console, and run lines with Ctrl+Enter (Cmd+Enter on a Mac). Comment each step with `#`.
+- Before you hand in, check that the script runs from top to bottom in a fresh session: *Session > Restart R*, then run everything.
+
+## Import a CSV
+
+**Recipe**
+
+```{r}
+#| eval: false
+dataset <- read.csv("file.csv")    # columns separated by commas
+dataset <- read.csv2("file.csv")   # columns separated by semicolons (Excel on French computers)
+```
+
+Use one of the two lines, not both.
+
+**Example from the labs** (Lab 1: the student marks typed in Excel)
+
+```{r}
+students <- read.csv("data/students.csv")
+students
+```
+
+::: {.callout-warning}
+## Wrong separator
+
+If you get a single column with a name like `name.mark_essay.mark_exam.gender`, you used the wrong function for your file:
+
+```{r}
+head(read.csv2("data/students.csv"), 3)
+```
+
+Switch to the other one. The Lab 1 solution has both lines one after the other, so if you run the whole script, the second line undoes the first.
+:::
+
+## Inspect a variable
+
+**Recipe**
+
+| Command | Shows |
+|---|---|
+| `names(dataset)` | the variable names |
+| `dim(dataset)` | rows (respondents) and columns (variables) |
+| `str(dataset)` | the type of every variable (`num`, `int`, `chr`) |
+| `head(dataset)` | the first 6 rows |
+| `table(dataset$x, useNA = "ifany")` | how often each value occurs, including `NA` |
+| `summary(dataset$x)` | minimum, quartiles, mean, maximum |
+| `sort(unique(dataset$x))` | every distinct value, sorted: special codes stand out |
+
+**Example from the labs** (Lab 2: did the respondent vote in 2024?)
+
+```{r}
+dataset <- read.csv("data/anes_lab.csv")
+dim(dataset)
+table(dataset$V242065, useNA = "ifany")
+```
+
+**How to read it**
+
+- 1 to 4 are answers: 4 means "voted", and 1, 2 and 3 are different ways of saying "didn't vote".
+- The negative values are different kinds of missing answer (refused, don't know, not asked, …). The codebook lists what each one means.
+
+### Finding the missing-value codes in any dataset
+
+- Look for values that don't fit the scale. The labs have:
+  - negative values in the ANES;
+  - 77, 88 and 99 (refusal, don't know, no answer) on the 0–10 scales of the ESS;
+  - 999 for ESS age;
+  - 7, 8 and 9 on the ESS's 1–4 scales.
+- `summary()` often gives them away: a maximum age of 999 is a code, not a person. `sort(unique())` lists every value.
+
+  ```{r}
+  ess <- read.csv("data/ess_lab.csv")
+  summary(ess$agea)
+  sort(unique(ess$lrscale))
+  ```
+
+- When in doubt, check the codebook.
+
+## Clean: make a new variable
+
+Always create a **new** variable with a clear name and keep the original unchanged. Then check the new variable with `table()`.
+
+### Keep a valid range
+
+**Recipe:** `dataset$new <- ifelse(dataset$x >= low & dataset$x <= high, dataset$x, NA)`
+
+**Example from the labs** (Lab 2: rating of the Democratic Party, 0–10)
+
+```{r}
+dataset$like_democrat <- ifelse(dataset$V242432 >= 0 & dataset$V242432 <= 10, # <1>
+                                dataset$V242432,                              # <2>
+                                NA)                                           # <3>
+table(dataset$like_democrat, useNA = "ifany")                                 # <4>
+```
+
+1. The condition: `TRUE` for the valid answers 0 to 10.
+2. The value if `TRUE`: keep the original value.
+3. The value if `FALSE`: missing. Every code outside 0–10 (the negatives and 96–98) becomes `NA`.
+4. Check: only 0–10 and `NA` are left.
+
+### Set special codes to missing
+
+**Recipe:** `dataset$new <- ifelse(dataset$x %in% c(77, 88, 99), NA, dataset$x)`
+
+**Example from the labs** (Lab 4: left-right self-placement in the ESS)
+
+```{r}
+ess$lrscale_clean <- ifelse(ess$lrscale %in% c(77, 88, 99), NA, ess$lrscale)
+table(ess$lrscale_clean, useNA = "ifany")
+```
+
+`%in%` checks whether a value is one of a list: `x %in% c(77, 88, 99)` is shorter than `x == 77 | x == 88 | x == 99`.
+
+### Make a binary (dummy) variable
+
+**Recipe:** `dataset$new <- ifelse(dataset$x == yes_code, 1, ifelse(dataset$x %in% no_codes, 0, NA))`
+
+**Example from the labs** (Lab 2: voted in 2024, 1 = yes, 0 = no)
+
+```{r}
+dataset$voted_2024 <- ifelse(dataset$V242065 == 4, 1,                  # <1>
+                             ifelse(dataset$V242065 %in% c(1, 2, 3), 0, # <2>
+                                    NA))                                # <3>
+table(dataset$V242065, dataset$voted_2024, useNA = "ifany")             # <4>
+```
+
+1. Code 4 ("voted") becomes 1.
+2. Otherwise, codes 1, 2 and 3 become 0.
+3. Everything else (the missing codes) becomes `NA`.
+4. Check against the original: each old code (rows) should land in exactly one new value (columns).
+
+A binary variable can also group several codes of a scale. In Lab 3, satisfaction with democracy (1 = very satisfied … 5 = not at all) became `swd_binary`: codes 1–2 → 1 (satisfied), codes 4–5 → 0 (dissatisfied).
+
+### Make several categories
+
+**Example from the labs** (Lab 5: left 0–3, centre 4–6, right 7–10). Both versions give the same result.
+
+::: {.panel-tabset}
+## Base R (Lab 5)
+
+```{r}
+ess$left_right_3cat <- NA                                                 # <1>
+ess$left_right_3cat[ess$lrscale_clean >= 0 & ess$lrscale_clean <= 3] <- 1 # <2>
+ess$left_right_3cat[ess$lrscale_clean >= 4 & ess$lrscale_clean <= 6] <- 2
+ess$left_right_3cat[ess$lrscale_clean >= 7 & ess$lrscale_clean <= 10] <- 3
+table(ess$left_right_3cat, useNA = "ifany")
+```
+
+1. Start with a variable that is missing for everyone.
+2. For the rows where the condition is `TRUE`, set the value to 1. Rows that match no condition stay `NA`.
+
+## dplyr (Lab 3 solution)
+
+```{r}
+library(dplyr)
+ess <- ess |>                                   # <1>
+  mutate(left_right_3cat = case_when(           # <2>
+    lrscale_clean <= 3 ~ 1,
+    lrscale_clean >= 4 & lrscale_clean <= 6 ~ 2,
+    lrscale_clean >= 7 ~ 3,
+    TRUE ~ NA_real_                             # <3>
+  ))
+table(ess$left_right_3cat, useNA = "ifany")
+```
+
+1. `|>` ("then") passes the dataset to the next step. The Lab 3 solution writes the older pipe `%>%` from the magrittr package, which works the same here.
+2. `case_when()` checks the conditions from top to bottom and uses the first one that is `TRUE`.
+3. The catch-all: everything else (here, `NA`) stays missing.
+:::
+
+The labs' teaching assistant on the two styles: "THEY WORK THE SAME WAY, so use whichever one you prefer."
+
+### Categorical variables: `factor()`
+
+A variable like gender is stored as numbers (1, 2, 3, 4), but the numbers are labels, not amounts. `factor()` tells R to treat them as categories. This matters in regressions, where you write `factor(gndr)` (see [Regression](04-regression.qmd)).
+
+```{r}
+dataset$gender <- ifelse(dataset$V241551 %in% c(1, 2, 3, 4), dataset$V241551, NA)
+dataset$gender_f <- factor(dataset$gender,
+                           levels = c(1, 2, 3, 4),
+                           labels = c("Man", "Woman", "Nonbinary", "Something else"))
+table(dataset$gender_f, useNA = "ifany")
+```
+
+## Your turn
+
+::: {.callout-note icon=false}
+## Exercise 1.1 · Lab 1
+
+With `students`, create:
+
+- `final_mark`: the essay mark plus the exam mark, divided by 2;
+- `first`: 1 if the final mark is 70 or more, 0 otherwise;
+- `female`: 1 if the student is female, 0 otherwise;
+- `female_first`: 1 if the student is female **and** has a final mark of 70 or more, 0 otherwise.
+:::
+
+::: {.callout-tip collapse="true"}
+## Hint
+
+`ifelse(condition, 1, 0)`. Text values need quotes: `students$gender == "F"`. Combine two conditions with `&`.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+students$final_mark <- (students$mark_essay + students$mark_exam) / 2
+students$first <- ifelse(students$final_mark >= 70, 1, 0)
+students$female <- ifelse(students$gender == "F", 1, 0)
+students$female_first <- ifelse(students$gender == "F" & students$final_mark >= 70, 1, 0)
+students
+```
+:::
+
+::: {.callout-note icon=false}
+## Exercise 1.2 · Lab 2
+
+`V242435` is how much respondents like Donald Trump, on a 0–10 scale. Inspect it, clean it into `like_trump`, and check the result.
+:::
+
+::: {.callout-tip collapse="true"}
+## Hint
+
+Inspect with `table(dataset$V242435)`. Then keep the valid range, as with `like_democrat`.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+table(dataset$V242435, useNA = "ifany")
+dataset$like_trump <- ifelse(dataset$V242435 >= 0 & dataset$V242435 <= 10, dataset$V242435, NA)
+table(dataset$like_trump, useNA = "ifany")
+```
+:::
+
+::: {.callout-note icon=false}
+## Exercise 1.3 · Lab 3
+
+Clean age (`V241458x`; 80 means "80 or older"), then create `age_category`: 0 = 30 or younger, 1 = 31 to 60, 2 = 61 or older.
+:::
+
+::: {.callout-tip collapse="true"}
+## Hint
+
+Inspect `V241458x` first to find the missing code. Then use either the base R or the dplyr version from "Make several categories".
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+summary(dataset$V241458x)   # the minimum, -2, is the missing code
+dataset$age <- ifelse(dataset$V241458x >= 18 & dataset$V241458x <= 80, dataset$V241458x, NA)
+
+dataset <- dataset |>
+  mutate(age_category = case_when(
+    age <= 30 ~ 0,
+    age >= 31 & age <= 60 ~ 1,
+    age >= 61 ~ 2,
+    TRUE ~ NA_real_
+  ))
+table(dataset$age_category, useNA = "ifany")
+```
+:::
+
+::: {.callout-note icon=false}
+## Exercise 1.4 · Lab 5
+
+In the ESS, `trstplc` is trust in the police (0 = no trust at all, 10 = complete trust). Clean it into `trust_police`, then create `high_trust_police`: 0 = low trust (5 or less), 1 = high trust (6 or more).
+:::
+
+::: {.callout-tip collapse="true"}
+## Hint
+
+`table(ess$trstplc)` shows the special codes. Then make the binary variable with a nested `ifelse()`.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+table(ess$trstplc, useNA = "ifany")
+ess$trust_police <- ifelse(ess$trstplc >= 0 & ess$trstplc <= 10, ess$trstplc, NA)
+ess$high_trust_police <- ifelse(ess$trust_police >= 6, 1,
+                                ifelse(ess$trust_police <= 5, 0, NA))
+table(ess$trust_police, ess$high_trust_police, useNA = "ifany")
+```
+:::

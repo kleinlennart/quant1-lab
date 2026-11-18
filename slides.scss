@@ -1,0 +1,22 @@
+/*-- scss:defaults --*/
+$presentation-font-size-root: 34px;
+$link-color: #1f6fb2;
+$code-block-font-size: 0.75em;   // readable from the back of the room
+
+/*-- scss:rules --*/
+.reveal table { font-size: 0.72em; }
+.reveal .smaller table { font-size: 0.68em; }
+.reveal .smaller table code { font-size: 0.95em; }
+.reveal table td, .reveal table th { padding: 0.25em 0.5em; }
+.reveal blockquote { width: 100%; font-size: 0.75em; text-align: left; }
+.reveal h2 { font-size: 1.4em; }
+.reveal .figure-credit { font-size: 0.5em; color: #555; }
+.reveal table { margin-left: 0; margin-right: auto; margin-bottom: 0.8em; }
+.reveal table + div.sourceCode, .reveal table + .cell { margin-top: 0.8em; }
+.reveal .cell-output { margin-bottom: 0.6em; }
+.reveal .cell-output-display table { margin-left: 0 !important; margin-right: auto !important; }
+.reveal .fig-note { font-size: 0.6em; line-height: 1.35; color: #333; max-width: 90%; margin-top: 0.3em; }
+/* example interpretations: labelled box, so they read as examples, not the only right answer */
+.reveal .example-interp { border-left: 4px solid #1f6fb2; background: #f3f7fc; padding: 0.25em 0.7em; margin: 0.4em 0; }
+.reveal .example-interp::before { content: "Example interpretation"; display: block; font-size: 0.55em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #1f6fb2; }
+.reveal .example-interp ul { margin-top: 0.1em; }

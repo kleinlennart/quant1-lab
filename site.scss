@@ -1,0 +1,42 @@
+/*-- scss:defaults --*/
+// Match the slides (slides.qmd / slides.scss): same font, ink, link blue and navy
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+$font-family-sans-serif: "Source Sans 3", "Source Sans Pro", Helvetica, sans-serif;
+$font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+$font-size-root: 18px;
+
+$body-bg: #ffffff;
+$body-color: #222222;
+$headings-color: #222222;
+$headings-font-weight: 600;
+
+$primary: #1f3a5f;      // navy of the section slides
+$secondary: #6c757d;
+$link-color: #1f6fb2;   // link blue of the slides
+$info: #1f6fb2;
+$success: #2e7d4f;
+$code-color: #1f3a5f;   // inline code in navy, as on the slides
+
+/*-- scss:rules --*/
+a { text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* interpretation blockquotes (guide pages, mock exam): flagged as examples */
+blockquote, .blockquote {
+  border-left: 4px solid #1f6fb2;
+  background: #f3f7fc;
+  padding: 0.6em 1em;
+  color: #222222;
+  font-size: 1rem;
+}
+blockquote::before, .blockquote::before {
+  content: "Example interpretation";
+  display: block;
+  font-size: 0.75em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #1f6fb2;
+  margin-bottom: 0.3em;
+}

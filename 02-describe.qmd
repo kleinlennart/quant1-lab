@@ -1,0 +1,152 @@
+---
+title: "2 · Describe one variable"
+description: "Counts and percentages for a categorical variable; mean, median, standard deviation and histogram for a continuous one. Lab 2."
+---
+
+```{r}
+#| code-fold: true
+#| code-summary: "Setup: load the ANES data and clean the variables (page 1)"
+dataset <- read.csv("data/anes_lab.csv")
+dataset$voted_2024 <- ifelse(dataset$V242065 == 4, 1, ifelse(dataset$V242065 %in% c(1, 2, 3), 0, NA))
+dataset$like_democrat <- ifelse(dataset$V242432 >= 0 & dataset$V242432 <= 10, dataset$V242432, NA)
+dataset$like_trump <- ifelse(dataset$V242435 >= 0 & dataset$V242435 <= 10, dataset$V242435, NA)
+dataset$gender <- ifelse(dataset$V241551 %in% c(1, 2, 3, 4), dataset$V241551, NA)
+```
+
+## Which statistics for which variable?
+
+| Variable type | Statistics | Graph |
+|---|---|---|
+| Categorical: nominal, ordinal, binary | counts, percentages | `barplot(table(x))` |
+| Continuous | mean, median, standard deviation, minimum and maximum, quartiles | `hist(x)`, `boxplot(x)` |
+
+## A categorical variable
+
+**Recipe**
+
+```{r}
+#| eval: false
+table(dataset$x, useNA = "ifany")            # counts, including missing
+prop.table(table(dataset$x)) * 100           # percentages of the valid answers
+barplot(table(dataset$x))
+```
+
+**Example from the labs** (Lab 2: voted in 2024)
+
+```{r}
+table(dataset$voted_2024, useNA = "ifany")
+round(prop.table(table(dataset$voted_2024)) * 100, 1)   # <1>
+```
+
+1. `round(…, 1)` keeps one decimal. `table()` leaves out `NA` unless you ask for it, so these are percentages of the respondents who answered.
+
+**How to read it**
+
+> Of the respondents who answered, `r round(100 * mean(dataset$voted_2024, na.rm = TRUE), 1)`% say they voted in 2024 (n = `r sum(!is.na(dataset$voted_2024))`).
+
+## A continuous variable
+
+**Recipe**
+
+```{r}
+#| eval: false
+mean(dataset$x, na.rm = TRUE)
+median(dataset$x, na.rm = TRUE)
+sd(dataset$x, na.rm = TRUE)
+summary(dataset$x)                 # minimum, quartiles, mean, maximum, number of NAs
+hist(dataset$x)
+```
+
+**Example from the labs** (Lab 2: rating of the Democratic Party, 0–10)
+
+```{r}
+mean(dataset$like_democrat, na.rm = TRUE)    # <1>
+median(dataset$like_democrat, na.rm = TRUE)
+sd(dataset$like_democrat, na.rm = TRUE)
+summary(dataset$like_democrat)
+```
+
+1. `na.rm = TRUE` removes the missing values for this calculation. Without it, one `NA` makes the whole result `NA`, as below.
+
+```{r}
+mean(dataset$like_democrat)
+```
+
+```{r}
+hist(dataset$like_democrat,
+     main = "Rating of the Democratic Party",
+     xlab = "0 = strongly dislike, 10 = strongly like",
+     ylab = "Number of respondents")
+```
+
+```{r}
+#| include: false
+h <- hist(dataset$like_democrat, plot = FALSE)
+stopifnot(h$counts[1] == sum(dataset$like_democrat %in% c(0, 1)))
+```
+
+::: {.callout-tip}
+## One bar per value
+
+By default, the first bar of this histogram counts the 0s and the 1s together (`r h$counts[1]` = `r sum(dataset$like_democrat == 0, na.rm = TRUE)` + `r sum(dataset$like_democrat == 1, na.rm = TRUE)`), so there are 10 bars for 11 values. For a 0–10 scale, set the bar edges yourself:
+
+```{r}
+#| eval: false
+hist(dataset$like_democrat, breaks = seq(-0.5, 10.5, by = 1))
+```
+:::
+
+**How to read it**
+
+- **Mean and median:** compare them. If they are very close, the distribution is approximately symmetric. If the mean is above the median, it is positively (right-) skewed; if below, negatively (left-) skewed. Name the values that pull the mean away from the median.
+- **Standard deviation:** how far values typically lie from the mean. Judge it against the mean: small compared with the mean means a small spread, large means a large spread.
+
+> Mean: `r round(mean(dataset$like_democrat, na.rm = TRUE), 2)`. Median: `r median(dataset$like_democrat, na.rm = TRUE)`. Standard deviation: `r round(sd(dataset$like_democrat, na.rm = TRUE), 2)`.
+>
+> Given that the mean and the median are very close, the distribution of the rating of the Democratic Party is approximately symmetric. The standard deviation means that ratings typically lie about `r round(sd(dataset$like_democrat, na.rm = TRUE), 1)` points from the mean, which is large compared with the mean. The spread of the distribution is thus large: respondents disagree a lot about the party.
+
+## Your turn
+
+::: {.callout-note icon=false}
+## Exercise 2.1 · Lab 2
+
+For the rating of Donald Trump (`like_trump`, cleaned in the setup above), give the mean, the median and the standard deviation, and plot a histogram. Write one sentence that describes the variable.
+:::
+
+::: {.callout-tip collapse="true"}
+## Hint
+
+Same commands as for `like_democrat`. Remember `na.rm = TRUE`.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+mean(dataset$like_trump, na.rm = TRUE)
+median(dataset$like_trump, na.rm = TRUE)
+sd(dataset$like_trump, na.rm = TRUE)
+hist(dataset$like_trump, breaks = seq(-0.5, 10.5, by = 1),
+     main = "Rating of Donald Trump", xlab = "0 = strongly dislike, 10 = strongly like")
+```
+
+> Mean: `r round(mean(dataset$like_trump, na.rm = TRUE), 2)`. Median: `r median(dataset$like_trump, na.rm = TRUE)`. Standard deviation: `r round(sd(dataset$like_trump, na.rm = TRUE), 2)`.
+>
+> The mean is above the median, so the distribution is positively (right-) skewed, due to the many high ratings: `r round(100 * mean(dataset$like_trump >= 8, na.rm = TRUE))`% give 8 to 10, which pulls the mean above the median, while `r round(100 * mean(dataset$like_trump == 0, na.rm = TRUE))`% give 0. The standard deviation means that ratings typically lie about `r round(sd(dataset$like_trump, na.rm = TRUE), 1)` points from the mean, which is large compared with the mean. The spread is thus large: the ratings are polarised.
+:::
+
+::: {.callout-note icon=false}
+## Exercise 2.2 · Lab 2
+
+What percentage of respondents are women (`gender` = 2)?
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+round(prop.table(table(dataset$gender)) * 100, 1)
+```
+
+> `r round(100 * mean(dataset$gender == 2, na.rm = TRUE), 1)`% of the respondents who answered are women.
+:::

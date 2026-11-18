@@ -1,0 +1,196 @@
+---
+title: "4 · Linear regression"
+description: "OLS with lm(), reading summary(), country fixed effects, a regression on one country, and the diagnostics for heteroskedasticity and multicollinearity. Lab 4."
+---
+
+```{r}
+#| code-fold: true
+#| code-summary: "Setup: load the ESS data and clean the variables (as in Lab 4)"
+dataset <- read.csv("data/ess_lab.csv")
+# Lab 4 cleans these in place (the original variable is overwritten)
+dataset$lrscale <- ifelse(dataset$lrscale %in% c(77, 88, 99), NA, dataset$lrscale)   # left-right, 0-10
+dataset$agea <- ifelse(dataset$agea == 999, NA, dataset$agea)                        # age
+dataset$eduyrs <- ifelse(dataset$eduyrs %in% c(77, 88, 99), NA, dataset$eduyrs)      # years of education
+# gndr: 1 = male, 2 = female; cntry: two-letter country code (no missing codes)
+```
+
+```{r}
+#| include: false
+source("_common.R")   # p_txt(), sig_txt(), b(), p(), sig(): wording from the course
+```
+
+## Linear regression (OLS)
+
+You need this when the outcome is **continuous** and you want the effect of several independent variables at once, each one *net of the others* (the control variables).
+
+**Recipe**
+
+```{r}
+#| eval: false
+model <- lm(y ~ x1 + factor(x2) + x3, data = dataset)   # factor() for categorical predictors
+summary(model)
+confint(model)                                          # 95% confidence intervals
+nobs(model)                                             # number of respondents used
+```
+
+**Example from the labs** (Lab 4: left-right self-placement by age, gender and education)
+
+```{r}
+model1 <- lm(lrscale ~ agea + factor(gndr) + eduyrs, data = dataset)
+summary(model1)
+```
+
+**How to read it**
+
+1. **`Estimate`:** how much Y increases when X increases by one unit, net of the other independent variables (the control variables). A positive coefficient means a positive relationship, a negative one a negative relationship.
+   - `agea` = `r b(model1, "agea", 4)`: when age increases by one year, left-right self-placement increases by `r b(model1, "agea", 4)` points.
+   - `factor(gndr)2` = `r b(model1, "factor(gndr)2")`: how much larger or smaller left-right self-placement is for women (2) than for men (1), the **reference category**, which has no row of its own. Women place themselves `r abs(b(model1, "factor(gndr)2", 2))` points further left than men.
+   - `eduyrs` = `r b(model1, "eduyrs")`: when education increases by one year, left-right self-placement decreases by `r abs(b(model1, "eduyrs"))` points.
+   - `(Intercept)`: the value of Y when all the independent variables are 0 (a man aged 0 with no education), which means little here.
+2. **`Std. Error`, `t value`, `Pr(>|t|)`:** `t` = estimate ÷ standard error, and `Pr(>|t|)` is the p-value for H0 that the coefficient is 0 in the population. R's stars: `***` p < 0.001, `**` p < 0.01, `*` p < 0.05, `.` p < 0.1. The course's tables use different stars (`***` p < 0.01, `**` p < 0.05, `*` p < 0.10), so write the level in words: "statistically significant at the 0.01 level".
+3. **"5569 observations deleted due to missingness":** `lm()` uses only respondents with no `NA` in any of the variables, so N = `r format(nobs(model1), big.mark = ",")`.
+4. **`Multiple R-squared`** = `r round(summary(model1)$r.squared, 3)`: the proportion of the variance of the dependent variable explained by the independent variables, here `r round(100 * summary(model1)$r.squared, 1)`%. It indicates how good the regression is.
+5. **`F-statistic`:** tests H0 that all the coefficients are 0 together.
+
+> Net of age and education, women place themselves `r abs(b(model1, "factor(gndr)2", 2))` points further to the left than men on the 0-10 scale; this effect is `r sig(model1, "factor(gndr)2")`. When education increases by one year, left-right self-placement decreases by `r abs(b(model1, "eduyrs"))` points (`r sig(model1, "eduyrs")`). The independent variables explain `r round(100 * summary(model1)$r.squared, 1)`% of the variance of left-right self-placement (R² = `r round(summary(model1)$r.squared, 3)`).
+
+::: {.callout-tip}
+## Significant is not the same as large
+
+A statistically significant effect is not always strong. With `r format(nobs(model1), big.mark = ",")` respondents, even tiny effects are significant: ten more years of age move the score by `r round(10 * coef(model1)[["agea"]], 2)` points on a 0-10 scale, `r sig(model1, "agea")` but very small. Report the size as well as the significance.
+:::
+
+## Country fixed effects
+
+**Recipe:** add `+ factor(cntry)`. R adds a dummy for each country except the first in alphabetical order (here AT, Austria), so respondents are compared **within** the same country. Differences between the countries' average scores no longer drive the other coefficients.
+
+**Example from the labs** (Lab 4)
+
+```{r}
+model2 <- lm(lrscale ~ agea + factor(gndr) + eduyrs + factor(cntry), data = dataset)
+summary(model2)
+```
+
+**How to read it**
+
+- **The predictors of interest:**
+  - Gender (`r b(model2, "factor(gndr)2")`) and education (`r b(model2, "eduyrs")`) change little from `model1`.
+  - R² rises from `r round(summary(model1)$r.squared, 3)` to `r round(summary(model2)$r.squared, 3)`, because the countries explain part of the variance.
+  - With country fixed effects, the estimates are within countries: respondents are compared with others from the same country.
+- **A country row** compares that country with Austria, the reference category. `factor(cntry)HU` = `r b(model2, "factor(cntry)HU", 2)`: net of age, gender and education, respondents in Hungary place themselves `r abs(b(model2, "factor(cntry)HU", 2))` points further `r if (coef(model2)[["factor(cntry)HU"]] > 0) "right" else "left"` than respondents in Austria.
+
+## A regression on one country
+
+**Recipe:** `dataset_fr <- subset(dataset, cntry == "FR")`, then the same `lm()` with `data = dataset_fr`.
+
+**Example from the labs** (Lab 4: France only)
+
+```{r}
+dataset_france <- subset(dataset, cntry == "FR")
+model_france <- lm(lrscale ~ agea + factor(gndr) + eduyrs, data = dataset_france)
+summary(model_france)
+```
+
+> In France, N = `r format(nobs(model_france), big.mark = ",")`. With fewer respondents the standard errors are larger. The effect of education (`r b(model_france, "eduyrs")`, `r p(model_france, "eduyrs")`) is `r sig(model_france, "eduyrs")` only, not at the 0.05 level: weaker evidence than in the full sample.
+
+## Diagnostics
+
+### Heteroskedasticity
+
+OLS assumes the errors have the same variance at every level of the predictors (**homoskedasticity**). If the spread of the residuals changes, the errors are **heteroskedastic**.
+
+**Recipe**
+
+```{r}
+#| eval: false
+plot(model$fitted.values, model$residuals)   # look for a spread that widens or narrows
+abline(h = 0)
+library(lmtest)
+bptest(model)                                # Breusch-Pagan test; H0: homoskedasticity
+```
+
+**Example from the labs** (Lab 4)
+
+```{r}
+plot(model2$fitted.values, model2$residuals, xlab = "Fitted values", ylab = "Residuals")
+abline(h = 0, col = "red")
+
+library(lmtest)
+bptest(model2)
+```
+
+```{r}
+#| include: false
+bp <- bptest(model2)
+```
+
+**How to read it**
+
+- **The plot:** the diagonal stripes come from the outcome taking only 11 values. Look at whether the vertical spread of the points changes from left to right.
+- **The test:** H0 is homoskedasticity, so a small p-value means heteroskedasticity.
+
+> The Breusch-Pagan test gives BP = `r round(bp$statistic)` (df = `r bp$parameter`, `r p_txt(bp$p.value)`): we reject homoskedasticity, so there is heteroskedasticity. The variance of the residuals is not the same across the values of the dependent variable. The course's quick fix is to replace the standard errors with robust standard errors.
+
+::: {.callout-note collapse="true"}
+## Beyond the labs: why it matters
+
+Heteroskedasticity doesn't bias the coefficients, but the usual standard errors, and so the t-tests and p-values, are no longer valid (Wooldridge, *Introductory Econometrics*, ch. 8).
+:::
+
+### Multicollinearity
+
+Predictors that are strongly correlated with each other make it hard to separate their effects, and their standard errors grow.
+
+**Recipe:** `library(car)`, then `vif(model)`. Large values suggest multicollinearity.
+
+**Example from the labs** (Lab 4)
+
+```{r}
+library(car)
+vif(model2)
+```
+
+**How to read it**
+
+- With `factor()` terms, `vif()` prints three columns. `GVIF` is the usual VIF for a variable with one coefficient, like age, gender (one dummy) or education. `GVIF^(1/(2*Df))` adjusts for the `Df` dummies of a factor like `cntry`.
+
+- The course's rule: a VIF below 10 is generally not a concern.
+
+> All the VIFs are close to 1 (at most `r round(max(vif(model2)[, 1]), 2)`), well below 10, so multicollinearity is not a concern.
+
+## Your turn
+
+::: {.callout-note icon=false}
+## Exercise 4.1 · Lab 4
+
+`trstplc` is trust in the police (0 = no trust at all, 10 = complete trust).
+
+1. Check and clean `trstplc`.
+2. Regress trust in the police on age, gender, years of education and country fixed effects. Interpret the coefficients.
+3. Test for heteroskedasticity.
+4. Test for multicollinearity.
+:::
+
+::: {.callout-tip collapse="true"}
+## Hint
+
+The special codes are the same as for `lrscale`. The model is `model2` with a different outcome.
+:::
+
+::: {.callout-tip collapse="true"}
+## Solution
+
+```{r}
+table(dataset$trstplc, useNA = "ifany")
+dataset$trust_police <- ifelse(dataset$trstplc >= 0 & dataset$trstplc <= 10, dataset$trstplc, NA)
+
+model_trust <- lm(trust_police ~ agea + factor(gndr) + eduyrs + factor(cntry), data = dataset)
+summary(model_trust)$coefficients[1:4, ]   # the first rows; summary(model_trust) shows all
+summary(model_trust)$r.squared
+
+bptest(model_trust)
+vif(model_trust)
+```
+
+> Net of the other variables and the country fixed effects, trust in the police increases by `r b(model_trust, "agea")` points when age increases by one year and by `r b(model_trust, "eduyrs")` points when education increases by one year, and women trust the police `r b(model_trust, "factor(gndr)2", 2)` points more than men (all `r sig_txt(max(summary(model_trust)$coefficients[2:4, 4]))`). R² = `r round(summary(model_trust)$r.squared, 3)` (without the country dummies it would be `r round(summary(lm(trust_police ~ agea + factor(gndr) + eduyrs, data = dataset))$r.squared, 3)`). The Breusch-Pagan test rejects homoskedasticity (`r p_txt(bptest(model_trust)$p.value)`), so there is heteroskedasticity (fix: robust standard errors). All the VIFs are close to 1, well below 10, so multicollinearity is not a concern.
+:::
