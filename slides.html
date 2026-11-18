@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-501a880b6b3b1ddf664a2f59eeea9d9b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-contrib/fontawesome6-6.7.2/all.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/fontawesome6-6.7.2/latex-fontsize.css" rel="stylesheet"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+<meta name="author" content="Lennart Klein">
+<meta name="dcterms.date" content="2026-11-19">
+<title>QM1 Lab Exam: R Guide – R Recap Before the Lab Exam</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+<link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+<style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #767676;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #767676;  padding-left: 4px; }
+    div.sourceCode
+      { color: #545454; background-color: #fefefe; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #545454; } /* Normal */
+    code span.al { color: #7928a1; } /* Alert */
+    code span.an { color: #696969; } /* Annotation */
+    code span.at { color: #a55a00; } /* Attribute */
+    code span.bn { color: #7928a1; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #d91e18; } /* ControlFlow */
+    code span.ch { color: #008000; } /* Char */
+    code span.cn { color: #d91e18; } /* Constant */
+    code span.co { color: #696969; } /* Comment */
+    code span.cv { color: #696969; font-style: italic; } /* CommentVar */
+    code span.do { color: #696969; font-style: italic; } /* Documentation */
+    code span.dt { color: #7928a1; } /* DataType */
+    code span.dv { color: #7928a1; } /* DecVal */
+    code span.er { color: #7928a1; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #a55a00; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #696969; } /* Information */
+    code span.kw { color: #d91e18; } /* Keyword */
+    code span.op { color: #00769e; } /* Operator */
+    code span.ot { color: #d91e18; } /* Other */
+    code span.pp { color: #7928a1; } /* Preprocessor */
+    code span.sc { color: #00769e; } /* SpecialChar */
+    code span.ss { color: #008000; } /* SpecialString */
+    code span.st { color: #008000; } /* String */
+    code span.va { color: #a55a00; } /* Variable */
+    code span.vs { color: #008000; } /* VerbatimString */
+    code span.wa { color: #696969; font-style: italic; } /* Warning */
+  </style>
+<link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-709fac5a3ef0cf0f695093a579a1a846.css">
+<link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+<link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+<link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+<link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+<style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section class="quarto-title-block center"><h1 class="title">R Recap Before the Lab Exam</h1>
+  <p class="subtitle">Introduction to Quantitative Methods · Sciences Po</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Lennart Klein
+</div>
+</div>
+</div>
+
+  <p class="date">19 November 2026</p>
+</section><section class="slide level2 center"><h2>Today</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>By the end you should have</strong></p>
+<ul>
+<li>an <strong>RStudio</strong> project you can reuse<br> on Tuesday</li>
+<li>a feel for how R reads a line of code</li>
+<li>a routine for fixing errors, with or<br>without AI</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<p><strong>The idea of this session</strong></p>
+<ul>
+<li>code along and interrupt with any questions</li>
+<li>everything builds on TAs’ labs and the lecture</li>
+<li>I am just a nerd who likes to share R &lt;3</li>
+<li>slides are recycled from my time as a TA</li>
+</ul>
+</div></div>
+</section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>1 · Setting Up a Project</h2>
+</section><section class="slide level2"><h2>
+<i class="fa-brands fa-r-project" aria-label="r-project"></i> and RStudio</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><img data-src="images/r4ds-rstudio-script.png" alt="RStudio with the Editor, Console and Output panes highlighted."></p>
+<p><span class="figure-credit">Figure: Wickham et al., <a href="https://r4ds.hadley.nz/workflow-scripts.html"><em>R for Data Science</em> (2e)</a>, CC BY-NC-ND 3.0</span></p>
+</div><div class="column" style="width:50%;">
+<p><strong>R</strong> does the statistics. <strong>RStudio</strong> is where you write it.</p>
+<ul>
+<li>
+<strong>Editor:</strong> your script, the file you hand in</li>
+<li>
+<strong>Console:</strong> runs R.<br><code>&gt;</code> ready, <code>+</code> unfinished line</li>
+<li>
+<strong>Terminal:</strong> not R, only for setup</li>
+<li>
+<strong>Environment:</strong> data objects &amp; variables in memory</li>
+<li>
+<strong>Output:</strong> plots, help, files</li>
+</ul>
+</div></div>
+</section><section class="slide level2"><h2>Best Practice: One folder per project</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<p>A good folder structure (example):</p>
+<pre><code>labexam/
+├── labexam.Rproj    ← double-click this
+├── data/
+│   ├── anes_….csv
+│   └── ess.csv
+├── output/
+└── Lastname_Firstname.R</code></pre>
+</div><div class="column" style="width:55%;">
+<ul>
+<li>In <strong>RStudio</strong>, create one with:<br><em>File &gt; New Project &gt; New Directory</em>.</li>
+<li>Opening <code>labexam.Rproj</code> automatically makes this folder the working directory.</li>
+<li>
+<code>read.csv("data/ess.csv")</code> then works on any computer, without <code><a href="https://rdrr.io/r/base/getwd.html">setwd()</a></code>.</li>
+<li>[TIP] Before you hand in:<br><em>Session &gt; Restart R</em>, then run the whole script again to make sure it works.</li>
+</ul>
+</div></div>
+</section><section class="slide level2"><h2>Best Practice: Start every session from a clean slate</h2>
+<p>By default, <strong>RStudio</strong> saves everything in memory to <code>.RData</code> when you quit and loads it again next time. Yesterday’s objects come back, and a script can seem to work only because of them.</p>
+<div class="columns">
+<div class="column" style="width:55%;">
+<p><em>Tools &gt; Global Options &gt; General</em>:</p>
+<ul>
+<li>untick <strong>Restore .RData into workspace at startup</strong>
+</li>
+<li>set <strong>Save workspace to .RData on exit</strong> to <strong>Never</strong>
+</li>
+</ul>
+</div><div class="column" style="width:45%;">
+<p>Or run this once in the Console:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"usethis"</span><span class="op">)</span></span>
+<span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_blank_slate.html">use_blank_slate</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
+<p>Your script is what counts. To test it: <em>Session &gt; Restart R</em> (Cmd+Shift+0 on a Mac, Ctrl+Shift+F10 on Windows), then run everything from the top.</p>
+</section><section class="slide level2"><h2>The top of your script might look something like this</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Lab exam · Lastname Firstname</span></span>
+<span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">lmtest</span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bprice2652/car_repo">car</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bbolker/margins">margins</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"data/ess.csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Install the packages once, in the Console (not in the script):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"dplyr"</span>, <span class="st">"lmtest"</span>, <span class="st">"car"</span>, <span class="st">"margins"</span>, <span class="st">"nnet"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>2 · How R Reads Code</h2>
+</section><section class="slide level2"><h2>Three patterns you see in every lab script</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Pattern</th>
+<th>Read it as</th>
+<th>Example</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>name &lt;- value</code></td>
+<td>“name gets value”</td>
+<td><code>x &lt;- c(3, 7, 10)</code></td>
+</tr>
+<tr class="even">
+<td><code>function(arguments)</code></td>
+<td>“do this, with these settings”</td>
+<td><code>mean(x, na.rm = TRUE)</code></td>
+</tr>
+<tr class="odd">
+<td><code>dataset$var</code></td>
+<td>“the column var of dataset”</td>
+<td><code>dataset$agea</code></td>
+</tr>
+</tbody>
+</table>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">7</span>, <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.666667</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span><span class="op">$</span><span class="va">agea</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span> <span class="co"># [ ] picks elements: here the first six</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 65 21 53 78 64 59</code></pre>
+</div>
+</div>
+</section><section class="slide level2"><h2>A condition gives TRUE or FALSE for every row</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># one answer per row</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">agea</span> <span class="op">&gt;=</span> <span class="fl">18</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># TRUE counts as 1: how many missing codes?</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">77</span>, <span class="fl">88</span>, <span class="fl">99</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5074</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># the share of women</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">gndr</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5396315</code></pre>
+</div>
+</div>
+</section><section class="slide level2"><h2>
+<code>ifelse()</code> is Excel’s <code>IF()</code> for every row</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="co"># condition, checked for every row</span></span>
+<span>  test <span class="op">=</span> <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">77</span>, <span class="fl">88</span>, <span class="fl">99</span><span class="op">)</span>,</span>
+<span>  <span class="co"># value where the condition is TRUE</span></span>
+<span>  yes <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="co"># value where it is FALSE</span></span>
+<span>  no <span class="op">=</span> <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    0     1     2     3     4     5     6     7     8     9    10  &lt;NA&gt; 
+ 1318   775  2005  3522  3339 11259  3360  3711  2852   928  1371  5074 </code></pre>
+</div>
+</div>
+<blockquote>
+<p><code>useNA</code> controls if the table includes counts of <code>NA</code> values: the allowed values correspond to never (<code>"no"</code>), only if the count is positive (<code>"ifany"</code>) and even for zero counts (<code>"always"</code>). (<code><a href="https://rdrr.io/r/base/table.html">?table</a></code>)</p>
+<p>The default is <code>"no"</code>, which would hide the 5,074 new <code>NA</code>s.</p>
+</blockquote>
+</section><section class="slide level2"><h2>One <code>NA</code> makes the result <code>NA</code>
+</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="cn">NA</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<ul>
+<li>
+<code>na.rm = TRUE</code> in <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/sd.html">sd()</a></code> and <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>
+</li>
+<li>
+<code>use = "complete.obs"</code> in <code><a href="https://rdrr.io/r/stats/cor.html">cor()</a></code>
+</li>
+<li>
+<code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> and <code><a href="https://rdrr.io/r/stats/glm.html">glm()</a></code> drop incomplete rows on their own and say so: “(… observations deleted due to missingness)”</li>
+</ul></section><section class="slide level2"><h2>Packages</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<table class="caption-top"><tbody>
+<tr class="odd">
+<td><code>install.packages("car")</code></td>
+<td>downloads it, once per computer</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://github.com/bprice2652/car_repo">library(car)</a></code></td>
+<td>loads it, in every session</td>
+</tr>
+<tr class="odd">
+<td><code>car::vif(model)</code></td>
+<td>uses one function without <code><a href="https://rdrr.io/r/base/library.html">library()</a></code>
+</td>
+</tr>
+</tbody></table>
+</div><div class="column" style="width:50%;">
+<p>If R says <code>could not find function "vif"</code>, load the package with <code><a href="https://github.com/bprice2652/car_repo">library(car)</a></code>.</p>
+<p>If it says <code>there is no package called 'car'</code>, install it first.</p>
+<p>Base R functions such as <code>mean</code>, <code>lm</code> and <code>t.test</code> are always available.</p>
+</div></div>
+</section><section class="slide level2"><h2>Base R and the tidyverse</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p>Base R, as in the labs:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span><span class="op">$</span><span class="va">age_cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">age</span> <span class="op">&lt;=</span> <span class="fl">30</span>,</span>
+<span>  <span class="fl">0</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">age</span> <span class="op">&lt;=</span> <span class="fl">60</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column" style="width:50%;">
+<p>dplyr, with the native pipe <code>|&gt;</code> (“then”):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="va">dataset</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span></span>
+<span>    age_cat <span class="op">=</span> <span class="fu">case_when</span><span class="op">(</span></span>
+<span>      <span class="va">age</span> <span class="op">&lt;=</span> <span class="fl">30</span> <span class="op">~</span> <span class="fl">0</span>,</span>
+<span>      <span class="va">age</span> <span class="op">&lt;=</span> <span class="fl">60</span> <span class="op">~</span> <span class="fl">1</span>,</span>
+<span>      <span class="va">age</span> <span class="op">&gt;=</span> <span class="fl">61</span> <span class="op">~</span> <span class="fl">2</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div></div>
+<p>The Lab 3 solution writes the older pipe <code>%&gt;%</code> (from the magrittr package), which does the same here. Both versions give the same variable. Wajd: “THEY WORK THE SAME WAY, so use whichever one you prefer.” Base R is closer to the lab scripts, which helps on Tuesday.</p>
+</section><section class="slide level2"><h2>
+<code>y ~ x</code> means “y explained by x”</h2>
+<p>The same formula works in five functions from the labs:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># means by group</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">gndr</span>, data <span class="op">=</span> <span class="va">dataset</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># difference of means</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">gndr</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># figure</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">gndr</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># regression</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># logistic regression (y01 is a 0/1 dummy variable)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dataset</span>, family <span class="op">=</span> <span class="va">binomial</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><br></p>
+<blockquote>
+<p><code>+</code> adds a predictor. <code>*</code> adds two predictors and their interaction.</p>
+</blockquote>
+</section><section class="slide level2"><h2>
+<code>factor()</code>: numbers that are labels</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">lrscale_clean</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept) factor(gndr)2 
+    5.2665148    -0.2946513 </code></pre>
+</div>
+</div>
+<ul>
+<li>
+<code>gndr</code> codes 1 = male and 2 = female, so the numbers are categories, not amounts.</li>
+<li>
+<code>factor(gndr)2</code> compares women with men. Men are the reference: the first level, which gets no row of its own.</li>
+<li>
+<code>factor(cntry)</code> adds one dummy per country, compared with AT (first in alphabetical order). These are the country fixed effects.</li>
+</ul></section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>3 · From Output to Words</h2>
+</section><section class="slide level2"><h2>Describe a variable (Lab 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.87644</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.405986</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>Given that the mean and the median are very close, the distribution of the rating of the Democratic Party is approximately symmetric. The standard deviation means that ratings typically lie about 3.4 points from the mean, which is large compared with the mean: the spread of the distribution is thus large.</p>
+</div>
+</section><section class="slide level2"><h2>Histogram (Lab 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="slides_files/figure-revealjs/unnamed-chunk-15-1.png" style="width:78.0%" class="r-stretch"><p>The bars show the shape that the mean and median describe. The first bar counts the 0s and the 1s together; <code>breaks = seq(-0.5, 10.5, by = 1)</code> gives one bar per value.</p>
+</section><section class="slide level2"><h2>Group means (Lab 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">like_democrat</span> <span class="op">~</span> <span class="va">voted_2024</span>, data <span class="op">=</span> <span class="va">anes</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  voted_2024 like_democrat
+1          0      4.373077
+2          1      4.949704</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>Non-voters: 4.37. Voters: 4.95. There is therefore a difference in the means, suggesting an association between voting and the rating of the Democratic Party in this sample.</p>
+</div>
+<p>The t-test checks whether it holds in the population.</p>
+</section><section class="slide level2"><h2>Correlation (Lab 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, <span class="va">anes</span><span class="op">$</span><span class="va">age</span>, use <span class="op">=</span> <span class="st">"complete.obs"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.02571812</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>There is a positive, negligible association between age and the rating of the Democratic Party: age makes almost no difference to it.</p>
+</div>
+<p>Strength: |r| below 0.10 negligible, from 0.10 weak, 0.30 moderate, 0.50 strong, 0.75 very strong.</p>
+</section><section class="slide level2"><h2>t-test (Lab 3)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">swd</span> <span class="op">~</span> <span class="va">voted_2024</span>, data <span class="op">=</span> <span class="va">anes</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  swd by voted_2024
+t = 8.2327, df = 1056.3, p-value = 5.355e-16
+alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
+95 percent confidence interval:
+ 0.3044511 0.4949929
+sample estimates:
+mean in group 0 mean in group 1 
+       2.973077        2.573355 </code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>The difference is statistically significant at the 0.01 level: we reject the null hypothesis that the means are not different. Voters (lower score) are more satisfied.</p>
+</div>
+</section><section class="slide level2"><h2>Chi-square test (Lab 3)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">swd_binary</span>, <span class="va">anes</span><span class="op">$</span><span class="va">voted_2024</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="va">tab</span>, margin <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+       0    1
+  0 46.8 30.9
+  1 53.2 69.1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  tab
+X-squared = 71.87, df = 1, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>The association is statistically significant at the 0.01 level: we reject the null hypothesis of no association. Direction: 69% of voters are satisfied, 53% of non-voters.</p>
+</div>
+</section><section class="slide level2"><h2>OLS regression (Lab 4)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Estimate Std. Error t value Pr(&gt;|t|)
+(Intercept)    5.51740   0.062060   88.90 0.00e+00
+age            0.00297   0.000674    4.40 1.07e-05
+factor(gndr)2 -0.30219   0.024287  -12.44 1.85e-35
+edu           -0.03021   0.003079   -9.81 1.07e-22</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<ul>
+<li>When education increases by one year, left-right self-placement decreases by 0.030 points, net of the other variables (statistically significant at the 0.01 level).</li>
+<li>Women place themselves 0.30 points further left than men, the reference category (statistically significant at the 0.01 level).</li>
+<li>R² = 0.009: the independent variables explain 0.9% of the variance.</li>
+</ul>
+</div>
+</section><section class="slide level2"><h2>Country fixed effects (Lab 4)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_fe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
+<span>  <span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cntry</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">dataset</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, <span class="op">]</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              Estimate Std. Error t value Pr(&gt;|t|)
+age            0.00332   0.000671    4.94  7.8e-07
+factor(gndr)2 -0.32567   0.024067  -13.53  1.3e-41
+edu           -0.02744   0.003167   -8.67  4.7e-18</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<ul>
+<li>With country fixed effects, the estimates are within countries: each respondent is compared with others from the same country.</li>
+<li>The effects barely change: women -0.33 (before -0.30).</li>
+<li>R² rises from 0.009 to 0.033: the countries explain part of the variance.</li>
+</ul>
+</div>
+</section><section class="slide level2"><h2>Heteroskedasticity (Lab 4)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    studentized Breusch-Pagan test
+
+data:  m_fe
+BP = 1356, df = 25, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>We reject the null hypothesis of homoskedasticity (statistically significant at the 0.01 level), so there is heteroskedasticity: the variance of the residuals is not the same across the values of the dependent variable.</p>
+</div>
+<p>The course’s quick fix: robust standard errors.</p>
+</section><section class="slide level2"><h2>Multicollinearity (Lab 4)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/car/man/vif.html">vif</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                  GVIF Df GVIF^(1/(2*Df))
+age           1.071270  1        1.035022
+factor(gndr)  1.006579  1        1.003284
+edu           1.140503  1        1.067944
+factor(cntry) 1.106917 22        1.002311</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>All the VIFs are close to 1 (at most 1.14), well below 10, so multicollinearity is not a concern.</p>
+</div>
+<p>For <code>factor(cntry)</code>, read the last column, <code>GVIF^(1/(2*Df))</code>.</p>
+</section><section class="slide level2"><h2>Logit and marginal effects (Lab 5)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
+<span>  <span class="va">far_right</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">dataset</span>,</span>
+<span>  family <span class="op">=</span> <span class="va">binomial</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/margins/man/margins.html">margins</a></span><span class="op">(</span><span class="va">logit</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> factor     AME     SE        z      p   lower   upper
+    age  0.0010 0.0001   9.2588 0.0000  0.0008  0.0012
+    edu -0.0029 0.0005  -5.7969 0.0000 -0.0039 -0.0019
+  gndr2 -0.0458 0.0039 -11.7849 0.0000 -0.0534 -0.0382</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<ul>
+<li>
+<strong>Coefficient</strong> (in <code>summary(logit)</code>): only its sign. Women’s is negative, so women are less likely to place themselves on the far right.</li>
+<li>
+<strong>Marginal effect:</strong> the probability is 4.6 percentage points lower for women than for men, net of age and education.</li>
+</ul>
+</div>
+</section><section class="slide level2"><h2>Multinomial logit (Lab 5)</h2>
+<p><code>lr3</code>: left (0-3), centre (4-6), right (7-10), recoded as in Lab 5.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mlogit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span></span>
+<span>  <span class="va">lr3</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">dataset</span>,</span>
+<span>  trace <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mlogit</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         (Intercept)    age factor(gndr)2    edu
+2 Centre       1.523 -0.002        -0.026 -0.039
+3 Right        0.658  0.004        -0.375 -0.038</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>Each row compares a category with Left, the reference. Only the signs: women are less likely to be on the right rather than the left (-0.37).</p>
+</div>
+</section><section class="slide level2"><h2>Interaction (Lab 5)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
+<span>  <span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">*</span> <span class="va">edu</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cntry</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">dataset</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">cf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">m_int</span><span class="op">)</span></span>
+<span><span class="va">cf</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"edu"</span>, <span class="st">"factor(gndr)2:edu"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>              edu factor(gndr)2:edu 
+      -0.02166119       -0.01074850 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cf</span><span class="op">[</span><span class="st">"edu"</span><span class="op">]</span> <span class="op">+</span> <span class="va">cf</span><span class="op">[</span><span class="st">"factor(gndr)2:edu"</span><span class="op">]</span> <span class="co"># the education slope for women</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        edu 
+-0.03240969 </code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>Men (reference): <code>edu</code>. Women: <code>edu</code> + interaction. The interaction is statistically significant at the 0.10 level only: weak evidence that gender moderates the effect of education.</p>
+</div>
+</section><section class="slide level2"><h2>easystats: a clean coefficient table</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/parameters/">parameters</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://easystats.github.io/parameters/reference/model_parameters.html">model_parameters</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Parameter   | Coefficient |       SE |         95% CI | t(33941) |      p
+-------------------------------------------------------------------------
+(Intercept) |        5.52 |     0.06 | [ 5.40,  5.64] |    88.90 | &lt; .001
+age         |    2.97e-03 | 6.74e-04 | [ 0.00,  0.00] |     4.40 | &lt; .001
+gndr [2]    |       -0.30 |     0.02 | [-0.35, -0.25] |   -12.44 | &lt; .001
+edu         |       -0.03 | 3.08e-03 | [-0.04, -0.02] |    -9.81 | &lt; .001</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Uncertainty intervals (equal-tailed) and p-values (two-tailed) computed
+  using a Wald t-distribution approximation.</code></pre>
+</div>
+</div>
+<p>Coefficients, 95% confidence intervals and p-values in one table. One install for all of easystats: <code>install.packages("easystats")</code> (<a href="https://easystats.github.io/easystats/">easystats.github.io</a>).</p>
+</section><section class="slide level2"><h2>easystats: tests in words</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/report/">report</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">swd</span> <span class="op">~</span> <span class="va">voted_2024</span>, data <span class="op">=</span> <span class="va">anes</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Effect sizes were labelled following Cohen's (1988) recommendations.
+
+The Welch Two Sample t-test testing the difference of swd by voted_2024 (mean
+in group 0 = 2.97, mean in group 1 = 2.57) suggests that the effect is
+positive, statistically significant, and medium (difference = 0.40, 95% CI
+[0.30, 0.49], t(1056.34) = 8.23, p &lt; .001; Cohen's d = 0.51, 95% CI [0.38,
+0.63])</code></pre>
+</div>
+</div>
+<p>A useful check of your own sentence. It labels effect sizes with Cohen’s d (“medium”), which the course doesn’t use: report the significance level and the direction in the course’s terms.</p>
+</section><section class="slide level2"><h2>easystats: diagnostics in words (Lab 4)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/performance/">performance</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://easystats.github.io/performance/reference/check_heteroscedasticity.html">check_heteroscedasticity</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Warning: Heteroscedasticity (non-constant error variance) detected (p &lt; .001).</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/performance/reference/check_collinearity.html">check_collinearity</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Check for Multicollinearity
+
+Low Correlation
+
+          Term  VIF   VIF 95% CI adj. VIF Tolerance Tolerance 95% CI
+           age 1.07 [1.06, 1.08]     1.04      0.93     [0.92, 0.94]
+  factor(gndr) 1.01 [1.00, 1.03]     1.00      0.99     [0.97, 1.00]
+           edu 1.14 [1.13, 1.15]     1.07      0.88     [0.87, 0.89]
+ factor(cntry) 1.11 [1.09, 1.12]     1.00      0.90     [0.89, 0.91]</code></pre>
+</div>
+</div>
+<p>The same results as <code><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest()</a></code> and <code><a href="https://rdrr.io/pkg/car/man/vif.html">vif()</a></code>, with the conclusion spelled out: heteroskedasticity, and no multicollinearity.</p>
+</section><section class="slide level2"><h2>easystats: compare models (Lab 4)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/performance/reference/compare_performance.html">compare_performance</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m_fe</span>, metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"R2_adj"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># Comparison of Model Performance Indices
+
+Name | Model |    R2 | R2 (adj.)
+--------------------------------
+m    |    lm | 0.009 |     0.009
+m_fe |    lm | 0.033 |     0.032</code></pre>
+</div>
+</div>
+<p>Without (<code>m</code>) and with (<code>m_fe</code>) country fixed effects: the countries raise R² from 0.009 to 0.033.</p>
+</section><section class="slide level2"><h2>easystats: check the checker</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>We fitted a linear model to predict lrscale_clean with age, gndr and edu. The
+model's explanatory power is very weak (R2 = 8.61e-03, adj. R2 = 8.52e-03). The
+model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
+
+  - The effect of age is statistically significant and positive (beta = 2.97e-03,
+95% CI [1.65e-03, 4.29e-03], t(33941) = 4.40, p &lt; .001, Std. beta = 0.02)
+  - The effect of gndr [2] is statistically significant and negative (beta =
+-0.03, 95% CI [-0.04, -0.02], t(33941) = -9.81, p &lt; .001, Std. beta = -0.13)
+  - The effect of edu is statistically significant and negative (beta = -0.30,
+95% CI [-0.35, -0.25], t(33941) = -12.44, p &lt; .001, Std. beta = -0.05)</code></pre>
+</div>
+</div>
+<p>Compare with <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>: women’s coefficient is -0.30 and education’s -0.03. <code><a href="https://easystats.github.io/report/reference/report.html">report()</a></code> swaps the two. Tools make mistakes too: check every number against <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> before you use it.</p>
+</section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>4 · Fixing Errors</h2>
+</section><section class="slide level2"><h2>Common error messages</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Message</th>
+<th>Usually means</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>object 'x' not found</code></td>
+<td>a typo, wrong capitals, or the line that creates <code>x</code> hasn’t run</td>
+</tr>
+<tr class="even">
+<td><code>could not find function</code></td>
+<td>the package isn’t loaded</td>
+</tr>
+<tr class="odd">
+<td>
+<code>unexpected symbol</code> / <code>')'</code>
+</td>
+<td>a missing comma, quote or bracket</td>
+</tr>
+<tr class="even">
+<td>result is <code>NA</code>
+</td>
+<td>missing values: add <code>na.rm = TRUE</code>
+</td>
+</tr>
+<tr class="odd">
+<td><code>grouping factor must have exactly 2 levels</code></td>
+<td>the <code>t.test</code> group doesn’t have exactly two values: check it with <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>
+</td>
+</tr>
+<tr class="even">
+<td><code>replacement has 0 rows</code></td>
+<td>the column doesn’t exist, often after a wrong import</td>
+</tr>
+</tbody>
+</table>
+<p>Start with the last line of the message, then try <code>?function</code>. If you’re still stuck, give the AI your code together with the error.</p>
+</section><section class="slide level2"><h2>Check every step</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    0     1     2     3     4     5     6     7     8     9    10  &lt;NA&gt; 
+ 1318   775  2005  3522  3339 11259  3360  3711  2852   928  1371  5074 </code></pre>
+</div>
+</div>
+<ul>
+<li>Only valid values and <code>NA</code> left: the recode worked.</li>
+<li>
+<code>table(old, new, useNA = "ifany")</code> shows where each old code ended up.</li>
+<li>
+<code>summary(x)</code>: a maximum of 99 or 999 is a missing-value code.</li>
+<li>
+<code>nobs(model)</code>: the number of rows the model used.</li>
+</ul></section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>5 · Using AI</h2>
+</section><section class="slide level2"><h2>Anatomy of a prompt</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Element</th>
+<th>What it is</th>
+<th>For an R question</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Instruction</td>
+<td>“a specific task or instruction you want the model to perform”</td>
+<td>fix this error; explain this output</td>
+</tr>
+<tr class="even">
+<td>Context</td>
+<td>“external information or additional context that can steer the model to better responses”</td>
+<td>base R as in the labs; the variable codes from <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>
+</td>
+</tr>
+<tr class="odd">
+<td>Input data</td>
+<td>“the input or question that we are interested to find a response for”</td>
+<td>your code and the full error message</td>
+</tr>
+<tr class="even">
+<td>Output indicator</td>
+<td>“the type or format of the output”</td>
+<td>one sentence per line of code</td>
+</tr>
+</tbody>
+</table>
+<p>“You do not need all the four elements for a prompt and the format depends on the task at hand.”</p>
+<p><span class="figure-credit">Source: DAIR.AI, <a href="https://www.promptingguide.ai/introduction/elements"><em>Prompt Engineering Guide</em>, “Elements of a Prompt”</a></span></p>
+</section><section class="slide level2"><h2>Asking AI for help</h2>
+<p>The model makers’ own guides go further:</p>
+<ul>
+<li>Anthropic: <a href="https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/overview">Prompt engineering overview</a>
+</li>
+<li>OpenAI: <a href="https://developers.openai.com/api/docs/guides/prompt-engineering">Prompt engineering</a>
+</li>
+<li>Google: <a href="https://aistudio.google.com/docs/prompting-strategies">Prompt design strategies</a>
+</li>
+</ul>
+<p>What you do with the answer:</p>
+<ul>
+<li>run it line by line and check the result with <code><a href="https://rdrr.io/r/base/table.html">table()</a></code> and <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>
+</li>
+<li>write the interpretations yourself, so your answers don’t read like everyone else’s</li>
+</ul></section><section class="slide level2"><h2>Beyond the Chat</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 52%">
+<col style="width: 42%">
+</colgroup>
+<thead><tr class="header">
+<th></th>
+<th>What</th>
+<th>Works with</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>Chat in the browser, copy and paste</td>
+<td>any account</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td>A desktop app opened on <code>labexam/</code>, which reads your files and runs R</td>
+<td>ChatGPT app (Codex);<br>Claude app, Code tab (paid plan)</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td>Inside <strong>RStudio</strong>: Posit Assistant, Agent engines, Codex Agent</td>
+<td>ChatGPT sign-in, plus one terminal step</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td>Posit Assistant with Posit AI Pass</td>
+<td>$5 for the first month, then $20 a month</td>
+</tr>
+</tbody>
+</table>
+<p>The <a href="ai-setup.html">AI setup page</a> has the steps. Give an agent only the project folder, and read every change it makes.</p>
+</section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>6 · Why R Is Cool</h2>
+</section><section class="slide level2"><h2>Publication-ready figures (with the <a href="https://ggplot2.tidyverse.org">ggplot2</a> package)</h2>
+
+<img data-src="slides_files/figure-revealjs/unnamed-chunk-42-1.png" style="width:72.0%" class="r-stretch"><div class="fig-note">
+<p>Figure: Mean satisfaction with democracy by country, with 95% confidence intervals. Data: European Social Survey, round 11 (unweighted).</p>
+</div>
+</section><section class="slide level2"><h2>Pretty regression tables</h2>
+<div class="cell">
+<div class="cell-output-display">
+<!-- preamble start -->
+
+    <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script><script>
+      // Create table-specific functions using external factory
+      const tableFns_s93s49pyo7perjthpv4u = TinyTable.createTableFunctions("tinytable_s93s49pyo7perjthpv4u");
+      // tinytable span after
+      window.addEventListener('load', function () {
+          var cellsToStyle = [
+            // tinytable style arrays after
+          { positions: [ { i: '9', j: 2 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_kr79ou82qe84ygoba14a',}, 
+          { positions: [ { i: '6', j: 2 }, { i: '6', j: 3 } ], css_id: 'tinytable_css_al3u782xmzerrq55d0us',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '7', j: 3 }, { i: '8', j: 3 } ], css_id: 'tinytable_css_2145uid11waanhg6zk43',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_7xugpsvptqxfiel8bcld',}, 
+          { positions: [ { i: '9', j: 1 } ], css_id: 'tinytable_css_o5lttckq0uhudrlklmiv',}, 
+          { positions: [ { i: '6', j: 1 } ], css_id: 'tinytable_css_p0j55lykvzwgplg7nsld',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 } ], css_id: 'tinytable_css_mj71z66c7fh60gqible4',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_dcujzgzsmt07h16be8yy',}, 
+          ];
+
+          // Loop over the arrays to style the cells
+          cellsToStyle.forEach(function (group) {
+              group.positions.forEach(function (cell) {
+                  tableFns_s93s49pyo7perjthpv4u.styleCell(cell.i, cell.j, group.css_id);
+              });
+          });
+      });
+    </script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
+<style>
+    /* tinytable css entries after */
+    #tinytable_s93s49pyo7perjthpv4u td.tinytable_css_kr79ou82qe84ygoba14a, #tinytable_s93s49pyo7perjthpv4u th.tinytable_css_kr79ou82qe84ygoba14a {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_s93s49pyo7perjthpv4u td.tinytable_css_al3u782xmzerrq55d0us, #tinytable_s93s49pyo7perjthpv4u th.tinytable_css_al3u782xmzerrq55d0us {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_s93s49pyo7perjthpv4u td.tinytable_css_2145uid11waanhg6zk43, #tinytable_s93s49pyo7perjthpv4u th.tinytable_css_2145uid11waanhg6zk43 { text-align: center }
+    #tinytable_s93s49pyo7perjthpv4u td.tinytable_css_7xugpsvptqxfiel8bcld, #tinytable_s93s49pyo7perjthpv4u th.tinytable_css_7xugpsvptqxfiel8bcld {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_s93s49pyo7perjthpv4u td.tinytable_css_o5lttckq0uhudrlklmiv, #tinytable_s93s49pyo7perjthpv4u th.tinytable_css_o5lttckq0uhudrlklmiv {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_s93s49pyo7perjthpv4u td.tinytable_css_p0j55lykvzwgplg7nsld, #tinytable_s93s49pyo7perjthpv4u th.tinytable_css_p0j55lykvzwgplg7nsld {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_s93s49pyo7perjthpv4u td.tinytable_css_mj71z66c7fh60gqible4, #tinytable_s93s49pyo7perjthpv4u th.tinytable_css_mj71z66c7fh60gqible4 { text-align: left }
+    #tinytable_s93s49pyo7perjthpv4u td.tinytable_css_dcujzgzsmt07h16be8yy, #tinytable_s93s49pyo7perjthpv4u th.tinytable_css_dcujzgzsmt07h16be8yy {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    </style>
+<div class="container">
+      <table class="tinytable" id="tinytable_s93s49pyo7perjthpv4u" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+<thead><tr>
+<th scope="col" data-row="0" data-col="1"> </th>
+                <th scope="col" data-row="0" data-col="2">(1)</th>
+                <th scope="col" data-row="0" data-col="3">(2)</th>
+              </tr></thead>
+<tfoot>
+<tr><td colspan="3">* p &lt; 0.1, ** p &lt; 0.05, *** p &lt; 0.01</td></tr>
+<tr><td colspan="3">OLS. Dependent variable: left-right self-placement (0 = left, 10 = right). Standard errors in parentheses.</td></tr>
+</tfoot>
+<tbody>
+<tr>
+<td data-row="1" data-col="1">Age (years)</td>
+                  <td data-row="1" data-col="2">0.003***</td>
+                  <td data-row="1" data-col="3">0.003***</td>
+                </tr>
+<tr>
+<td data-row="2" data-col="1"></td>
+                  <td data-row="2" data-col="2">(0.001)</td>
+                  <td data-row="2" data-col="3">(0.001)</td>
+                </tr>
+<tr>
+<td data-row="3" data-col="1">Woman</td>
+                  <td data-row="3" data-col="2">-0.302***</td>
+                  <td data-row="3" data-col="3">-0.326***</td>
+                </tr>
+<tr>
+<td data-row="4" data-col="1"></td>
+                  <td data-row="4" data-col="2">(0.024)</td>
+                  <td data-row="4" data-col="3">(0.024)</td>
+                </tr>
+<tr>
+<td data-row="5" data-col="1">Education (years)</td>
+                  <td data-row="5" data-col="2">-0.030***</td>
+                  <td data-row="5" data-col="3">-0.027***</td>
+                </tr>
+<tr>
+<td data-row="6" data-col="1"></td>
+                  <td data-row="6" data-col="2">(0.003)</td>
+                  <td data-row="6" data-col="3">(0.003)</td>
+                </tr>
+<tr>
+<td data-row="7" data-col="1">Observations</td>
+                  <td data-row="7" data-col="2">33,945</td>
+                  <td data-row="7" data-col="3">33,945</td>
+                </tr>
+<tr>
+<td data-row="8" data-col="1">R²</td>
+                  <td data-row="8" data-col="2">0.009</td>
+                  <td data-row="8" data-col="3">0.033</td>
+                </tr>
+<tr>
+<td data-row="9" data-col="1">Country fixed effects</td>
+                  <td data-row="9" data-col="2">No</td>
+                  <td data-row="9" data-col="3">Yes</td>
+                </tr>
+</tbody>
+</table>
+</div>
+<!-- hack to avoid NA insertion in last line -->
+</div>
+</div>
+<p><span class="figure-credit">Made with the modelsummary package, which also writes Word and LaTeX tables.</span></p>
+</section><section class="slide level2 center"><h2>Tuesday</h2>
+<p>Expect the steps from the labs, applied to variables you haven’t seen: inspect, clean, check, describe, test, model, and interpret each result in your own words.</p>
+<p><a href="mock-exam.html">Mock exam</a> · <a href="cheatsheet.html">Cheat sheet</a></p>
+<p>To keep learning: <a href="https://r4ds.hadley.nz">R for Data Science</a> (free online), the <a href="https://posit.co/resources/cheatsheets/">Posit cheat sheets</a>, and <a href="index.html">this guide</a>.</p>
+</section><section class="slide level2 center" data-background-color="#444"><h2>Appendix: Every Lab Function</h2>
+</section><section class="slide level2 smaller"><h2>Start and import</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>What it does</th>
+<th>Example from the labs</th>
+<th>Watch out</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code></td>
+<td>downloads a package, once per computer</td>
+<td><code>install.packages("car")</code></td>
+<td>in the console, not in the exam script</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/library.html">library()</a></code></td>
+<td>loads a package for this session</td>
+<td><code><a href="https://github.com/bprice2652/car_repo">library(car)</a></code></td>
+<td>every session; the stats package is always loaded</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/base/getwd.html">getwd()</a></code></td>
+<td>shows the working directory</td>
+<td><code><a href="https://rdrr.io/r/base/getwd.html">getwd()</a></code></td>
+<td>with a project it’s the project folder</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/list.files.html">list.files()</a></code></td>
+<td>lists the files in a folder</td>
+<td><code>list.files("data")</code></td>
+<td>the exact file name to use</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code></td>
+<td>imports a comma-separated file</td>
+<td><code>read.csv("data/ess.csv")</code></td>
+<td>path relative to the project</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/utils/read.table.html">read.csv2()</a></code></td>
+<td>imports a semicolon-separated file</td>
+<td><code>read.csv2("students.csv")</code></td>
+<td>use one of the two, not both</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/base/names.html">names()</a></code></td>
+<td>the variable names</td>
+<td><code>names(dataset)</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>
+<code><a href="https://rdrr.io/r/base/dim.html">dim()</a></code>, <code><a href="https://rdrr.io/r/base/nrow.html">nrow()</a></code>
+</td>
+<td>rows × columns</td>
+<td><code>dim(dataset)</code></td>
+<td>rows = respondents</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/utils/head.html">head()</a></code></td>
+<td>the first rows</td>
+<td><code>head(dataset)</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/utils/str.html">str()</a></code></td>
+<td>the type of each variable</td>
+<td><code>str(dataset)</code></td>
+<td>
+<code>chr</code> = text, <code>int</code>/<code>num</code> = numbers</td>
+</tr>
+</tbody>
+</table></section><section class="slide level2 smaller"><h2>Inspect and clean</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>What it does</th>
+<th>Example from the labs</th>
+<th>Watch out</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/base/table.html">table()</a></code></td>
+<td>counts each value</td>
+<td><code>table(dataset$V242065)</code></td>
+<td>add <code>useNA = "ifany"</code> to see <code>NA</code>
+</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code></td>
+<td>min, quartiles, mean, max</td>
+<td><code>summary(dataset$agea)</code></td>
+<td>a max of 999 is a code</td>
+</tr>
+<tr class="odd">
+<td>
+<code><a href="https://rdrr.io/r/base/unique.html">unique()</a></code>, <code><a href="https://rdrr.io/r/base/sort.html">sort()</a></code>
+</td>
+<td>the distinct values</td>
+<td><code>sort(unique(dataset$lrscale))</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code></td>
+<td>if-then for every row</td>
+<td><code>ifelse(x %in% c(77, 88, 99), NA, x)</code></td>
+<td><code>ifelse(condition, yes, no)</code></td>
+</tr>
+<tr class="odd">
+<td><code>%in%</code></td>
+<td>“is one of”</td>
+<td><code>x %in% c(1, 2, 3)</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>
+<code>==</code>, <code>!=</code>, <code>&gt;=</code>, <code>&amp;</code>, <code>|</code>
+</td>
+<td>compare, AND, OR</td>
+<td><code>x &gt;= 0 &amp; x &lt;= 10</code></td>
+<td>
+<code>==</code> compares, <code>=</code> sets an argument</td>
+</tr>
+<tr class="odd">
+<td><code>NA</code></td>
+<td>missing value</td>
+<td><code>ifelse(..., x, NA)</code></td>
+<td>no quotes: <code>"NA"</code> is text</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/NA.html">is.na()</a></code></td>
+<td>TRUE where missing</td>
+<td><code>sum(is.na(dataset$age))</code></td>
+<td>
+<code>x == NA</code> doesn’t work</td>
+</tr>
+<tr class="odd">
+<td><code>x[condition] &lt;- value</code></td>
+<td>change only the matching rows</td>
+<td><code>d$cat[d$x &lt;= 3] &lt;- 1</code></td>
+<td>Lab 5’s 3-category recode</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code></td>
+<td>treat numbers as categories</td>
+<td><code>factor(gndr)</code></td>
+<td>first level = reference</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/base/subset.html">subset()</a></code></td>
+<td>keep the matching rows</td>
+<td><code>subset(dataset, cntry == "FR")</code></td>
+<td>text needs quotes</td>
+</tr>
+<tr class="even">
+<td>
+<code>mutate()</code> + <code>case_when()</code>
+</td>
+<td>dplyr recode</td>
+<td>Lab 3 solution</td>
+<td>needs <code><a href="https://dplyr.tidyverse.org">library(dplyr)</a></code>
+</td>
+</tr>
+</tbody>
+</table></section><section class="slide level2 smaller"><h2>Describe and compare</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>What it does</th>
+<th>Example from the labs</th>
+<th>Watch out</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>
+<code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, <code><a href="https://rdrr.io/r/stats/sd.html">sd()</a></code>
+</td>
+<td>centre, spread</td>
+<td><code>mean(x, na.rm = TRUE)</code></td>
+<td>without <code>na.rm</code> → <code>NA</code>
+</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/proportions.html">prop.table()</a></code></td>
+<td>turns counts into proportions</td>
+<td><code>prop.table(table(x, y), 1) * 100</code></td>
+<td>
+<code>1</code> = row %, <code>2</code> = column %</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/base/Round.html">round()</a></code></td>
+<td>rounds</td>
+<td><code>round(x, 1)</code></td>
+<td>halves round to even</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code></td>
+<td>histogram</td>
+<td><code>hist(dataset$like_democrat)</code></td>
+<td>for a 0 to 10 scale: <code>breaks = seq(-0.5, 10.5, 1)</code>
+</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/graphics/barplot.html">barplot()</a></code></td>
+<td>bar chart of counts</td>
+<td><code>barplot(table(x))</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot()</a></code></td>
+<td>distribution by group</td>
+<td><code>boxplot(swd ~ voted_2024, data = d)</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code></td>
+<td>scatter plot</td>
+<td><code>plot(d$age, d$like_democrat)</code></td>
+<td>x first, then y</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/stats/aggregate.html">aggregate()</a></code></td>
+<td>statistic by group</td>
+<td><code>aggregate(y ~ group, data = d, FUN = mean)</code></td>
+<td>drops <code>NA</code> itself</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/stats/cor.html">cor()</a></code></td>
+<td>correlation r</td>
+<td><code>cor(x, y, use = "complete.obs")</code></td>
+<td>no p-value: <code><a href="https://rdrr.io/r/stats/cor.test.html">cor.test()</a></code>
+</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/stats/t.test.html">t.test()</a></code></td>
+<td>difference of two means</td>
+<td><code>t.test(y ~ group, data = d)</code></td>
+<td>the group needs exactly 2 values</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test()</a></code></td>
+<td>association of two categorical variables</td>
+<td><code>chisq.test(table(x, y))</code></td>
+<td>no direction: look at the %</td>
+</tr>
+</tbody>
+</table></section><section class="slide level2 smaller"><h2>Models</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead><tr class="header">
+<th>Function</th>
+<th>What it does</th>
+<th>Example from the labs</th>
+<th>Watch out</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code></td>
+<td>linear regression (OLS)</td>
+<td><code>lm(y ~ age + factor(gndr) + edu, data = d)</code></td>
+<td>
+<code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> for categories</td>
+</tr>
+<tr class="even">
+<td><code>summary(model)</code></td>
+<td>coefficients, p-values, R²</td>
+<td><code>summary(model1)</code></td>
+<td>note how many rows were deleted</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/stats/confint.html">confint()</a></code></td>
+<td>95% confidence intervals</td>
+<td><code>confint(model1)</code></td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/stats/nobs.html">nobs()</a></code></td>
+<td>rows the model used</td>
+<td><code>nobs(model1)</code></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/stats/coef.html">coef()</a></code></td>
+<td>the coefficients as numbers</td>
+<td><code>coef(m)["edu"]</code></td>
+<td>for interaction arithmetic</td>
+</tr>
+<tr class="even">
+<td><code>glm(…, family = binomial)</code></td>
+<td>logistic regression</td>
+<td><code>glm(far_right ~ …, family = binomial)</code></td>
+<td>only the sign of the coefficients</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/margins/man/margins.html">margins()</a></code></td>
+<td>average marginal effects</td>
+<td><code>summary(margins(logit1))</code></td>
+<td>× 100 = percentage points</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom()</a></code></td>
+<td>multinomial logit</td>
+<td><code>multinom(y3 ~ …, data = d)</code></td>
+<td>reference = first level; <code><a href="http://www.stats.ox.ac.uk/pub/MASS4/">library(nnet)</a></code>
+</td>
+</tr>
+<tr class="odd">
+<td><code>x1 * x2</code></td>
+<td>interaction</td>
+<td><code>factor(gndr) * eduyrs</code></td>
+<td>slope for group 2 = <code>b_x</code> + <code>b_int</code>
+</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest()</a></code></td>
+<td>Breusch-Pagan test</td>
+<td><code>bptest(model2)</code></td>
+<td>H0: homoskedasticity; <code><a href="https://rdrr.io/r/base/library.html">library(lmtest)</a></code>
+</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/pkg/car/man/vif.html">vif()</a></code></td>
+<td>multicollinearity</td>
+<td><code>vif(model2)</code></td>
+<td>below 10: not a concern; <code><a href="https://github.com/bprice2652/car_repo">library(car)</a></code>
+</td>
+</tr>
+<tr class="even">
+<td>
+<code>plot(fitted, resid)</code> + <code>abline(h = 0)</code>
+</td>
+<td>residual plot</td>
+<td><code>plot(m$fitted.values, m$residuals)</code></td>
+<td>look for a spread that changes</td>
+</tr>
+</tbody>
+</table>
+
+
+</section>
+</div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+<p>Quantitative Methods I · Quick R Recap</p>
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="site_libs/revealjs/plugin/notes/notes.js"></script><script src="site_libs/revealjs/plugin/search/search.js"></script><script src="site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': false,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'pdfMaxPagesPerSlide': 1,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'none',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1280,
+
+        height: 720,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@2.7.9/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script><script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script><script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          const newWindowLabel = "(opens in a new tab)";
+          const newWindowNoteId = "quarto-ext-newwindow-label";
+          // Links reference one hidden label through aria-describedby, so the
+          // announcement never changes their accessible name.
+          var describeNewWindow = (link) => {
+            if (!window.document.getElementById(newWindowNoteId)) {
+              var newWindowNote = window.document.createElement("span");
+              newWindowNote.id = newWindowNoteId;
+              newWindowNote.hidden = true;
+              newWindowNote.textContent = newWindowLabel;
+              window.document.body.appendChild(newWindowNote);
+            }
+            var describedBy = (link.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean);
+            if (!describedBy.includes(newWindowNoteId)) {
+              describedBy.push(newWindowNoteId);
+              link.setAttribute("aria-describedby", describedBy.join(" "));
+            }
+          }
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+          window.quartoDecorateExternalLinks = function (root) {
+         var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+                // target, if specified
+                link.setAttribute("target", "_blank");
+                if (link.getAttribute("rel") === null) {
+                  link.setAttribute("rel", "noopener");
+                }
+                describeNewWindow(link);
+              if (!link.classList.contains('no-external-icon')) {
+              }
+            }
+          }
+          };
+          window.quartoDecorateExternalLinks(window.document);
+        // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+        // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+        const hideOnEscAndFocusOut = {
+          name: 'hideOnEscAndFocusOut',
+          defaultValue: true,
+          fn(instance) {
+            const dismiss = () => {
+              // A show scheduled by the trigger delay would otherwise reopen it
+              instance.clearDelayTimeouts();
+              instance.hide();
+            };
+            const onKeyDown = (event) => {
+              if (event.key !== 'Escape') {
+                return;
+              }
+              // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+              // except an open reveal.js slide menu, which Esc should close too.
+              // The menu handles keys only when its keyboard option is on.
+              const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+                window.Reveal.getConfig().menu?.keyboard !== false;
+              if (!menuHandlesEsc) {
+                event.stopPropagation();
+              }
+              if (instance.popper.contains(window.document.activeElement)) {
+                // Disabled while refocusing so the focus trigger does not reopen it
+                instance.disable();
+                instance.reference.focus();
+                instance.enable();
+              }
+              dismiss();
+            };
+            const onFocusOut = (event) => {
+              const target = event.relatedTarget;
+              if (target && !instance.reference.contains(target) &&
+                  !instance.popper.contains(target)) {
+                dismiss();
+              }
+            };
+            // On the trigger too: a click trigger (code-annotations: select) has no
+            // blur handling. Attached for the instance's lifetime so leaving the
+            // trigger also cancels a show still pending on the trigger delay.
+            instance.reference.addEventListener('focusout', onFocusOut);
+            return {
+              onShow() {
+                window.document.addEventListener('keydown', onKeyDown, true);
+                instance.popper.addEventListener('focusout', onFocusOut);
+              },
+              onHide() {
+                window.document.removeEventListener('keydown', onKeyDown, true);
+                instance.popper.removeEventListener('focusout', onFocusOut);
+              },
+              onDestroy() {
+                instance.reference.removeEventListener('focusout', onFocusOut);
+              },
+            };
+          },
+        };
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+            plugins: [hideOnEscAndFocusOut],
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+
+
+</body></html>
