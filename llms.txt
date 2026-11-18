@@ -1,0 +1,10 @@
+# QM1 Lab Exam: R Guide
+
+> Slides, cheat sheet and mock exam for the R lab exercise in Introduction to Quantitative Methods (Sciences Po, Autumn 2026).
+
+## Pages
+
+- [R for the lab exam](https://kleinlennart.github.io/quant1-lab/index.llms.md)
+- [AI that helps you learn](https://kleinlennart.github.io/quant1-lab/ai-setup.llms.md)
+- [Cheat sheet](https://kleinlennart.github.io/quant1-lab/cheatsheet.llms.md)
+- [Mock lab exam](https://kleinlennart.github.io/quant1-lab/mock-exam.llms.md)
