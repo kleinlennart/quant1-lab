@@ -1,0 +1,17 @@
+---
+title: "Source of the slides"
+execute:
+  freeze: false   # always re-read slides.qmd
+---
+
+The [slides](slides.qmd) are one Quarto file, `slides.qmd`, shown here as written. R chunks run when the file is rendered, and inline code like `` `r knitr::inline_expr("round(avg, 1)")` `` puts results into the text. To render it yourself you would also need the data extracts and `_common.R` from this site.
+
+```{r}
+#| echo: false
+#| results: asis
+src <- readLines("slides.qmd", warn = FALSE)
+# show shortcodes as written instead of running them
+src <- gsub("{{<", "{{{<", src, fixed = TRUE)
+src <- gsub(">}}", ">}}}", src, fixed = TRUE)
+cat("`````markdown", src, "`````", sep = "\n")
+```

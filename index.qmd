@@ -4,6 +4,8 @@ subtitle: "Introduction to Quantitative Methods · Sciences Po · Autumn 2026"
 toc: true
 ---
 
+Unofficial: not official course material.
+
 ## The lab exam
 
 | | |

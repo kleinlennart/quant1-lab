@@ -10,7 +10,6 @@ project:
     - "data/*.csv"    # the data extracts (not make_data.R, not other data/ folders)
     - slides.pdf      # printed from _site/slides.html?print-pdf (re-print after changing the slides)
     - CNAME           # custom domain for GitHub Pages; must be in every publish
-    - slides.qmd      # source of the slides, linked from the "made with R" slide
     # - downloads/labexam.zip   # starter project: hidden for now (page + zip kept in downloads/)
   render:
     - "*.qmd"         # only the site pages (not downloads/labexam/README.txt etc.)
@@ -55,6 +54,7 @@ website:
           - ai-setup.qmd
           # - downloads.qmd   # hidden for now
   page-footer:
+    center: "Unofficial: not official course material."
     left: "Data: ANES 2024 Time Series Study; European Social Survey round 11 (CC BY-NC-SA 4.0)."
     right: "Made with [Quarto](https://quarto.org)"
 
