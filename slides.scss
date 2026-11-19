@@ -17,9 +17,11 @@ $code-block-font-size: 0.75em;   // readable from the back of the room
 .reveal .cell-output-display table { margin-left: 0 !important; margin-right: auto !important; }
 .reveal .fig-note { font-size: 0.6em; line-height: 1.35; color: #333; max-width: 90%; margin-top: 0.3em; }
 /* example interpretations: labelled box, so they read as examples, not the only right answer */
-.reveal .example-interp { border-left: 4px solid #1f6fb2; background: #f3f7fc; padding: 0.25em 0.7em; margin: 0.4em 0; }
+.reveal .example-interp { border-left: 3px solid #1f6fb2; background: #f8fafd; padding: 0.2em 0.7em; margin: 0.4em 0; font-size: 0.85em; }
 .reveal .example-interp::before { content: "Example interpretation"; display: block; font-size: 0.55em; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: #1f6fb2; }
 .reveal .example-interp ul { margin-top: 0.1em; }
+/* under an interpretation: where the numbers come from */
+.reveal .interp-note { font-size: 0.6em; color: #555; margin-top: 0.2em; }
 /* cover slide (replaces the built-in title slide) */
 .reveal .cover h2 { font-size: 2.2em; margin-bottom: 0.6em; }
 .reveal .cover .unofficial { font-size: 0.7em; color: #555; }
@@ -29,3 +31,6 @@ $code-block-font-size: 0.75em;   // readable from the back of the room
 
 /* show code and output in full: reveal caps code boxes at 400px and scrolls the rest */
 .reveal pre code { max-height: none; }
+
+/* one large number in a column (logit overview) */
+.reveal .big-number { display: block; font-size: 1.8em; font-weight: 600; color: #1f3a5f; margin: 0.2em 0; }
