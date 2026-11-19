@@ -5,6 +5,7 @@
 set -e
 cd "$(dirname "$0")/.."
 
+rm -rf slides_cache   # publish from a full, fresh run of every chunk
 quarto render
 
 # Slides PDF: print the rendered slides, make their links absolute

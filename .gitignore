@@ -5,3 +5,6 @@
 
 # byproduct of a full render; the slides use _freeze and _site
 /slides_files/
+
+# knitr chunk cache (local only)
+/slides_cache/
