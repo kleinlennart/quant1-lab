@@ -2,3 +2,6 @@
 /_site/
 
 **/*.quarto_ipynb
+
+# byproduct of a full render; the slides use _freeze and _site
+/slides_files/

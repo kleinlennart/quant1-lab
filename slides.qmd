@@ -1,14 +1,14 @@
 ---
-title: "R Recap Before the Lab Exam"
-subtitle: "Introduction to Quantitative Methods · Sciences Po"
+pagetitle: "R Recap Before the Lab Exam"   # no built-in title slide: the first slide below is the cover
 author: "Lennart Klein"
-date: "2026-11-19"
-date-format: "D MMMM YYYY"
+revealjs-plugins:
+  - pointer                          # Q: laser pointer
 format:
   revealjs:
     theme: [default, slides.scss]
     slide-number: true
     pdf-max-pages-per-slide: 1   # one PDF page per slide (print with ?print-pdf)
+    chalkboard: true             # C: draw on the slide, B: blackboard
     hash-type: number
     preview-links: false              # help sites (rdrr.io) refuse to load inside the slide overlay
     link-external-newwindow: true     # so links open in a new browser tab
@@ -33,6 +33,12 @@ knitr:
 
 ```{r}
 #| include: false
+# static Source Sans 3 (the slide font); the installed variable font renders too thin
+systemfonts::register_font(
+  name = "Source Sans Static",
+  plain = "fonts/SourceSans3-Regular.ttf",
+  bold = "fonts/SourceSans3-Semibold.ttf"
+)
 dataset <- read.csv("data/ess_lab.csv")
 dataset$lrscale_clean <- ifelse(
   dataset$lrscale %in% c(77, 88, 99),
@@ -46,6 +52,16 @@ dataset$edu <- ifelse(
   dataset$eduyrs
 )
 ```
+
+## R Recap Before the Lab Exam {.cover .center}
+
+Introduction to Quantitative Methods · Sciences Po
+
+Lennart Klein · 19 November 2026
+
+::: {.follow}
+**Follow along:**<br>[quant1.kleinbutsignificant.com/slides.html](https://quant1.kleinbutsignificant.com/slides.html) · [{{< fa file-pdf >}} PDF](slides.pdf){aria-label="Slides as PDF"}
+:::
 
 ## Today {.center}
 
@@ -163,25 +179,35 @@ install.packages(c("dplyr", "lmtest", "car", "margins", "nnet"))
 
 | Pattern | Read it as | Example |
 |---|---|---|
-| `name <- value` | "name gets value" | `x <- c(3, 7, 10)` |
+| `name <- value` | "name gets value" | `x <- c(2, 4, 6)` |
 | `function(arguments)` | "do this, with these settings" | `mean(x, na.rm = TRUE)` |
 | `dataset$var` | "the column var of dataset" | `dataset$agea` |
 
 ```{r}
-x <- c(3, 7, 10)
+#| output-location: fragment
+x <- c(2, 4, 6)
 mean(x)
+```
+
+```{r}
 dataset$agea[1:6] # [ ] picks elements: here the first six
 ```
 
 ## A condition gives TRUE or FALSE for every row
 
 ```{r}
+#| output-location: fragment
 # one answer per row
 head(dataset$agea >= 18)
+```
 
+```{r}
 # TRUE counts as 1: how many missing codes?
 sum(dataset$lrscale %in% c(77, 88, 99))
+```
 
+```{r}
+#| output-location: fragment
 # the share of women
 mean(dataset$gndr == 2)
 ```
@@ -189,6 +215,7 @@ mean(dataset$gndr == 2)
 ## `ifelse()` is Excel's `IF()` for every row
 
 ```{r}
+#| code-line-numbers: "|2-3|4-5|6-7|10"
 dataset$lrscale_clean <- ifelse(
   # condition, checked for every row
   test = dataset$lrscale %in% c(77, 88, 99),
@@ -208,7 +235,12 @@ table(dataset$lrscale_clean, useNA = "ifany")
 ## One `NA` makes the result `NA`
 
 ```{r}
+#| output-location: fragment
 mean(c(4, 6, NA))
+```
+
+```{r}
+#| output-location: fragment
 mean(c(4, 6, NA), na.rm = TRUE)
 ```
 
@@ -290,7 +322,6 @@ lm(lrscale_clean ~ age + factor(gndr) + edu, data = dataset)
 # logistic regression (y01 is a 0/1 dummy variable)
 glm(y01 ~ age + factor(gndr), data = dataset, family = binomial)
 ```
-<br>
 
 > `+` adds a predictor. `*` adds two predictors and their interaction.
 
@@ -356,9 +387,93 @@ sd(anes$like_democrat, na.rm = TRUE)
 Given that the mean and the median are very close, the distribution of the rating of the Democratic Party is approximately symmetric. The standard deviation means that ratings typically lie about `r round(sd(anes$like_democrat, na.rm = TRUE), 1)` points from the mean, which is large compared with the mean: the spread of the distribution is thus large.
 :::
 
+## Describe a variable (Lab 2) – as a figure
+
+::: {.columns}
+::: {.column width="66%"}
+```{r}
+#| label: plot-density
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6.2
+#| out-width: "100%"
+#| dev: "ragg_png"
+ld <- anes$like_democrat[!is.na(anes$like_democrat)]
+mu <- mean(ld)
+s_d <- sd(ld)
+md <- median(ld)
+dens <- ggplot2::layer_data(
+  ggplot2::ggplot(data.frame(v = ld), ggplot2::aes(v)) +
+    ggplot2::geom_density(bounds = c(0, 10), adjust = 1.2)
+)
+band <- dens[dens$x >= mu - s_d & dens$x <= mu + s_d, ]
+ggplot2::ggplot(dens, ggplot2::aes(x = x, y = y)) +
+  ggplot2::geom_area(data = band, fill = "grey85") +
+  ggplot2::geom_line(linewidth = 1.2) +
+  ggplot2::geom_vline(xintercept = mu, linewidth = 1) +
+  ggplot2::geom_vline(
+    xintercept = md,
+    linetype = "22",
+    linewidth = 1
+  ) +
+  ggplot2::annotate(
+    "text",
+    x = mu - 0.15,
+    y = max(dens$y) * 1.04,
+    label = paste0("Mean ", format(round(mu, 2), nsmall = 2)),
+    hjust = 1,
+    size = 6.5,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::annotate(
+    "text",
+    x = md + 0.15,
+    y = max(dens$y) * 1.04,
+    label = paste0("Median ", md),
+    hjust = 0,
+    size = 6.5,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::scale_x_continuous(breaks = 0:10) +
+  ggplot2::scale_y_continuous(
+    labels = function(x) paste0(round(100 * x), "%"),
+    expand = ggplot2::expansion(mult = c(0, 0.12))
+  ) +
+  ggplot2::labs(
+    x = "Rating of the Democratic Party (0-10)",
+    y = "Share of respondents"
+  ) +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    axis.text = ggplot2::element_text(colour = "black"),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_line(
+      colour = "grey88",
+      linewidth = 0.3
+    ),
+    axis.line.x = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    )
+  )
+```
+:::
+::: {.column width="34%" .fe-note}
+- **Curve**: how common each rating is (smoothed).
+- **Mean** and **median** almost coincide: the distribution is roughly symmetric.
+- **Shaded**: mean ± 1 standard deviation, from `r format(round(mean(anes$like_democrat, na.rm = TRUE) - sd(anes$like_democrat, na.rm = TRUE), 1), nsmall = 1)` to `r format(round(mean(anes$like_democrat, na.rm = TRUE) + sd(anes$like_democrat, na.rm = TRUE), 1), nsmall = 1)`. It holds `r round(100 * mean(abs(anes$like_democrat - mean(anes$like_democrat, na.rm = TRUE)) <= sd(anes$like_democrat, na.rm = TRUE), na.rm = TRUE))`% of respondents: a large spread.
+:::
+:::
+
 ## Histogram (Lab 2)
 
 ```{r}
+#| label: plot-histogram
 #| fig-width: 9
 #| fig-height: 4.6
 #| out-width: "78%"
@@ -416,6 +531,79 @@ tt <- t.test(swd ~ voted_2024, data = anes)
 The difference is `r sig_txt(tt$p.value)`: we reject the null hypothesis that the means are not different. Voters (lower score) are more satisfied.
 :::
 
+## t-test (Lab 3) – as a figure
+
+::: {.columns}
+::: {.column width="66%"}
+```{r}
+#| label: plot-ttest
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6.2
+#| out-width: "100%"
+#| dev: "ragg_png"
+ci_group <- function(g) {
+  t <- t.test(anes$swd[anes$voted_2024 == g])
+  data.frame(
+    mean = t$estimate,
+    low = t$conf.int[1],
+    high = t$conf.int[2]
+  )
+}
+tg <- rbind(ci_group(0), ci_group(1))
+tg$group <- factor(
+  c("Non-voters", "Voters"),
+  levels = c("Voters", "Non-voters")
+)
+ggplot2::ggplot(tg, ggplot2::aes(x = mean, y = group)) +
+  ggplot2::geom_errorbar(
+    ggplot2::aes(xmin = low, xmax = high),
+    width = 0.12,
+    orientation = "y",
+    linewidth = 0.8
+  ) +
+  ggplot2::geom_point(size = 4) +
+  ggplot2::geom_text(
+    ggplot2::aes(label = format(round(mean, 2), nsmall = 2)),
+    nudge_y = 0.22,
+    size = 7,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::scale_x_continuous(
+    limits = c(2.4, 3.2),
+    breaks = seq(2.4, 3.2, 0.2)
+  ) +
+  ggplot2::labs(
+    x = "Mean satisfaction (1 = very satisfied ... 5 = not at all)",
+    y = NULL
+  ) +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    axis.text = ggplot2::element_text(colour = "black"),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_line(
+      colour = "grey88",
+      linewidth = 0.3
+    ),
+    axis.line.x = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    )
+  )
+```
+:::
+::: {.column width="34%" .fe-note}
+- Dot: the mean of each group. Line: its 95% confidence interval.
+- The intervals don't overlap: the difference is statistically significant.
+- Lower means **more** satisfied: voters are more satisfied.
+:::
+:::
+
 ## Chi-square test (Lab 3)
 
 ```{r}
@@ -434,6 +622,88 @@ pct <- round(prop.table(tab, margin = 2) * 100)
 The association is `r sig_txt(chi$p.value)`: we reject the null hypothesis of no association. Direction: `r pct["1", "1"]`% of voters are satisfied, `r pct["1", "0"]`% of non-voters.
 :::
 
+## Chi-square test (Lab 3) – as a figure
+
+::: {.columns}
+::: {.column width="66%"}
+```{r}
+#| label: plot-chisq
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6.2
+#| out-width: "100%"
+#| dev: "ragg_png"
+ok <- !is.na(anes$swd_binary) & !is.na(anes$voted_2024)
+cg <- data.frame(
+  group = factor(
+    c("Non-voters", "Voters"),
+    levels = c("Voters", "Non-voters")
+  ),
+  pct = c(
+    100 * mean(anes$swd_binary[ok & anes$voted_2024 == 0]),
+    100 * mean(anes$swd_binary[ok & anes$voted_2024 == 1])
+  )
+)
+overall <- 100 * mean(anes$swd_binary[ok])
+ggplot2::ggplot(cg, ggplot2::aes(x = pct, y = group)) +
+  ggplot2::geom_col(width = 0.5, fill = "grey70") +
+  ggplot2::geom_text(
+    ggplot2::aes(label = paste0(round(pct), "%")),
+    hjust = -0.15,
+    size = 7,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::geom_vline(
+    xintercept = overall,
+    linetype = "22",
+    linewidth = 0.8
+  ) +
+  ggplot2::annotate(
+    "text",
+    x = overall + 1.5,
+    y = 2.6,
+    label = paste0("All: ", round(overall), "%"),
+    hjust = 0,
+    size = 6.5,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::scale_x_continuous(
+    limits = c(0, 100),
+    breaks = seq(0, 100, 25),
+    labels = function(x) paste0(x, "%"),
+    expand = ggplot2::expansion(mult = c(0, 0.02))
+  ) +
+  ggplot2::scale_y_discrete(
+    expand = ggplot2::expansion(add = c(0.5, 0.8))
+  ) +
+  ggplot2::labs(x = "Satisfied with democracy", y = NULL) +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    axis.text = ggplot2::element_text(colour = "black"),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_line(
+      colour = "grey88",
+      linewidth = 0.3
+    ),
+    axis.line.x = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    )
+  )
+```
+:::
+::: {.column width="34%" .fe-note}
+- Bars: the share satisfied in each group.
+- Dashed line: what both groups would show with **no association** (the null hypothesis).
+- Chi-square measures how far the groups are from that line. The bars give the direction.
+:::
+:::
+
 ## OLS regression (Lab 4)
 
 ```{r}
@@ -445,6 +715,76 @@ print(summary(m)$coefficients, digits = 3)
 - When education increases by one year, left-right self-placement decreases by `r format(abs(round(coef(m)[["edu"]], 3)), nsmall = 3)` points, net of the other variables (`r sig(m, "edu")`).
 - Women place themselves `r format(abs(round(coef(m)[["factor(gndr)2"]], 2)), nsmall = 2)` points further left than men, the reference category (`r sig(m, "factor(gndr)2")`).
 - R² = `r round(summary(m)$r.squared, 3)`: the independent variables explain `r round(100 * summary(m)$r.squared, 1)`% of the variance.
+:::
+
+## OLS regression (Lab 4) – as a figure
+
+::: {.columns}
+::: {.column width="66%"}
+```{r}
+#| label: plot-ols
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 8
+#| fig-height: 6.2
+#| out-width: "100%"
+#| dev: "ragg_png"
+bm <- aggregate(lrscale_clean ~ edu, data = dataset, FUN = mean)
+bm <- bm[bm$edu >= 4 & bm$edu <= 24, ]
+# prediction averaged over gender (like the dots), at the mean age of the model sample
+mf <- model.frame(m)
+w_women <- mean(mf[["factor(gndr)"]] == "2")
+nd <- expand.grid(edu = 4:24, gndr = c(1, 2), age = mean(mf$age))
+nd$p <- predict(m, newdata = nd)
+line_ols <- data.frame(
+  edu = 4:24,
+  Predicted = (1 - w_women) *
+    nd$p[nd$gndr == 1] +
+    w_women * nd$p[nd$gndr == 2]
+)
+ggplot2::ggplot() +
+  ggplot2::geom_point(
+    data = bm,
+    ggplot2::aes(x = edu, y = lrscale_clean),
+    size = 3.5,
+    colour = "grey50"
+  ) +
+  ggplot2::geom_line(
+    data = line_ols,
+    ggplot2::aes(x = edu, y = Predicted),
+    linewidth = 1.3
+  ) +
+  ggplot2::scale_x_continuous(breaks = seq(4, 24, 4)) +
+  ggplot2::labs(
+    x = "Years of education",
+    y = "Left-right (0 = left, 10 = right)"
+  ) +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    axis.text = ggplot2::element_text(colour = "black"),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_line(
+      colour = "grey88",
+      linewidth = 0.3
+    ),
+    axis.line.x = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    )
+  )
+```
+:::
+::: {.column width="34%" .fe-note}
+- Dots: the average left-right position for each year of education.
+- Line: the regression's prediction. Its slope is the education coefficient, `r format(round(coef(m)[["edu"]], 3), nsmall = 3)` per year, net of age and gender.
+- The line summarises the dots; it doesn't pass through each one.
+:::
 :::
 
 ## Country fixed effects (Lab 4)
@@ -461,6 +801,118 @@ print(summary(m_fe)$coefficients[2:4, ], digits = 3)
 - With country fixed effects, the estimates are within countries: each respondent is compared with others from the same country.
 - The effects barely change: women `r format(round(coef(m_fe)[["factor(gndr)2"]], 2), nsmall = 2)` (before `r format(round(coef(m)[["factor(gndr)2"]], 2), nsmall = 2)`).
 - R² rises from `r round(summary(m)$r.squared, 3)` to `r round(summary(m_fe)$r.squared, 3)`: the countries explain part of the variance.
+:::
+
+## Country fixed effects (Lab 4) – as a figure
+
+::: {.columns}
+::: {.column width="66%"}
+```{r}
+#| label: plot-fixed-effects
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 8
+#| fig-height: 6.2
+#| out-width: "100%"
+#| dev: "ragg_png"
+grid_fe <- expand.grid(
+  edu = 4:24,
+  cntry = sort(unique(dataset$cntry)),
+  gndr = 1,
+  age = mean(dataset$age, na.rm = TRUE),
+  stringsAsFactors = FALSE
+)
+grid_fe$Predicted <- predict(m_fe, newdata = grid_fe)
+cnames <- c(
+  AT = "Austria",
+  BE = "Belgium",
+  BG = "Bulgaria",
+  CH = "Switzerland",
+  CY = "Cyprus",
+  DE = "Germany",
+  EE = "Estonia",
+  ES = "Spain",
+  FI = "Finland",
+  FR = "France",
+  GR = "Greece",
+  HR = "Croatia",
+  HU = "Hungary",
+  IE = "Ireland",
+  IT = "Italy",
+  LT = "Lithuania",
+  LV = "Latvia",
+  NL = "Netherlands",
+  PL = "Poland",
+  PT = "Portugal",
+  SE = "Sweden",
+  SI = "Slovenia",
+  SK = "Slovakia"
+)
+base_fe <- grid_fe[grid_fe$edu == 4, ]
+hi <- base_fe$cntry[which.max(base_fe$Predicted)]
+lo <- base_fe$cntry[which.min(base_fe$Predicted)]
+show <- cnames[unique(c(hi, "FR", lo))]
+grid_fe$hl <- grid_fe$cntry %in% names(show)
+ends_fe <- grid_fe[grid_fe$hl & grid_fe$edu == 24, ]
+ends_fe$label <- show[ends_fe$cntry]
+ggplot2::ggplot(
+  grid_fe,
+  ggplot2::aes(x = edu, y = Predicted, group = cntry)
+) +
+  ggplot2::geom_line(
+    data = grid_fe[!grid_fe$hl, ],
+    colour = "grey80",
+    linewidth = 0.6
+  ) +
+  ggplot2::geom_line(
+    data = grid_fe[grid_fe$hl, ],
+    colour = "black",
+    linewidth = 1.2
+  ) +
+  ggplot2::geom_text(
+    data = ends_fe,
+    ggplot2::aes(label = label),
+    hjust = 0,
+    nudge_x = 0.4,
+    size = 7,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::scale_x_continuous(
+    breaks = seq(4, 24, 4),
+    expand = ggplot2::expansion(mult = c(0.02, 0.01))
+  ) +
+  ggplot2::labs(
+    x = "Years of education",
+    y = "Left-right (0 = left, 10 = right)"
+  ) +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::coord_cartesian(clip = "off") +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    axis.text = ggplot2::element_text(colour = "black"),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_line(
+      colour = "grey88",
+      linewidth = 0.3
+    ),
+    axis.line.x = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    ),
+    plot.margin = ggplot2::margin(10, 110, 10, 10)
+  )
+```
+:::
+::: {.column width="34%" .fe-note}
+- Each line is one country.
+- Different heights: each country has its own baseline. That baseline is the **fixed effect**.
+- Parallel lines: one education effect, estimated **within** countries.
+:::
 :::
 
 ## Heteroskedasticity (Lab 4)
@@ -480,6 +932,69 @@ We reject the null hypothesis of homoskedasticity (`r sig_txt(bp$p.value)`), so 
 
 The course's quick fix: robust standard errors.
 
+## Heteroskedasticity (Lab 4) – as a figure
+
+::: {.columns}
+::: {.column width="66%"}
+```{r}
+#| label: plot-heteroskedasticity
+#| echo: false
+#| fig-width: 8
+#| fig-height: 5.6
+#| out-width: "100%"
+#| dev: "ragg_png"
+# simulated illustration: same line, equal vs growing spread
+set.seed(1)
+n_sim <- 150
+x_sim <- runif(n_sim, 0, 10)
+sim <- rbind(
+  data.frame(
+    x = x_sim,
+    y = 2 + 0.5 * x_sim + rnorm(n_sim, sd = 1),
+    panel = "Equal spread"
+  ),
+  data.frame(
+    x = x_sim,
+    y = 2 + 0.5 * x_sim + rnorm(n_sim, sd = 0.15 + 0.3 * x_sim),
+    panel = "Spread grows"
+  )
+)
+ggplot2::ggplot(sim, ggplot2::aes(x = x, y = y)) +
+  ggplot2::geom_point(size = 1.8, colour = "grey55") +
+  ggplot2::geom_abline(intercept = 2, slope = 0.5, linewidth = 1.2) +
+  ggplot2::facet_wrap(~panel) +
+  ggplot2::labs(x = "X", y = "Y") +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    strip.text = ggplot2::element_text(
+      colour = "black",
+      size = 21,
+      hjust = 0
+    ),
+    axis.text = ggplot2::element_blank(),
+    panel.grid = ggplot2::element_blank(),
+    axis.line = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    ),
+    panel.spacing = ggplot2::unit(2, "lines")
+  )
+```
+
+[Simulated data, for illustration.]{.figure-credit}
+:::
+::: {.column width="34%" .fe-note}
+- Each dot is a person, the line is the regression's prediction.
+- Left: the line is equally good for everyone. Right: the further right, the more people are off the line.
+- Why it's bad: the line is still right, but the usual standard errors are wrong, so the p-values can't be trusted.
+- Our model is like the right one (Breusch-Pagan test). Fix: robust standard errors.
+:::
+:::
+
 ## Multicollinearity (Lab 4)
 
 ```{r}
@@ -491,6 +1006,83 @@ All the VIFs are close to 1 (at most `r round(max(vif(m_fe)[, 1]), 2)`), well be
 :::
 
 For `factor(cntry)`, read the last column, `GVIF^(1/(2*Df))`.
+
+## Multicollinearity (Lab 4) – as a figure
+
+::: {.columns}
+::: {.column width="66%"}
+```{r}
+#| label: plot-vif
+#| echo: false
+#| fig-width: 8
+#| fig-height: 6.2
+#| out-width: "100%"
+#| dev: "ragg_png"
+v <- vif(m_fe)
+vd <- data.frame(
+  var = factor(
+    c("Age", "Gender", "Education", "Country"),
+    levels = rev(c("Age", "Gender", "Education", "Country"))
+  ),
+  vif = v[, "GVIF"]
+)
+ggplot2::ggplot(vd, ggplot2::aes(x = vif, y = var)) +
+  ggplot2::geom_col(width = 0.5, fill = "grey70") +
+  ggplot2::geom_text(
+    ggplot2::aes(label = format(round(vif, 2), nsmall = 2)),
+    hjust = -0.2,
+    size = 6.5,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::geom_vline(
+    xintercept = 10,
+    linetype = "22",
+    linewidth = 0.8
+  ) +
+  ggplot2::annotate(
+    "text",
+    x = 9.8,
+    y = 4.45,
+    label = "Concern from 10",
+    hjust = 1,
+    size = 6,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::scale_x_continuous(
+    limits = c(0, 11),
+    breaks = c(0, 1, 5, 10),
+    expand = ggplot2::expansion(mult = c(0, 0.02))
+  ) +
+  ggplot2::scale_y_discrete(
+    expand = ggplot2::expansion(add = c(0.5, 0.8))
+  ) +
+  ggplot2::labs(x = "Variance inflation factor (VIF)", y = NULL) +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    axis.text = ggplot2::element_text(colour = "black"),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_line(
+      colour = "grey88",
+      linewidth = 0.3
+    ),
+    axis.line.x = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    )
+  )
+```
+:::
+::: {.column width="34%" .fe-note}
+- VIF: how much a variable is explained by the other independent variables.
+- Why it's bad: if variables overlap, the model can't tell their effects apart. The standard errors get large, so real effects can look not significant.
+- 1 means no overlap; below 10 is generally not a concern. All four are about 1: no multicollinearity.
+:::
+:::
 
 ## Logit and marginal effects (Lab 5)
 
@@ -512,6 +1104,94 @@ ame_w <- me$AME[me$factor == "gndr2"]
 ::: {.example-interp}
 - **Coefficient** (in `summary(logit)`): only its sign. Women's is negative, so women are less likely to place themselves on the far right.
 - **Marginal effect:** the probability is `r abs(round(100 * ame_w, 1))` percentage points lower for women than for men, net of age and education.
+:::
+
+## Logit (Lab 5) – as a figure
+
+::: {.columns}
+::: {.column width="66%"}
+```{r}
+#| label: plot-logit
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 8
+#| fig-height: 6.2
+#| out-width: "100%"
+#| dev: "ragg_png"
+pl <- as.data.frame(
+  modelbased::estimate_expectation(
+    logit,
+    by = c("age=[18:90]", "gndr")
+  )
+)
+pl$Group <- ifelse(pl$gndr == 2, "Women", "Men")
+ends_l <- pl[pl$age == max(pl$age), ]
+ggplot2::ggplot(
+  pl,
+  ggplot2::aes(x = age, y = Predicted, group = Group)
+) +
+  ggplot2::geom_ribbon(
+    ggplot2::aes(ymin = CI_low, ymax = CI_high),
+    fill = "grey85",
+    alpha = 0.6
+  ) +
+  ggplot2::geom_line(
+    ggplot2::aes(colour = Group, linetype = Group),
+    linewidth = 1.2
+  ) +
+  ggplot2::geom_text(
+    data = ends_l,
+    ggplot2::aes(label = Group),
+    hjust = 0,
+    nudge_x = 1.5,
+    size = 7,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::scale_colour_manual(
+    values = c(Men = "black", Women = "grey45"),
+    guide = "none"
+  ) +
+  ggplot2::scale_linetype_manual(
+    values = c(Men = "solid", Women = "22"),
+    guide = "none"
+  ) +
+  ggplot2::scale_y_continuous(
+    limits = c(0, 0.3),
+    labels = function(x) paste0(round(100 * x), "%")
+  ) +
+  ggplot2::scale_x_continuous(
+    breaks = seq(20, 90, 10),
+    expand = ggplot2::expansion(mult = c(0.02, 0.01))
+  ) +
+  ggplot2::coord_cartesian(clip = "off") +
+  ggplot2::labs(x = "Age", y = "Probability of far right (8-10)") +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    axis.text = ggplot2::element_text(colour = "black"),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_line(
+      colour = "grey88",
+      linewidth = 0.3
+    ),
+    axis.line.x = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    ),
+    plot.margin = ggplot2::margin(10, 90, 10, 10)
+  )
+```
+:::
+::: {.column width="34%" .fe-note}
+- Lines: the predicted probability of placing oneself on the far right, for an average education.
+- The gap between the lines is the marginal effect of gender: about `r abs(round(100 * ame_w))` percentage points.
+- The slope is the marginal effect of age: about `r format(round(1000 * me$AME[me$factor == "age"], 1), nsmall = 1)` percentage points per 10 years.
+:::
 :::
 
 ## Multinomial logit (Lab 5)
@@ -541,6 +1221,86 @@ round(coef(mlogit), 3)
 Each row compares a category with Left, the reference. Only the signs: women are less likely to be on the right rather than the left (`r round(coef(mlogit)["3 Right", "factor(gndr)2"], 2)`).
 :::
 
+## Multinomial logit (Lab 5) – as a figure
+
+```{r}
+#| label: plot-multinom
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 5.6
+#| out-width: "100%"
+#| dev: "ragg_png"
+pred <- modelbased::estimate_expectation(mlogit, by = "edu=[4:24]")
+pd <- as.data.frame(pred)
+pd$Response <- sub("^[0-9] ", "", as.character(pd$Response))
+ends <- pd[pd$edu == max(pd$edu), ]
+# keep end labels apart where lines cross (at least 3 points)
+ends <- ends[order(ends$Predicted), ]
+ends$label_y <- ends$Predicted
+for (k in seq_len(nrow(ends))[-1]) {
+  ends$label_y[k] <- max(ends$label_y[k], ends$label_y[k - 1] + 0.03)
+}
+ggplot2::ggplot(
+  pd,
+  ggplot2::aes(x = edu, y = Predicted, group = Response)
+) +
+  ggplot2::geom_line(
+    ggplot2::aes(colour = Response, linetype = Response),
+    linewidth = 1.1
+  ) +
+  ggplot2::geom_text(
+    data = ends,
+    ggplot2::aes(y = label_y, label = Response),
+    hjust = 0,
+    nudge_x = 0.4,
+    size = 7,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::scale_colour_manual(
+    values = c(Left = "black", Centre = "grey55", Right = "black"),
+    guide = "none"
+  ) +
+  ggplot2::scale_linetype_manual(
+    values = c(Left = "solid", Centre = "solid", Right = "22"),
+    guide = "none"
+  ) +
+  ggplot2::scale_y_continuous(
+    labels = function(x) paste0(round(100 * x), "%"),
+    limits = c(0, 0.6),
+    breaks = seq(0, 0.6, 0.2)
+  ) +
+  ggplot2::scale_x_continuous(
+    breaks = seq(4, 24, 4),
+    expand = ggplot2::expansion(mult = c(0.02, 0.01))
+  ) +
+  ggplot2::labs(
+    x = "Years of education",
+    y = "Predicted probability"
+  ) +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::coord_cartesian(clip = "off") +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    axis.text = ggplot2::element_text(colour = "black"),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_line(
+      colour = "grey88",
+      linewidth = 0.3
+    ),
+    axis.line.x = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    ),
+    plot.margin = ggplot2::margin(10, 110, 10, 10)
+  )
+```
+
 ## Interaction (Lab 5)
 
 ```{r}
@@ -550,12 +1310,93 @@ m_int <- lm(
 )
 cf <- coef(m_int)
 cf[c("edu", "factor(gndr)2:edu")]
+```
+
+```{r}
 cf["edu"] + cf["factor(gndr)2:edu"] # the education slope for women
 ```
 
 ::: {.example-interp}
 Men (reference): `edu`. Women: `edu` + interaction. The interaction is `r sig(m_int, "factor(gndr)2:edu")` only: weak evidence that gender moderates the effect of education.
 :::
+
+## Interaction (Lab 5) – as a figure
+
+```{r}
+#| label: plot-interaction
+#| echo: false
+#| message: false
+#| warning: false
+#| fig-width: 11
+#| fig-height: 5.6
+#| out-width: "100%"
+#| dev: "ragg_png"
+pi <- as.data.frame(
+  modelbased::estimate_expectation(
+    m_int,
+    by = c("edu=[4:24]", "gndr")
+  )
+)
+pi$Group <- ifelse(pi$gndr == 2, "Women", "Men")
+ends_i <- pi[pi$edu == max(pi$edu), ]
+ggplot2::ggplot(
+  pi,
+  ggplot2::aes(x = edu, y = Predicted, group = Group)
+) +
+  ggplot2::geom_ribbon(
+    ggplot2::aes(ymin = CI_low, ymax = CI_high),
+    fill = "grey85",
+    alpha = 0.6
+  ) +
+  ggplot2::geom_line(
+    ggplot2::aes(colour = Group, linetype = Group),
+    linewidth = 1.2
+  ) +
+  ggplot2::geom_text(
+    data = ends_i,
+    ggplot2::aes(label = Group),
+    hjust = 0,
+    nudge_x = 0.4,
+    size = 7,
+    family = "Source Sans Static"
+  ) +
+  ggplot2::scale_colour_manual(
+    values = c(Men = "black", Women = "grey45"),
+    guide = "none"
+  ) +
+  ggplot2::scale_linetype_manual(
+    values = c(Men = "solid", Women = "22"),
+    guide = "none"
+  ) +
+  ggplot2::scale_x_continuous(
+    breaks = seq(4, 24, 4),
+    expand = ggplot2::expansion(mult = c(0.02, 0.01))
+  ) +
+  ggplot2::labs(
+    x = "Years of education",
+    y = "Left-right (0 = left, 10 = right)"
+  ) +
+  ggplot2::theme_minimal(
+    base_size = 21,
+    base_family = "Source Sans Static"
+  ) +
+  ggplot2::coord_cartesian(clip = "off") +
+  ggplot2::theme(
+    text = ggplot2::element_text(colour = "black"),
+    axis.text = ggplot2::element_text(colour = "black"),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.grid.major.x = ggplot2::element_blank(),
+    panel.grid.major.y = ggplot2::element_line(
+      colour = "grey88",
+      linewidth = 0.3
+    ),
+    axis.line.x = ggplot2::element_line(
+      colour = "black",
+      linewidth = 0.4
+    ),
+    plot.margin = ggplot2::margin(10, 110, 10, 10)
+  )
+```
 
 ## easystats: a clean coefficient table
 
@@ -577,6 +1418,24 @@ report(t.test(swd ~ voted_2024, data = anes))
 
 A useful check of your own sentence. It labels effect sizes with Cohen's d ("medium"), which the course doesn't use: report the significance level and the direction in the course's terms.
 
+## easystats: a correlation in words
+
+```{r}
+#| message: false
+#| warning: false
+report(cor.test(anes$like_democrat, anes$age))
+```
+
+```{r}
+#| include: false
+ct_rep <- cor.test(anes$like_democrat, anes$age)
+```
+
+report() labels strength after Funder (2019) and tests only at the 0.05 level. The course uses its own conventions, so in the exam write it the course's way:
+
+- Strength: **`r r_label(ct_rep$estimate)`** (bands 0.10 / 0.30 / 0.50 / 0.75, Lecture 4 *Measures of association*, slide 21)
+- Significance: `r sig_txt(ct_rep$p.value)`, p = `r format(round(ct_rep$p.value, 3), nsmall = 3)` (levels 0.10 / 0.05 / 0.01, lecture *Hypothesis testing*, slide 6)
+
 ## easystats: diagnostics in words (Lab 4)
 
 ```{r}
@@ -595,7 +1454,7 @@ compare_performance(m, m_fe, metrics = c("R2", "R2_adj"))
 
 Without (`m`) and with (`m_fe`) country fixed effects: the countries raise R² from `r round(summary(m)$r.squared, 3)` to `r round(summary(m_fe)$r.squared, 3)`.
 
-## easystats: check the checker
+## easystats: summary
 
 ```{r}
 #| message: false
@@ -698,12 +1557,6 @@ The [AI setup page](ai-setup.html) has the steps. Give an agent only the project
 #| include: false
 library(ggplot2)
 library(modelsummary)
-# static Source Sans 3 (the slide font); the installed variable font renders too thin
-systemfonts::register_font(
-  name = "Source Sans Static",
-  plain = "fonts/SourceSans3-Regular.ttf",
-  bold = "fonts/SourceSans3-Semibold.ttf"
-)
 dataset$swd <- ifelse(
   dataset$stfdem >= 0 & dataset$stfdem <= 10,
   dataset$stfdem,
@@ -714,6 +1567,7 @@ dataset$swd <- ifelse(
 ## Publication-ready figures (with the [ggplot2](https://ggplot2.tidyverse.org) package)
 
 ```{r}
+#| label: plot-journal
 #| echo: false
 #| fig-width: 10
 #| fig-height: 5.4
@@ -822,6 +1676,40 @@ modelsummary(
 ```
 
 [Made with the [modelsummary](https://modelsummary.com) package, which also writes Word and LaTeX tables.]{.figure-credit}
+
+## These slides are made with R
+
+This whole deck is one [Quarto](https://quarto.org) file: Markdown text with R chunks that run every time on render. Every number, figure and table comes straight from the data.
+
+:::: {.columns}
+::: {.column width="50%"}
+**What I write**
+
+````markdown
+```{{r}}
+avg <- mean(dataset$swd, na.rm = TRUE)
+avg
+```
+
+The mean is `r knitr::inline_expr("round(avg, 1)")`.
+````
+:::
+
+::: {.column width="50%"}
+**What you see**
+
+```{r}
+avg <- mean(dataset$swd, na.rm = TRUE)
+avg
+```
+
+The mean is `r round(avg, 1)`.
+:::
+::::
+
+Try it in RStudio: *File › New File › Quarto Presentation*. The same works for papers (Word, PDF) and websites. <a href="https://quant1.kleinbutsignificant.com/slides.qmd" download>Source of these slides</a>
+
+## 7 · Practice {.center background-color="#1f3a5f"}
 
 ## Tuesday {.center}
 

@@ -1,5 +1,5 @@
 ---
-title: "AI that helps you learn"
+title: "AI Setup"
 description: "Four levels of AI help for R, from chat to an agent inside RStudio, with setup steps and ground rules."
 ---
 

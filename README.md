@@ -9,10 +9,16 @@ Study guide, cheat sheet, mock exam and slides for the R lab exercise in *Introd
 ```sh
 quarto preview          # live preview
 quarto render           # build into _site/
-quarto publish gh-pages # publish
 ```
 
 R packages: dplyr, lmtest, car, margins, nnet, ggplot2, modelsummary, easystats, ragg, systemfonts, downlit, xml2.
+
+## Publish
+
+```sh
+sh tools/publish.sh   # render, print slides.pdf, publish to GitHub Pages
+git add -A            # then commit and push (publishing rewrites slides.pdf)
+```
 
 ## Credits
 
