@@ -103,7 +103,7 @@
     code span.vs { color: #008000; } /* VerbatimString */
     code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
-<link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-caaf9b32548ff685f9666fc444f4bc98.css">
+<link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-e9b1e5981767cb99eefeebb9299d347b.css">
 <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
 <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
 <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -256,7 +256,7 @@
 <div class="column" style="width:45%;">
 <p>A good folder structure (example):</p>
 <pre><code>labexam/
-├── labexam.Rproj    ← double-click this
+├── labexam.Rproj    ← double-click
 ├── data/
 │   ├── anes_….csv
 │   └── ess.csv
@@ -514,25 +514,58 @@
 <code>factor(gndr)2</code> compares women with men. Men are the reference: the first level, which gets no row of its own.</li>
 <li>
 <code>factor(cntry)</code> adds one dummy per country, compared with AT (first in alphabetical order). These are the country fixed effects.</li>
-</ul></section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>3 · From Output to Words</h2>
-</section><section class="slide level2"><h2>Describe a variable (Lab 2)</h2>
+</ul></section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>3 · Labs Reworked</h2>
+</section><section class="slide level2 center" data-background-color="#dce6f2"><h2>Lab 2</h2>
+<p>Describe variables and their associations · ANES 2024</p>
+</section><section class="slide level2"><h2>Frequency table (Lab 2)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">voted_2024</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 4.87644</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 5</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 3.405986</code></pre>
+<pre><code>
+   0    1 
+ 835 3933 </code></pre>
 </div>
 </div>
 <div class="example-interp">
-<p>Given that the mean and the median are very close, the distribution of the rating of the Democratic Party is approximately symmetric. The standard deviation means that ratings typically lie about 3.4 points from the mean, which is large compared with the mean: the spread of the distribution is thus large.</p>
+<p>Most respondents voted in 2024: 3,933 of 4,768, or 82.5%. The mode is “voted”.</p>
 </div>
+<div class="interp-note">
+<p>In the output: <code>0</code> = did not vote, <code>1</code> = voted, with the number of respondents below. <code>prop.table(table(dataset$voted_2024))</code> gives the shares.</p>
+</div>
+</section><section class="slide level2"><h2>Describe a variable (Lab 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">like_democrat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.87644</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">like_democrat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.405986</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">like_democrat</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<ul>
+<li>
+<strong>Centre:</strong> on average, respondents rate the Democratic Party 4.88 out of 10 (median 5).</li>
+<li>
+<strong>Shape:</strong> the mean and the median are very close, so the distribution is approximately symmetric.</li>
+<li>
+<strong>Spread:</strong> the standard deviation (3.41) is large compared with the mean: the ratings are widely spread.</li>
+</ul>
+</div>
+<div class="interp-note">
+<p>In the output: <code>[1]</code> only numbers the first value of the result. <code>na.rm = TRUE</code> leaves out the missing values.</p>
+</div>
+</section><section class="slide level2"><h2>Histogram (Lab 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">like_democrat</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="slides_files/figure-revealjs/plot-histogram-1.png" style="width:78.0%" class="r-stretch"><p>The bars show the shape that the mean and median describe. The first bar counts the 0s and the 1s together; <code>breaks = seq(-0.5, 10.5, by = 1)</code> gives one bar per value.</p>
 </section><section class="slide level2"><h2>Describe a variable (Lab 2) – as a figure</h2>
 <div class="columns">
 <div class="column" style="width:66%;">
@@ -554,15 +587,25 @@
 <strong>Shaded</strong>: mean ± 1 standard deviation, from 1.5 to 8.3. It holds 59% of respondents: a large spread.</li>
 </ul>
 </div></div>
-</section><section class="slide level2"><h2>Histogram (Lab 2)</h2>
+</section><section class="slide level2"><h2>Crosstab (Lab 2)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">voted_2024</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">gender</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   
+       1    2    3    4
+  0  346  439    9    4
+  1 1731 1976   33   12</code></pre>
 </div>
-<img data-src="slides_files/figure-revealjs/plot-histogram-1.png" style="width:78.0%" class="r-stretch"><p>The bars show the shape that the mean and median describe. The first bar counts the 0s and the 1s together; <code>breaks = seq(-0.5, 10.5, by = 1)</code> gives one bar per value.</p>
+</div>
+<div class="example-interp">
+<p>Men and women voted at about the same rate: 83.3% of men and 81.8% of women. Gender makes little difference to voting in this sample.</p>
+</div>
+<div class="interp-note">
+<p>In the output: rows = voted (0 no, 1 yes), columns = gender (1 man, 2 woman, 3 nonbinary, 4 something else). These are counts: <code>prop.table(table(...), margin = 2)</code> gives the share of each column.</p>
+</div>
 </section><section class="slide level2"><h2>Group means (Lab 2)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">like_democrat</span> <span class="op">~</span> <span class="va">voted_2024</span>, data <span class="op">=</span> <span class="va">anes</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">like_democrat</span> <span class="op">~</span> <span class="va">voted_2024</span>, data <span class="op">=</span> <span class="va">dataset</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  voted_2024 like_democrat
 1          0      4.373077
@@ -570,28 +613,42 @@
 </div>
 </div>
 <div class="example-interp">
-<p>Non-voters: 4.37. Voters: 4.95. There is therefore a difference in the means, suggesting an association between voting and the rating of the Democratic Party in this sample.</p>
+<p>Voters rate the Democratic Party higher than non-voters: 4.95 against 4.37 out of 10. The difference in the means suggests an association between voting and the rating of the Democratic Party in this sample.</p>
 </div>
-<p>The t-test checks whether it holds in the population.</p>
+<div class="interp-note">
+<p>In the output: one row per group, <code>0</code> = did not vote, <code>1</code> = voted. Whether the difference holds in the population is what the t-test checks (Lab 3).</p>
+</div>
 </section><section class="slide level2"><h2>Correlation (Lab 2)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, <span class="va">anes</span><span class="op">$</span><span class="va">age</span>, use <span class="op">=</span> <span class="st">"complete.obs"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">like_democrat</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">age</span>, use <span class="op">=</span> <span class="st">"complete.obs"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.02571812</code></pre>
 </div>
 </div>
 <div class="example-interp">
-<p>There is a positive, negligible association between age and the rating of the Democratic Party: age makes almost no difference to it.</p>
+<p>There is a positive but negligible association between age and the rating of the Democratic Party (r = 0.03): age makes almost no difference to it.</p>
 </div>
-<p>Strength: |r| below 0.10 negligible, from 0.10 weak, 0.30 moderate, 0.50 strong, 0.75 very strong.</p>
+<div class="interp-note">
+<p>Strength (Lecture 4): |r| below 0.10 negligible, from 0.10 weak, 0.30 moderate, 0.50 strong, 0.75 very strong. <code>use = "complete.obs"</code> leaves out respondents with a missing value.</p>
+</div>
+</section><section class="slide level2"><h2>Scatter plot (Lab 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">age</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">like_democrat</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="slides_files/figure-revealjs/plot-scatter-1.png" style="width:78.0%" class="r-stretch"><div class="interp-note">
+<p>Each dot is a respondent. The ratings are whole numbers, so the dots fall in rows and hide each other. No slope is visible: the same as r = 0.03.</p>
+</div>
+</section><section class="slide level2 center" data-background-color="#dce6f2"><h2>Lab 3</h2>
+<p>t-test and chi-square test · ANES 2024</p>
 </section><section class="slide level2"><h2>t-test (Lab 3)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">swd</span> <span class="op">~</span> <span class="va">voted_2024</span>, data <span class="op">=</span> <span class="va">anes</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">swd</span> <span class="op">~</span> <span class="va">dataset</span><span class="op">$</span><span class="va">voted_2024</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Welch Two Sample t-test
 
-data:  swd by voted_2024
+data:  dataset$swd by dataset$voted_2024
 t = 8.2327, df = 1056.3, p-value = 5.355e-16
 alternative hypothesis: true difference in means between group 0 and group 1 is not equal to 0
 95 percent confidence interval:
@@ -602,7 +659,18 @@ mean in group 0 mean in group 1
 </div>
 </div>
 <div class="example-interp">
-<p>The difference is statistically significant at the 0.01 level: we reject the null hypothesis that the means are not different. Voters (lower score) are more satisfied.</p>
+<p>Voters are more satisfied with democracy than non-voters: their mean is 2.57 against 2.97 (lower = more satisfied), a difference of 0.40. The difference is statistically significant at the 0.01 level: we reject the null hypothesis that the means are equal.</p>
+</div>
+<div class="interp-note">
+<p>In the output: <code>mean in group 0</code> = non-voters, <code>group 1</code> = voters. <code>p-value</code> = 5.4^{-16}. The 95% confidence interval of the difference does not include 0.</p>
+</div>
+</section><section class="slide level2"><h2>Boxplot (Lab 3)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">swd</span> <span class="op">~</span> <span class="va">dataset</span><span class="op">$</span><span class="va">voted_2024</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="slides_files/figure-revealjs/plot-boxplot-1.png" style="width:78.0%" class="r-stretch"><div class="interp-note">
+<p>The thick line is the median, the box holds the middle half of the respondents. <code>swd</code> has only four values (1, 2, 4, 5), so both boxes look alike: the medians are both 2. The means (t-test) show the difference better, as on the next slide.</p>
 </div>
 </section><section class="slide level2"><h2>t-test (Lab 3) – as a figure</h2>
 <div class="columns">
@@ -624,25 +692,27 @@ mean in group 0 mean in group 1
 </div></div>
 </section><section class="slide level2"><h2>Chi-square test (Lab 3)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">swd_binary</span>, <span class="va">anes</span><span class="op">$</span><span class="va">voted_2024</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="va">tab</span>, margin <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>, <span class="fl">1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">swd_binary</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">voted_2024</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   
        0    1
-  0 46.8 30.9
-  1 53.2 69.1</code></pre>
+  0  365 1147
+  1  415 2561</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">swd_binary</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">voted_2024</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's Chi-squared test with Yates' continuity correction
 
-data:  tab
+data:  dataset$swd_binary and dataset$voted_2024
 X-squared = 71.87, df = 1, p-value &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="example-interp">
-<p>The association is statistically significant at the 0.01 level: we reject the null hypothesis of no association. Direction: 69% of voters are satisfied, 53% of non-voters.</p>
+<p>Voters are more often satisfied with democracy: 69% of voters against 53% of non-voters. The association is statistically significant at the 0.01 level: we reject the null hypothesis of no association between voting and satisfaction.</p>
+</div>
+<div class="interp-note">
+<p>In the output: rows = satisfied (1) or not (0), columns = voted (1) or not (0). The test gives significance only; the direction comes from the percentages, <code>prop.table(table(...), margin = 2)</code>. X-squared = 71.9.</p>
 </div>
 </section><section class="slide level2"><h2>Chi-square test (Lab 3) – as a figure</h2>
 <div class="columns">
@@ -662,24 +732,34 @@ X-squared = 71.87, df = 1, p-value &lt; 2.2e-16</code></pre>
 <li>Chi-square measures how far the groups are from that line. The bars give the direction.</li>
 </ul>
 </div></div>
+</section><section class="slide level2 center" data-background-color="#dce6f2"><h2>Lab 4</h2>
+<p>Linear regression, country fixed effects and diagnostics · ESS round 11</p>
 </section><section class="slide level2"><h2>OLS regression (Lab 4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>              Estimate Std. Error t value Pr(&gt;|t|)
-(Intercept)    5.51740   0.062060   88.90 0.00e+00
-age            0.00297   0.000674    4.40 1.07e-05
-factor(gndr)2 -0.30219   0.024287  -12.44 1.85e-35
-edu           -0.03021   0.003079   -9.81 1.07e-22</code></pre>
+<pre><code>               Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    5.517395   0.062060   88.90  &lt; 2e-16 ***
+age            0.002967   0.000674    4.40  1.1e-05 ***
+factor(gndr)2 -0.302186   0.024287  -12.44  &lt; 2e-16 ***
+edu           -0.030211   0.003079   -9.81  &lt; 2e-16 ***</code></pre>
 </div>
 </div>
 <div class="example-interp">
 <ul>
-<li>When education increases by one year, left-right self-placement decreases by 0.030 points, net of the other variables (statistically significant at the 0.01 level).</li>
-<li>Women place themselves 0.30 points further left than men, the reference category (statistically significant at the 0.01 level).</li>
-<li>R² = 0.009: the independent variables explain 0.9% of the variance.</li>
+<li>
+<strong>Education:</strong> the more educated, the more to the left. One more year of education lowers left-right self-placement by 0.030 points, net of age and gender (statistically significant at the 0.01 level).</li>
+<li>
+<strong>Gender:</strong> women place themselves 0.30 points further left than men (statistically significant at the 0.01 level).</li>
+<li>
+<strong>Age:</strong> older people place themselves slightly further right, 0.003 points per year (statistically significant at the 0.01 level).</li>
 </ul>
+</div>
+<div class="interp-note">
+<p>In the output: <code>Estimate</code> gives the direction (sign) and the size, <code>Pr(&gt;|t|)</code> the p-value. R² = 0.009: together the variables explain 0.9% of the variance.</p>
 </div>
 </section><section class="slide level2"><h2>OLS regression (Lab 4) – as a figure</h2>
 <div class="columns">
@@ -701,24 +781,25 @@ edu           -0.03021   0.003079   -9.81 1.07e-22</code></pre>
 </div></div>
 </section><section class="slide level2"><h2>Country fixed effects (Lab 4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_fe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
 <span>  <span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cntry</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">dataset</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span><span class="op">$</span><span class="va">coefficients</span><span class="op">[</span><span class="fl">2</span><span class="op">:</span><span class="fl">4</span>, <span class="op">]</span>, digits <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
 <div class="cell-output cell-output-stdout">
-<pre><code>              Estimate Std. Error t value Pr(&gt;|t|)
-age            0.00332   0.000671    4.94  7.8e-07
-factor(gndr)2 -0.32567   0.024067  -13.53  1.3e-41
-edu           -0.02744   0.003167   -8.67  4.7e-18</code></pre>
+<pre><code>               Estimate Std. Error t value Pr(&gt;|t|)    
+age            0.003318   0.000671    4.94  7.8e-07 ***
+factor(gndr)2 -0.325671   0.024067  -13.53  &lt; 2e-16 ***
+edu           -0.027445   0.003167   -8.67  &lt; 2e-16 ***</code></pre>
 </div>
 </div>
 <div class="example-interp">
-<ul>
-<li>With country fixed effects, the estimates are within countries: each respondent is compared with others from the same country.</li>
-<li>The effects barely change: women -0.33 (before -0.30).</li>
-<li>R² rises from 0.009 to 0.033: the countries explain part of the variance.</li>
-</ul>
+<p>Net of the differences between countries, the effects barely change: one more year of education lowers left-right self-placement by 0.027 points, and women place themselves 0.33 points further left than men (both statistically significant at the 0.01 level).</p>
+</div>
+<div class="interp-note">
+<p>In the output: each respondent is now compared with others from the same country. The country rows (<code>factor(cntry)BE</code>, …) compare each country with Austria. R² rises from 0.009 to 0.033: the countries explain part of the variance.</p>
 </div>
 </section><section class="slide level2"><h2>Country fixed effects (Lab 4) – as a figure</h2>
 <div class="columns">
@@ -738,21 +819,56 @@ edu           -0.02744   0.003167   -8.67  4.7e-18</code></pre>
 <li>Parallel lines: one education effect, estimated <strong>within</strong> countries.</li>
 </ul>
 </div></div>
+</section><section class="slide level2"><h2>One country only: France (Lab 4)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset_france</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">cntry</span> <span class="op">==</span> <span class="st">"FR"</span><span class="op">)</span></span>
+<span><span class="va">model_france</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
+<span>  <span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">dataset_france</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model_france</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)    5.08818    0.32802   15.51  &lt; 2e-16 ***
+age            0.01123    0.00318    3.53  0.00042 ***
+factor(gndr)2 -0.33142    0.11680   -2.84  0.00461 ** 
+edu           -0.03390    0.01777   -1.91  0.05655 .  </code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>In France, older people place themselves further right (0.011 points per year) and women 0.33 points further left than men (both statistically significant at the 0.01 level). Education goes with a more left-wing placement, 0.034 points per year, but only statistically significant at the 0.10 level.</p>
+</div>
+<div class="interp-note">
+<p>In the output: the model uses only the 1,570 French respondents, so the standard errors are larger than with all countries.</p>
+</div>
+</section><section class="slide level2"><h2>Residual plot (Lab 4)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model2</span><span class="op">$</span><span class="va">fitted.values</span>, <span class="va">model2</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+
+</div>
+<img data-src="slides_files/figure-revealjs/plot-residuals-1.png" style="width:78.0%" class="r-stretch"><div class="interp-note">
+<p>Each dot is a respondent: the model’s prediction (x) against its error (y). If the vertical spread changes from left to right, the residuals are heteroskedastic. The diagonal stripes come from <code>lrscale</code> taking only whole values from 0 to 10. The Breusch-Pagan test on the next slide checks it formally.</p>
+</div>
 </section><section class="slide level2"><h2>Heteroskedasticity (Lab 4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb56"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest</a></span><span class="op">(</span><span class="va">model2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     studentized Breusch-Pagan test
 
-data:  m_fe
+data:  model2
 BP = 1356, df = 25, p-value &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="example-interp">
-<p>We reject the null hypothesis of homoskedasticity (statistically significant at the 0.01 level), so there is heteroskedasticity: the variance of the residuals is not the same across the values of the dependent variable.</p>
+<p>We reject the null hypothesis of homoskedasticity (statistically significant at the 0.01 level): the residuals are heteroskedastic. Their variance is not the same across the fitted values, so the usual standard errors are not reliable. The course’s fix: robust standard errors.</p>
 </div>
-<p>The course’s quick fix: robust standard errors.</p>
+<div class="interp-note">
+<p>In the output: BP = 1356, df = 25 (the number of independent variables, with the 22 country dummies). The null hypothesis is homoskedasticity, so a small p-value means heteroskedasticity.</p>
+</div>
 </section><section class="slide level2"><h2>Heteroskedasticity (Lab 4) – as a figure</h2>
 <div class="columns">
 <div class="column" style="width:66%;">
@@ -775,7 +891,7 @@ BP = 1356, df = 25, p-value &lt; 2.2e-16</code></pre>
 </div></div>
 </section><section class="slide level2"><h2>Multicollinearity (Lab 4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/car/man/vif.html">vif</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb58"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/car/man/vif.html">vif</a></span><span class="op">(</span><span class="va">model2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                  GVIF Df GVIF^(1/(2*Df))
 age           1.071270  1        1.035022
@@ -785,9 +901,11 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 </div>
 </div>
 <div class="example-interp">
-<p>All the VIFs are close to 1 (at most 1.14), well below 10, so multicollinearity is not a concern.</p>
+<p>All the VIFs are close to 1 (at most 1.14), well below 10: multicollinearity is not a concern.</p>
 </div>
-<p>For <code>factor(cntry)</code>, read the last column, <code>GVIF^(1/(2*Df))</code>.</p>
+<div class="interp-note">
+<p>In the output: for <code>factor(cntry)</code>, which has many categories, read the last column, <code>GVIF^(1/(2*Df))</code>.</p>
+</div>
 </section><section class="slide level2"><h2>Multicollinearity (Lab 4) – as a figure</h2>
 <div class="columns">
 <div class="column" style="width:66%;">
@@ -806,28 +924,204 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 <li>1 means no overlap; below 10 is generally not a concern. All four are about 1: no multicollinearity.</li>
 </ul>
 </div></div>
-</section><section class="slide level2"><h2>Logit and marginal effects (Lab 5)</h2>
+</section><section class="slide level2 center" data-background-color="#dce6f2"><h2>Lab 5</h2>
+<p>Logit, marginal effects, multinomial logit and interactions · ESS round 11.</p>
+</section><section class="slide level2"><h2>Recoding in base R (Lab 5, Step 2)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
-<span>  <span class="va">far_right</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">dataset</span>,</span>
-<span>  family <span class="op">=</span> <span class="va">binomial</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/margins/man/margins.html">margins</a></span><span class="op">(</span><span class="va">logit</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb60"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># 1 = far right (8-10), 0 = the rest (0-7)</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">far_right</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&gt;=</span> <span class="fl">8</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&lt;=</span> <span class="fl">10</span>,</span>
+<span>  <span class="fl">1</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span></span>
+<span>    <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&gt;=</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&lt;=</span> <span class="fl">7</span>,</span>
+<span>    <span class="fl">0</span>,</span>
+<span>    <span class="cn">NA</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong>Nested <code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code>:</strong> if 8 to 10, then 1; otherwise, if 0 to 7, then 0; otherwise <code>NA</code>. The second <code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code> is the “no” of the first.</p>
+<p>The next slide does the same with dplyr.</p>
+</section><section class="slide level2"><h2>The same thing but tidier: Recoding with dplyr</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb61"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="va">dataset</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    <span class="co"># condition ~ new value, one line per group</span></span>
+<span>    far_right <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lrscale_clean</span>, <span class="fl">8</span>, <span class="fl">10</span><span class="op">)</span> <span class="op">~</span> <span class="fl">1</span>,</span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lrscale_clean</span>, <span class="fl">0</span>, <span class="fl">7</span><span class="op">)</span> <span class="op">~</span> <span class="fl">0</span>,</span>
+<span>      .default <span class="op">=</span> <span class="cn">NA</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="va">dataset</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">far_right</span><span class="op">)</span> <span class="co"># check</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code> factor     AME     SE        z      p   lower   upper
-    age  0.0010 0.0001   9.2588 0.0000  0.0008  0.0012
-    edu -0.0029 0.0005  -5.7969 0.0000 -0.0039 -0.0019
-  gndr2 -0.0458 0.0039 -11.7849 0.0000 -0.0534 -0.0382</code></pre>
+<pre><code>  far_right     n
+1         0 29289
+2         1  5151
+3        NA  5074</code></pre>
+</div>
+</div>
+</div><div class="column fe-note" style="width:38%;">
+<ul>
+<li>One line per group, like the codebook. <code>between(x, 8, 10)</code> means 8 ≤ x ≤ 10.</li>
+<li>
+<code>.default = NA</code>: anything that matches no line (a missing code, <code>NA</code>) becomes <code>NA</code>.</li>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/count.html">count()</a></code> checks the result, like <code>table(x, useNA = "ifany")</code>.</li>
+</ul>
+</div></div>
+</section><section class="slide level2"><h2>Logit output (Lab 5, Step 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb63"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">logit1</span><span class="op">)</span> <span class="co"># far_right ~ age + factor(gndr) + edu + factor(cntry)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                 Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)     -2.898431   0.124556  -23.27  &lt; 2e-16 ***
+age              0.009263   0.000884   10.48  &lt; 2e-16 ***
+factor(gndr)2   -0.403955   0.031313  -12.90  &lt; 2e-16 ***
+edu             -0.013909   0.004163   -3.34  0.00083 ***
+factor(cntry)BE  0.655731   0.125520    5.22  1.7e-07 ***
+factor(cntry)BG  1.340284   0.110387   12.14  &lt; 2e-16 ***</code></pre>
 </div>
 </div>
 <div class="example-interp">
 <ul>
 <li>
-<strong>Coefficient</strong> (in <code>summary(logit)</code>): only its sign. Women’s is negative, so women are less likely to place themselves on the far right.</li>
+<strong>Gender:</strong> women are less likely than men to place themselves on the far right (statistically significant at the 0.01 level).</li>
 <li>
-<strong>Marginal effect:</strong> the probability is 4.6 percentage points lower for women than for men, net of age and education.</li>
+<strong>Age:</strong> older people are more likely (statistically significant at the 0.01 level).</li>
+<li>
+<strong>Education:</strong> the more educated, the less likely (statistically significant at the 0.01 level).</li>
 </ul>
+</div>
+<div class="interp-note">
+<p>In the output: in a logit, only the sign of <code>Estimate</code> is interpreted; the size comes from the marginal effects. <code>factor(gndr)2</code> = women vs men (the reference has no row), <code>factor(cntry)BE</code> = Belgium vs Austria. Stars: R’s <code>***</code> 0.001, <code>**</code> 0.01, <code>*</code> 0.05 are not the course’s 0.01, 0.05, 0.10 (Lecture 8, slide 41): go by the p-value.</p>
+</div>
+</section><section class="slide level2"><h2>One effect, three numbers (Lab 5)</h2>
+<p>The same model, the same effect of being a woman, on three scales:</p>
+<div class="columns">
+<div class="column" style="width:33%;">
+<p><strong>Log-odds</strong><br><code>summary(logit1)</code></p>
+<p><span class="big-number">-0.40</span></p>
+<p>Only the sign: women are less likely to be on the far right.</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Odds ratio</strong><br><code>exp(coef(logit1))</code></p>
+<p><span class="big-number">0.67</span></p>
+<p>Women’s odds are 33% lower.</p>
+</div><div class="column" style="width:33%;">
+<p><strong>Marginal effect</strong><br><code>summary(margins(logit1))</code></p>
+<p><span class="big-number">-0.050</span></p>
+<p>× 100: women are 5.0 percentage points less likely.</p>
+</div></div>
+<div class="interp-note">
+<p>In the exam: the direction and significance from <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>, the size from the marginal effects.</p>
+</div>
+</section><section class="slide level2"><h2>Log-odds and odds ratios (beyond the course)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb65"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">exp</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">logit1</span><span class="op">)</span><span class="op">)</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"age"</span>, <span class="st">"factor(gndr)2"</span>, <span class="st">"edu"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          age factor(gndr)2           edu 
+    1.0093063     0.6676743     0.9861869 </code></pre>
+</div>
+</div>
+<ul>
+<li>
+<strong><code>summary(logit1)</code> gives log-odds:</strong> the change in log(p / (1 − p)) when X goes up by one. That is hard to read, so the course reads only the sign (Lecture 10).</li>
+<li>
+<strong><code><a href="https://rdrr.io/r/base/Log.html">exp()</a></code> turns them into odds ratios.</strong> Above 1: higher odds; below 1: lower odds. Women: 0.67, so their odds of being on the far right are 33% lower than men’s.</li>
+<li>
+<strong>Odds are not probabilities.</strong> For the size, the course uses the marginal effects, in percentage points (the marginal effects slide).</li>
+</ul></section><section class="slide level2"><h2>Logit output, the bottom (Lab 5, Step 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb67"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">logit1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 28608  on 33944  degrees of freedom
+Residual deviance: 27292  on 33919  degrees of freedom
+  (5569 observations deleted due to missingness)
+AIC: 27344
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<div class="columns">
+<div class="column fe-note" style="width:50%;">
+<ul>
+<li>
+<strong>Residual deviance</strong>: how badly this model fits. Lower is better: compare models with it.</li>
+<li>
+<strong>Null deviance</strong>: the same, for a model without variables.</li>
+<li>
+<strong>Degrees of freedom</strong>: observations − coefficients (33,945 − 26).</li>
+</ul>
+</div><div class="column fe-note" style="width:50%;">
+<ul>
+<li>
+<strong>Observations deleted</strong>: rows with an <code>NA</code>. The model used 33,945 (<code>nobs(logit1)</code>).</li>
+<li>
+<strong>AIC</strong>, Akaike information criterion (<a href="https://en.wikipedia.org/wiki/Akaike_information_criterion">explainer</a>): lower is better, on the same data only.</li>
+<li>
+<strong>Dispersion</strong>, <strong>Fisher Scoring</strong>: ignore them.</li>
+</ul>
+</div></div>
+</section><section class="slide level2"><h2>Comparing models (Lab 5, Step 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb69"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logit0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
+<span>  <span class="va">far_right</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>, <span class="co"># logit1 without the countries</span></span>
+<span>  data <span class="op">=</span> <span class="va">dataset</span>,</span>
+<span>  family <span class="op">=</span> <span class="va">binomial</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/anova.html">anova</a></span><span class="op">(</span><span class="va">logit0</span>, <span class="va">logit1</span>, test <span class="op">=</span> <span class="st">"Chisq"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Deviance Table
+
+Model 1: far_right ~ age + factor(gndr) + edu
+Model 2: far_right ~ age + factor(gndr) + edu + factor(cntry)
+  Resid. Df Resid. Dev Df Deviance  Pr(&gt;Chi)    
+1     33941      28320                          
+2     33919      27292 22   1027.5 &lt; 2.2e-16 ***</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>The model with country fixed effects fits better: its residual deviance is lower (27,292 against 28,320), and the drop is statistically significant at the 0.01 level.</p>
+</div>
+<div class="interp-note">
+<p>In the output: <code>Resid. Dev</code> = each model’s residual deviance (lower = better fit), <code>Deviance</code> = the drop from model 1 to model 2, <code>Pr(&gt;Chi)</code> = the p-value of that drop. Compare only models on the same respondents: check with <code><a href="https://rdrr.io/r/stats/nobs.html">nobs()</a></code>.</p>
+</div>
+</section><section class="slide level2"><h2>Marginal effects (Lab 5, Step 2)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb71"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/margins/man/margins.html">margins</a></span><span class="op">(</span><span class="va">logit1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>  factor     AME     SE        z      p   lower   upper
+     age  0.0011 0.0001  10.4921 0.0000  0.0009  0.0013
+ cntryBE  0.0479 0.0095   5.0667 0.0000  0.0294  0.0664
+ cntryBG  0.1314 0.0105  12.5638 0.0000  0.1109  0.1519
+     edu -0.0017 0.0005  -3.3421 0.0008 -0.0027 -0.0007
+   gndr2 -0.0496 0.0038 -12.8889 0.0000 -0.0571 -0.0421</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<ul>
+<li>
+<strong>Gender:</strong> women are 5.0 percentage points less likely than men to place themselves on the far right, net of age, education and country (statistically significant at the 0.01 level).</li>
+<li>
+<strong>Age:</strong> each year of age raises the probability by 0.11 percentage points (statistically significant at the 0.01 level).</li>
+<li>
+<strong>Education:</strong> each year of education lowers it by 0.17 percentage points (statistically significant at the 0.01 level).</li>
+</ul>
+</div>
+<div class="interp-note">
+<p>In the output: <code>AME</code> × 100 = percentage points. <code>lower</code>, <code>upper</code> = its 95% confidence interval, <code>p</code> = the p-value.</p>
 </div>
 </section><section class="slide level2"><h2>Logit (Lab 5) – as a figure</h2>
 <div class="columns">
@@ -847,54 +1141,270 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 <li>The slope is the marginal effect of age: about 1.0 percentage points per 10 years.</li>
 </ul>
 </div></div>
-</section><section class="slide level2"><h2>Multinomial logit (Lab 5)</h2>
-<p><code>lr3</code>: left (0-3), centre (4-6), right (7-10), recoded as in Lab 5.</p>
+</section><section class="slide level2"><h2>Recoding in base R (Lab 5, Step 3)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb53"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mlogit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span></span>
-<span>  <span class="va">lr3</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>,</span>
-<span>  data <span class="op">=</span> <span class="va">dataset</span>,</span>
-<span>  trace <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mlogit</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb73"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># start with NA, then fill in each group</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">left_right_3cat</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">left_right_3cat</span><span class="op">[</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&gt;=</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&lt;=</span> <span class="fl">3</span></span>
+<span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">left_right_3cat</span><span class="op">[</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&gt;=</span> <span class="fl">4</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&lt;=</span> <span class="fl">6</span></span>
+<span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">left_right_3cat</span><span class="op">[</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&gt;=</span> <span class="fl">7</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&lt;=</span> <span class="fl">10</span></span>
+<span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">3</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><strong><code>x[condition] &lt;- value</code>:</strong> changes only the rows where the condition is <code>TRUE</code>, so each line fills in one group. Rows that match no line keep the <code>NA</code>.</p>
+<p>The next slide does the same with dplyr.</p>
+</section><section class="slide level2"><h2>Recoding with dplyr (Lab 5, Step 3)</h2>
+<div class="columns">
+<div class="column" style="width:62%;">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb74"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="va">dataset</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    <span class="co"># three groups with readable labels</span></span>
+<span>    left_right_3cat <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lrscale_clean</span>, <span class="fl">0</span>, <span class="fl">3</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Left"</span>,</span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lrscale_clean</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Centre"</span>,</span>
+<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/between.html">between</a></span><span class="op">(</span><span class="va">lrscale_clean</span>, <span class="fl">7</span>, <span class="fl">10</span><span class="op">)</span> <span class="op">~</span> <span class="st">"Right"</span>,</span>
+<span>      .default <span class="op">=</span> <span class="cn">NA</span></span>
+<span>    <span class="op">)</span>,</span>
+<span>    <span class="co"># the first level is the reference category</span></span>
+<span>    left_right_3cat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span></span>
+<span>      <span class="va">left_right_3cat</span>,</span>
+<span>      levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Left"</span>, <span class="st">"Centre"</span>, <span class="st">"Right"</span><span class="op">)</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div><div class="column fe-note" style="width:38%;">
+<ul>
+<li>Labels instead of 1, 2, 3: the output says “Centre” and “Right”, not “2” and “3”.</li>
+<li>
+<code>levels = …</code>: Left first, so Left is the reference. Without it, text is sorted alphabetically and Centre would be the reference.</li>
+</ul>
+</div></div>
+</section><section class="slide level2"><h2>Check the recode (Lab 5, Step 3)</h2>
+<div class="columns">
+<div class="column" style="width:45%;">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb75"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">left_right_3cat</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>         (Intercept)    age factor(gndr)2    edu
-2 Centre       1.523 -0.002        -0.026 -0.039
-3 Right        0.658  0.004        -0.375 -0.038</code></pre>
+<pre><code>  left_right_3cat     n
+1            Left  7620
+2          Centre 17958
+3           Right  8862
+4            &lt;NA&gt;  5074</code></pre>
+</div>
+</div>
+</div><div class="column" style="width:55%;">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb77"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/count.html">count</a></span><span class="op">(</span><span class="va">lrscale_clean</span>, <span class="va">left_right_3cat</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   lrscale_clean left_right_3cat     n
+1              0            Left  1318
+2              1            Left   775
+3              2            Left  2005
+4              3            Left  3522
+5              4          Centre  3339
+6              5          Centre 11259
+7              6          Centre  3360
+8              7           Right  3711
+9              8           Right  2852
+10             9           Right   928
+11            10           Right  1371
+12            NA            &lt;NA&gt;  5074</code></pre>
+</div>
+</div>
+</div></div>
+<div class="interp-note">
+<p>Left: how many in each group. Right: which original value went into which group, so a wrong boundary shows at once. <code>NA</code> = the missing values.</p>
+</div>
+</section><section class="slide level2"><h2>Reference categories: see and change</h2>
+<p>The first level of a factor is the reference. It gets no row, and every other level is compared with it.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb79"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">gndr</span><span class="op">)</span><span class="op">)</span> <span class="co"># men (1) are the reference</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "1" "2"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb81"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/levels.html">levels</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">left_right_3cat</span><span class="op">)</span> <span class="co"># Left is the reference</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Left"   "Centre" "Right" </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb83"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># women as the reference</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">gndr_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/relevel.html">relevel</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">gndr</span><span class="op">)</span>, ref <span class="op">=</span> <span class="st">"2"</span><span class="op">)</span></span>
+<span><span class="co"># the whole order, Centre first</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">left_right_3cat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">left_right_3cat</span>,</span>
+<span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Centre"</span>, <span class="st">"Left"</span>, <span class="st">"Right"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section><section class="slide level2"><h2>Good to know: Which reference category to choose?</h2>
+<ul>
+<li>
+<strong>The group you want to compare with</strong>, so the coefficients answer your question. To ask how women differ, men are the reference.</li>
+<li>
+<strong>A clear group</strong>, not “other” or “something else”.</li>
+<li>
+<strong>Not a small group</strong>: every coefficient is a comparison with it, so a small reference makes them all uncertain.</li>
+<li>Changing the reference changes the coefficients, not the model: the predictions and the fit stay the same.</li>
+</ul>
+<p><a href="https://doi.org/10.4135/9781412985628">Hardy, <em>Regression with Dummy Variables</em> (1993)</a></p>
+</section><section class="slide level2"><h2>Multinomial logit (Lab 5, Step 3)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb84"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">mlogit1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span></span>
+<span>  <span class="va">left_right_3cat</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cntry</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">dataset</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># weights:  81 (52 variable)
+initial  value 37292.394139 
+iter  10 value 34263.554893
+iter  20 value 34039.290995
+iter  30 value 33796.606462
+iter  40 value 33728.345070
+iter  50 value 33717.970193
+iter  60 value 33717.553823
+final  value 33717.517516 
+converged</code></pre>
+</div>
+</div>
+</div><div class="column fe-note" style="width:50%;">
+<ul>
+<li>
+<strong><code>iter … value</code></strong>: R searches step by step for the best coefficients. Ignore it.</li>
+<li>
+<strong><code>converged</code></strong>: the search is finished. “stopped after 100 iterations” would mean it is not.</li>
+<li>
+<code>multinom(…, trace = FALSE)</code> hides these lines.</li>
+</ul>
+</div></div>
+</section><section class="slide level2"><h2>Multinomial logit output (Lab 5, Step 3)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb86"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mlogit1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>Coefficients:
+       (Intercept)    age factor(gndr)2    edu
+Centre       2.101 -0.003        -0.049 -0.043
+Right        0.083  0.004        -0.415 -0.035
+Std. Errors:
+       (Intercept)   age factor(gndr)2   edu
+Centre       0.093 0.001         0.028 0.004
+Right        0.116 0.001         0.032 0.004</code></pre>
+</div>
+</div>
+</div><div class="column fe-note" style="width:42%;">
+<ul>
+<li>
+<strong>Rows</strong>: each category compared with Left, the reference.</li>
+<li>
+<strong>Columns</strong>: the variables.</li>
+<li>
+<strong>No p-values</strong>: see the next slide.</li>
+</ul>
+</div></div>
+</section><section class="slide level2"><h2>Multinomial logit: p-values (Lab 5, Step 3)</h2>
+<p><code>summary(mlogit1)</code> gives no p-values. Divide each coefficient by its standard error to get z:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb88"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mlogit1</span><span class="op">)</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">mlogit1</span><span class="op">)</span><span class="op">$</span><span class="va">standard.errors</span></span>
+<span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fl">2</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">pnorm</a></span><span class="op">(</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">abs</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span><span class="op">)</span> <span class="co"># two-sided p-values</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">p</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">4</span><span class="op">]</span>, <span class="fl">3</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       (Intercept) age factor(gndr)2 edu
+Centre       0.000   0         0.083   0
+Right        0.477   0         0.000   0</code></pre>
 </div>
 </div>
 <div class="example-interp">
-<p>Each row compares a category with Left, the reference. Only the signs: women are less likely to be on the right rather than the left (-0.37).</p>
+<ul>
+<li>Compared with the left, women are less likely than men to place themselves on the right (statistically significant at the 0.01 level).</li>
+<li>They are also slightly less likely to be in the centre, but this is statistically significant at the 0.10 level only.</li>
+</ul>
+</div>
+<div class="interp-note">
+<p>In the output: rows = Centre vs Left and Right vs Left, columns = the variables. As in a logit, only the signs are interpreted.</p>
 </div>
 </section><section class="slide level2"><h2>Multinomial logit (Lab 5) – as a figure</h2>
 
-<img data-src="slides_files/figure-revealjs/plot-multinom-1.png" style="width:100.0%" class="r-stretch"></section><section class="slide level2"><h2>Interaction (Lab 5)</h2>
+<img data-src="slides_files/figure-revealjs/plot-multinom-1.png" style="width:100.0%" class="r-stretch"></section><section class="slide level2"><h2>Interaction: gender × education (Lab 5, Step 4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb90"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">model1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
 <span>  <span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">*</span> <span class="va">edu</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cntry</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="va">dataset</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">cf</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">m_int</span><span class="op">)</span></span>
-<span><span class="va">cf</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"edu"</span>, <span class="st">"factor(gndr)2:edu"</span><span class="op">)</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>              edu factor(gndr)2:edu 
-      -0.02166119       -0.01074850 </code></pre>
-</div>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cf</span><span class="op">[</span><span class="st">"edu"</span><span class="op">]</span> <span class="op">+</span> <span class="va">cf</span><span class="op">[</span><span class="st">"factor(gndr)2:edu"</span><span class="op">]</span> <span class="co"># the education slope for women</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>        edu 
--0.03240969 </code></pre>
+<pre><code>                  Estimate Std. Error t value Pr(&gt;|t|)    
+factor(gndr)2     -0.18176    0.08359   -2.17    0.030 *  
+edu               -0.02166    0.00451   -4.80  1.6e-06 ***
+factor(gndr)2:edu -0.01075    0.00598   -1.80    0.072 .  </code></pre>
 </div>
 </div>
 <div class="example-interp">
-<p>Men (reference): <code>edu</code>. Women: <code>edu</code> + interaction. The interaction is statistically significant at the 0.10 level only: weak evidence that gender moderates the effect of education.</p>
+<p>The more educated place themselves further left, and a little more so among women: -0.022 points per year of education for men, -0.032 for women. The interaction is statistically significant at the 0.10 level only: weak evidence that gender moderates the effect of education.</p>
+</div>
+<div class="interp-note">
+<p>In the output: <code>edu</code> = the slope for men (the reference). <code>factor(gndr)2:edu</code> = how much the slope differs for women; it is the last row of <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>, after the countries. <code>factor(gndr)2</code> = the gap at 0 years of education, not meaningful on its own.</p>
 </div>
 </section><section class="slide level2"><h2>Interaction (Lab 5) – as a figure</h2>
 
-<img data-src="slides_files/figure-revealjs/plot-interaction-1.png" style="width:100.0%" class="r-stretch"></section><section class="slide level2"><h2>easystats: a clean coefficient table</h2>
+<img data-src="slides_files/figure-revealjs/plot-interaction-1.png" style="width:100.0%" class="r-stretch"></section><section class="slide level2"><h2>Interaction: education × income feeling (Lab 5, Step 5)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/parameters/">parameters</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb92"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span><span class="op">$</span><span class="va">income_feeling</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">hincfel</span> <span class="op">&gt;=</span> <span class="fl">1</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">hincfel</span> <span class="op">&lt;=</span> <span class="fl">4</span>,</span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">hincfel</span>,</span>
+<span>  <span class="cn">NA</span></span>
+<span><span class="op">)</span></span>
+<span><span class="va">model2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
+<span>  <span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span></span>
+<span>    <span class="va">edu</span> <span class="op">*</span> <span class="va">income_feeling</span> <span class="op">+</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cntry</span><span class="op">)</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">dataset</span></span>
+<span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                   Estimate Std. Error t value Pr(&gt;|t|)    
+edu                -0.04842    0.00753   -6.43  1.3e-10 ***
+income_feeling     -0.25080    0.04928   -5.09  3.6e-07 ***
+edu:income_feeling  0.00779    0.00360    2.16    0.031 *  </code></pre>
+</div>
+</div>
+<p><code>income_feeling</code> runs backwards: 1 = living comfortably … 4 = very difficult.</p>
+</section><section class="slide level2"><h2>Reading education × income feeling (Lab 5, Step 5)</h2>
+<p>The slope at each level is <code>edu</code> + interaction × level:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb94"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">slopes</span> <span class="op">&lt;-</span> <span class="va">cf2</span><span class="op">[</span><span class="st">"edu"</span><span class="op">]</span> <span class="op">+</span> <span class="va">cf2</span><span class="op">[</span><span class="st">"edu:income_feeling"</span><span class="op">]</span> <span class="op">*</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">slopes</span>, <span class="fl">3</span><span class="op">)</span> <span class="co"># comfortable, coping, difficult, very difficult</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.041 -0.033 -0.025 -0.017</code></pre>
+</div>
+</div>
+<div class="example-interp">
+<p>More education goes with a more left-wing placement, but less so for people who find it hard to live on their income: -0.041 per year for those living comfortably, -0.017 for those finding it very difficult. The interaction is statistically significant at the 0.05 level.</p>
+</div>
+<div class="interp-note">
+<p>In the output: <code>edu:income_feeling</code> = how much the education slope changes with each step on the income scale. <code>edu</code> alone = the slope at <code>income_feeling</code> = 0, which doesn’t exist (the scale is 1 to 4).</p>
+</div>
+</section><section class="slide level2 center" data-background-color="#dce6f2"><h2>easystats</h2>
+<p>The same analyses in fewer steps, with the easystats packages.</p>
+</section><section class="slide level2"><h2>easystats: a clean coefficient table</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb96"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/parameters/">parameters</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://easystats.github.io/parameters/reference/model_parameters.html">model_parameters</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Parameter   | Coefficient |       SE |         95% CI | t(33941) |      p
@@ -910,10 +1420,10 @@ Uncertainty intervals (equal-tailed) and p-values (two-tailed) computed
   using a Wald t-distribution approximation.</code></pre>
 </div>
 </div>
-<p>Coefficients, 95% confidence intervals and p-values in one table. One install for all of easystats: <code>install.packages("easystats")</code> (<a href="https://easystats.github.io/easystats/">easystats.github.io</a>).</p>
+<p>Coefficients, 95% confidence intervals and p-values in one table. All packages are allowed in the lab exam (the TA, 19 Nov). One install for all of easystats: <code>install.packages("easystats")</code> (<a href="https://easystats.github.io/easystats/">easystats.github.io</a>).</p>
 </section><section class="slide level2"><h2>easystats: tests in words</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb62"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/report/">report</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb99"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/report/">report</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">swd</span> <span class="op">~</span> <span class="va">voted_2024</span>, data <span class="op">=</span> <span class="va">anes</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Effect sizes were labelled following Cohen's (1988) recommendations.
@@ -928,7 +1438,7 @@ positive, statistically significant, and medium (difference = 0.40, 95% CI
 <p>A useful check of your own sentence. It labels effect sizes with Cohen’s d (“medium”), which the course doesn’t use: report the significance level and the direction in the course’s terms.</p>
 </section><section class="slide level2"><h2>easystats: a correlation in words</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, <span class="va">anes</span><span class="op">$</span><span class="va">age</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb101"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, <span class="va">anes</span><span class="op">$</span><span class="va">age</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Effect sizes were labelled following Funder's (2019) recommendations.
 
@@ -943,12 +1453,12 @@ anes$age is positive, statistically not significant, and tiny (r = 0.03, 95% CI
 <li>Significance: statistically significant at the 0.10 level, p = 0.085 (levels 0.10 / 0.05 / 0.01, lecture <em>Hypothesis testing</em>, slide 6)</li>
 </ul></section><section class="slide level2"><h2>easystats: diagnostics in words (Lab 4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/performance/">performance</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb103"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/performance/">performance</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://easystats.github.io/performance/reference/check_heteroscedasticity.html">check_heteroscedasticity</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Warning: Heteroscedasticity (non-constant error variance) detected (p &lt; .001).</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/performance/reference/check_collinearity.html">check_collinearity</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb105"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/performance/reference/check_collinearity.html">check_collinearity</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Check for Multicollinearity
 
@@ -964,20 +1474,67 @@ Low Correlation
 <p>The same results as <code><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest()</a></code> and <code><a href="https://rdrr.io/pkg/car/man/vif.html">vif()</a></code>, with the conclusion spelled out: heteroskedasticity, and no multicollinearity.</p>
 </section><section class="slide level2"><h2>easystats: compare models (Lab 4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/performance/reference/compare_performance.html">compare_performance</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m_fe</span>, metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"R2_adj"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb107"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">performance</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/performance/reference/compare_performance.html">compare_performance</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m_fe</span>, rank <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="columns">
+<div class="column" style="width:58%;">
+<div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># Comparison of Model Performance Indices
 
-Name | Model |    R2 | R2 (adj.)
---------------------------------
-m    |    lm | 0.009 |     0.009
-m_fe |    lm | 0.033 |     0.032</code></pre>
+Metric            |    m_fe |         m
+---------------------------------------
+Model             |      lm |        lm
+R2                |   0.033 |     0.009
+R2 (adj.)         |   0.032 |     0.009
+RMSE              |   2.206 |     2.233
+Sigma             |   2.206 |     2.233
+AIC weights       |    1.00 | 1.50e-173
+AICc weights      |    1.00 | 1.53e-173
+BIC weights       |    1.00 | 2.88e-133
+Performance-Score | 100.00% |     0.00%</code></pre>
 </div>
 </div>
-<p>Without (<code>m</code>) and with (<code>m_fe</code>) country fixed effects: the countries raise R² from 0.009 to 0.033.</p>
-</section><section class="slide level2"><h2>easystats: summary</h2>
+</div><div class="column fe-note" style="width:42%;">
+<ul>
+<li>
+<strong><code>rank = TRUE</code></strong>: the better model comes first.</li>
+<li>
+<strong>Performance-Score</strong>: the share of metrics on which the model is the better one. <code>m_fe</code> wins on all: 100%.</li>
+<li>
+<strong>AIC weights</strong>: the weight of evidence that the model is the best of those compared. Here 1.00 for <code>m_fe</code>.</li>
+<li>A quick ranking, not a test.</li>
+</ul>
+</div></div>
+</section><section class="slide level2"><h2>easystats: the comparison in words (Lab 4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb109"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">report</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="fu">performance</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/performance/reference/compare_performance.html">compare_performance</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m_fe</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>We compared two models; lm (R2 = 8.61e-03, adj. R2 = 8.52e-03, AIC = 1.51e+05,
+BIC = 1.51e+05, RMSE = 2.23, Sigma = 2.23) and lm (R2 = 0.03, adj. R2 = 0.03,
+AIC = 1.50e+05, BIC = 1.50e+05, RMSE = 2.21, Sigma = 2.21).</code></pre>
+</div>
+</div>
+<p>It calls both models “lm”: the first is <code>m</code>, the second <code>m_fe</code>. In the course’s words: the country fixed effects raise R² from 0.009 to 0.033.</p>
+</section><section class="slide level2"><h2>easystats: test models (Lab 5)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb111"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">performance</span><span class="fu">::</span><span class="fu"><a href="https://easystats.github.io/performance/reference/test_performance.html">test_performance</a></span><span class="op">(</span><span class="va">logit0</span>, <span class="va">logit1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Name   | Model |     BF | Omega2 | p (Omega2) |      LR | p (LR)
+----------------------------------------------------------------
+logit0 |   glm |        |        |            |         |       
+logit1 |   glm | &gt; 1000 |   0.03 |     &lt; .001 | 1027.51 | &lt; .001
+Models were detected as nested (in terms of fixed parameters) and are compared in sequential order.</code></pre>
+</div>
+</div>
+<ul>
+<li>
+<strong><code>LR</code></strong>, <strong><code>p (LR)</code></strong>: the same test as <code>anova(logit0, logit1, test = "Chisq")</code>.</li>
+<li>
+<strong><code>BF</code></strong>, <strong><code>Omega2</code></strong>: other tests, not in the course.</li>
+</ul></section><section class="slide level2"><h2>easystats: summary</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb113"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>We fitted a linear model to predict lrscale_clean with age, gndr and edu. The
 model's explanatory power is very weak (R2 = 8.61e-03, adj. R2 = 8.52e-03). The
@@ -1038,7 +1595,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <p>Start with the last line of the message, then try <code>?function</code>. If you’re still stuck, give the AI your code together with the error.</p>
 </section><section class="slide level2"><h2>Check every step</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb74"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb115"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     0     1     2     3     4     5     6     7     8     9    10  &lt;NA&gt; 
@@ -1265,16 +1822,16 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <div class="columns">
 <div class="column" style="width:50%;">
 <p><strong>Source Code</strong></p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb76"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb76-1"><a aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb76-2"><a aria-hidden="true" tabindex="-1"></a>avg <span class="ot">&lt;-</span> <span class="fu">mean</span>(dataset<span class="sc">$</span>swd, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb76-3"><a aria-hidden="true" tabindex="-1"></a>avg</span>
-<span id="cb76-4"><a aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb76-5"><a aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb76-6"><a aria-hidden="true" tabindex="-1"></a>The mean is <span class="in">`r round(avg, 1)`</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb117"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb117-1"><a aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb117-2"><a aria-hidden="true" tabindex="-1"></a>avg <span class="ot">&lt;-</span> <span class="fu">mean</span>(dataset<span class="sc">$</span>swd, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb117-3"><a aria-hidden="true" tabindex="-1"></a>avg</span>
+<span id="cb117-4"><a aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb117-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb117-6"><a aria-hidden="true" tabindex="-1"></a>The mean is <span class="in">`r round(avg, 1)`</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
 <p><strong>Slides</strong></p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb77"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">avg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">swd</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb118"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">avg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">swd</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">avg</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5.073292</code></pre>
@@ -1458,7 +2015,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 </tr>
 <tr class="even">
 <td>
-<code>mutate()</code> + <code>case_when()</code>
+<code><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate()</a></code> + <code><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when()</a></code>
 </td>
 <td>dplyr recode</td>
 <td>Lab 3 solution</td>
