@@ -1,4 +1,4 @@
-# AI that helps you learn
+# AI Setup
 
 Four levels of AI help for R, from chat to an agent inside RStudio, with setup steps and ground rules.
 

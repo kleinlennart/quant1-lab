@@ -12,7 +12,6 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.11.9">
 <meta name="author" content="Lennart Klein">
-<meta name="dcterms.date" content="2026-11-19">
 <title>QM1 Lab Exam: R Guide – R Recap Before the Lab Exam</title>
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -104,10 +103,13 @@
     code span.vs { color: #008000; } /* VerbatimString */
     code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
-<link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-709fac5a3ef0cf0f695093a579a1a846.css">
+<link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-125709d389f0f59e4896477dced3f296.css">
 <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
 <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
 <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+<link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+<link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+<link href="site_libs/revealjs/plugin/reveal-pointer/pointer.css" rel="stylesheet">
 <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
 <style type="text/css">
     .reveal div.sourceCode {
@@ -201,18 +203,13 @@
   <div class="reveal">
     <div class="slides">
 
-<section class="quarto-title-block center"><h1 class="title">R Recap Before the Lab Exam</h1>
-  <p class="subtitle">Introduction to Quantitative Methods · Sciences Po</p>
 
-<div class="quarto-title-authors">
-<div class="quarto-title-author">
-<div class="quarto-title-author-name">
-Lennart Klein
+<section class="slide level2 cover center"><h2>R Recap Before the Lab Exam</h2>
+<p>Introduction to Quantitative Methods · Sciences Po</p>
+<p>Lennart Klein · 19 November 2026</p>
+<div class="follow">
+<p><strong>Follow along:</strong><br><a href="https://quant1.kleinbutsignificant.com/slides.html">quant1.kleinbutsignificant.com/slides.html</a> · <a href="slides.pdf" aria-label="Slides as PDF"><i class="fa-solid fa-file-pdf" aria-label="file-pdf"></i> PDF</a></p>
 </div>
-</div>
-</div>
-
-  <p class="date">19 November 2026</p>
 </section><section class="slide level2 center"><h2>Today</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -325,7 +322,7 @@ Lennart Klein
 <tr class="odd">
 <td><code>name &lt;- value</code></td>
 <td>“name gets value”</td>
-<td><code>x &lt;- c(3, 7, 10)</code></td>
+<td><code>x &lt;- c(2, 4, 6)</code></td>
 </tr>
 <tr class="even">
 <td><code>function(arguments)</code></td>
@@ -340,11 +337,15 @@ Lennart Klein
 </tbody>
 </table>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">7</span>, <span class="fl">10</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">4</span>, <span class="fl">6</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] 6.666667</code></pre>
 </div>
+<div class="cell fragment">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4</code></pre>
+</div>
+</div>
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span><span class="op">$</span><span class="va">agea</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">]</span> <span class="co"># [ ] picks elements: here the first six</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 65 21 53 78 64 59</code></pre>
@@ -354,16 +355,24 @@ Lennart Klein
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># one answer per row</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">agea</span> <span class="op">&gt;=</span> <span class="fl">18</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE TRUE TRUE TRUE TRUE TRUE</code></pre>
 </div>
+</div>
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># TRUE counts as 1: how many missing codes?</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">77</span>, <span class="fl">88</span>, <span class="fl">99</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5074</code></pre>
 </div>
+</div>
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># the share of women</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">gndr</span> <span class="op">==</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5396315</code></pre>
 </div>
@@ -371,16 +380,16 @@ Lennart Klein
 </section><section class="slide level2"><h2>
 <code>ifelse()</code> is Excel’s <code>IF()</code> for every row</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span></span>
-<span>  <span class="co"># condition, checked for every row</span></span>
-<span>  test <span class="op">=</span> <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">77</span>, <span class="fl">88</span>, <span class="fl">99</span><span class="op">)</span>,</span>
-<span>  <span class="co"># value where the condition is TRUE</span></span>
-<span>  yes <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  <span class="co"># value where it is FALSE</span></span>
-<span>  no <span class="op">=</span> <span class="va">dataset</span><span class="op">$</span><span class="va">lrscale</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15" data-code-line-numbers="|2-3|4-5|6-7|10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a aria-label="1"></a>dataset<span class="sc">$</span>lrscale_clean <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(</span>
+<span id="cb15-2"><a aria-label="2"></a>  <span class="co"># condition, checked for every row</span></span>
+<span id="cb15-3"><a aria-label="3"></a>  <span class="at">test =</span> dataset<span class="sc">$</span>lrscale <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">77</span>, <span class="dv">88</span>, <span class="dv">99</span>),</span>
+<span id="cb15-4"><a aria-label="4"></a>  <span class="co"># value where the condition is TRUE</span></span>
+<span id="cb15-5"><a aria-label="5"></a>  <span class="at">yes =</span> <span class="cn">NA</span>,</span>
+<span id="cb15-6"><a aria-label="6"></a>  <span class="co"># value where it is FALSE</span></span>
+<span id="cb15-7"><a aria-label="7"></a>  <span class="at">no =</span> dataset<span class="sc">$</span>lrscale</span>
+<span id="cb15-8"><a aria-label="8"></a>)</span>
+<span id="cb15-9"><a aria-label="9"></a></span>
+<span id="cb15-10"><a aria-label="10"></a><span class="fu">table</span>(dataset<span class="sc">$</span>lrscale_clean, <span class="at">useNA =</span> <span class="st">"ifany"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     0     1     2     3     4     5     6     7     8     9    10  &lt;NA&gt; 
@@ -395,10 +404,16 @@ Lennart Klein
 </h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] NA</code></pre>
 </div>
+</div>
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">6</span>, <span class="cn">NA</span><span class="op">)</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="cell fragment">
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
@@ -479,7 +494,6 @@ Lennart Klein
 <span><span class="co"># logistic regression (y01 is a 0/1 dummy variable)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y01</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dataset</span>, family <span class="op">=</span> <span class="va">binomial</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><br></p>
 <blockquote>
 <p><code>+</code> adds a predictor. <code>*</code> adds two predictors and their interaction.</p>
 </blockquote>
@@ -518,12 +532,33 @@ Lennart Klein
 <div class="example-interp">
 <p>Given that the mean and the median are very close, the distribution of the rating of the Democratic Party is approximately symmetric. The standard deviation means that ratings typically lie about 3.4 points from the mean, which is large compared with the mean: the spread of the distribution is thus large.</p>
 </div>
+</section><section class="slide level2"><h2>Describe a variable (Lab 2) – as a figure</h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure><p><img data-src="slides_files/figure-revealjs/plot-density-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fe-note" style="width:34%;">
+<ul>
+<li>
+<strong>Curve</strong>: how common each rating is (smoothed).</li>
+<li>
+<strong>Mean</strong> and <strong>median</strong> almost coincide: the distribution is roughly symmetric.</li>
+<li>
+<strong>Shaded</strong>: mean ± 1 standard deviation, from 1.5 to 8.3. It holds 59% of respondents: a large spread.</li>
+</ul>
+</div></div>
 </section><section class="slide level2"><h2>Histogram (Lab 2)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-15-1.png" style="width:78.0%" class="r-stretch"><p>The bars show the shape that the mean and median describe. The first bar counts the 0s and the 1s together; <code>breaks = seq(-0.5, 10.5, by = 1)</code> gives one bar per value.</p>
+<img data-src="slides_files/figure-revealjs/plot-histogram-1.png" style="width:78.0%" class="r-stretch"><p>The bars show the shape that the mean and median describe. The first bar counts the 0s and the 1s together; <code>breaks = seq(-0.5, 10.5, by = 1)</code> gives one bar per value.</p>
 </section><section class="slide level2"><h2>Group means (Lab 2)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">like_democrat</span> <span class="op">~</span> <span class="va">voted_2024</span>, data <span class="op">=</span> <span class="va">anes</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -568,6 +603,24 @@ mean in group 0 mean in group 1
 <div class="example-interp">
 <p>The difference is statistically significant at the 0.01 level: we reject the null hypothesis that the means are not different. Voters (lower score) are more satisfied.</p>
 </div>
+</section><section class="slide level2"><h2>t-test (Lab 3) – as a figure</h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure><p><img data-src="slides_files/figure-revealjs/plot-ttest-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fe-note" style="width:34%;">
+<ul>
+<li>Dot: the mean of each group. Line: its 95% confidence interval.</li>
+<li>The intervals don’t overlap: the difference is statistically significant.</li>
+<li>Lower means <strong>more</strong> satisfied: voters are more satisfied.</li>
+</ul>
+</div></div>
 </section><section class="slide level2"><h2>Chi-square test (Lab 3)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">swd_binary</span>, <span class="va">anes</span><span class="op">$</span><span class="va">voted_2024</span><span class="op">)</span></span>
@@ -590,6 +643,24 @@ X-squared = 71.87, df = 1, p-value &lt; 2.2e-16</code></pre>
 <div class="example-interp">
 <p>The association is statistically significant at the 0.01 level: we reject the null hypothesis of no association. Direction: 69% of voters are satisfied, 53% of non-voters.</p>
 </div>
+</section><section class="slide level2"><h2>Chi-square test (Lab 3) – as a figure</h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure><p><img data-src="slides_files/figure-revealjs/plot-chisq-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fe-note" style="width:34%;">
+<ul>
+<li>Bars: the share satisfied in each group.</li>
+<li>Dashed line: what both groups would show with <strong>no association</strong> (the null hypothesis).</li>
+<li>Chi-square measures how far the groups are from that line. The bars give the direction.</li>
+</ul>
+</div></div>
 </section><section class="slide level2"><h2>OLS regression (Lab 4)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">+</span> <span class="va">edu</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
@@ -609,6 +680,24 @@ edu           -0.03021   0.003079   -9.81 1.07e-22</code></pre>
 <li>R² = 0.009: the independent variables explain 0.9% of the variance.</li>
 </ul>
 </div>
+</section><section class="slide level2"><h2>OLS regression (Lab 4) – as a figure</h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure><p><img data-src="slides_files/figure-revealjs/plot-ols-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fe-note" style="width:34%;">
+<ul>
+<li>Dots: the average left-right position for each year of education.</li>
+<li>Line: the regression’s prediction. Its slope is the education coefficient, -0.030 per year, net of age and gender.</li>
+<li>The line summarises the dots; it doesn’t pass through each one.</li>
+</ul>
+</div></div>
 </section><section class="slide level2"><h2>Country fixed effects (Lab 4)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_fe</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
@@ -630,6 +719,24 @@ edu           -0.02744   0.003167   -8.67  4.7e-18</code></pre>
 <li>R² rises from 0.009 to 0.033: the countries explain part of the variance.</li>
 </ul>
 </div>
+</section><section class="slide level2"><h2>Country fixed effects (Lab 4) – as a figure</h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure><p><img data-src="slides_files/figure-revealjs/plot-fixed-effects-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fe-note" style="width:34%;">
+<ul>
+<li>Each line is one country.</li>
+<li>Different heights: each country has its own baseline. That baseline is the <strong>fixed effect</strong>.</li>
+<li>Parallel lines: one education effect, estimated <strong>within</strong> countries.</li>
+</ul>
+</div></div>
 </section><section class="slide level2"><h2>Heteroskedasticity (Lab 4)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -645,6 +752,26 @@ BP = 1356, df = 25, p-value &lt; 2.2e-16</code></pre>
 <p>We reject the null hypothesis of homoskedasticity (statistically significant at the 0.01 level), so there is heteroskedasticity: the variance of the residuals is not the same across the values of the dependent variable.</p>
 </div>
 <p>The course’s quick fix: robust standard errors.</p>
+</section><section class="slide level2"><h2>Heteroskedasticity (Lab 4) – as a figure</h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure><p><img data-src="slides_files/figure-revealjs/plot-heteroskedasticity-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><span class="figure-credit">Simulated data, for illustration.</span></p>
+</div><div class="column fe-note" style="width:34%;">
+<ul>
+<li>Each dot is a person, the line is the regression’s prediction.</li>
+<li>Left: the line is equally good for everyone. Right: the further right, the more people are off the line.</li>
+<li>Why it’s bad: the line is still right, but the usual standard errors are wrong, so the p-values can’t be trusted.</li>
+<li>Our model is like the right one (Breusch-Pagan test). Fix: robust standard errors.</li>
+</ul>
+</div></div>
 </section><section class="slide level2"><h2>Multicollinearity (Lab 4)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb49"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/car/man/vif.html">vif</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -660,6 +787,24 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 <p>All the VIFs are close to 1 (at most 1.14), well below 10, so multicollinearity is not a concern.</p>
 </div>
 <p>For <code>factor(cntry)</code>, read the last column, <code>GVIF^(1/(2*Df))</code>.</p>
+</section><section class="slide level2"><h2>Multicollinearity (Lab 4) – as a figure</h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure><p><img data-src="slides_files/figure-revealjs/plot-vif-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fe-note" style="width:34%;">
+<ul>
+<li>VIF: how much a variable is explained by the other independent variables.</li>
+<li>Why it’s bad: if variables overlap, the model can’t tell their effects apart. The standard errors get large, so real effects can look not significant.</li>
+<li>1 means no overlap; below 10 is generally not a concern. All four are about 1: no multicollinearity.</li>
+</ul>
+</div></div>
 </section><section class="slide level2"><h2>Logit and marginal effects (Lab 5)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">logit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
@@ -683,6 +828,24 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 <strong>Marginal effect:</strong> the probability is 4.6 percentage points lower for women than for men, net of age and education.</li>
 </ul>
 </div>
+</section><section class="slide level2"><h2>Logit (Lab 5) – as a figure</h2>
+<div class="columns">
+<div class="column" style="width:66%;">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure><p><img data-src="slides_files/figure-revealjs/plot-logit-1.png" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column fe-note" style="width:34%;">
+<ul>
+<li>Lines: the predicted probability of placing oneself on the far right, for an average education.</li>
+<li>The gap between the lines is the marginal effect of gender: about 5 percentage points.</li>
+<li>The slope is the marginal effect of age: about 1.0 percentage points per 10 years.</li>
+</ul>
+</div></div>
 </section><section class="slide level2"><h2>Multinomial logit (Lab 5)</h2>
 <p><code>lr3</code>: left (0-3), centre (4-6), right (7-10), recoded as in Lab 5.</p>
 <div class="cell">
@@ -701,7 +864,9 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 <div class="example-interp">
 <p>Each row compares a category with Left, the reference. Only the signs: women are less likely to be on the right rather than the left (-0.37).</p>
 </div>
-</section><section class="slide level2"><h2>Interaction (Lab 5)</h2>
+</section><section class="slide level2"><h2>Multinomial logit (Lab 5) – as a figure</h2>
+
+<img data-src="slides_files/figure-revealjs/plot-multinom-1.png" style="width:100.0%" class="r-stretch"></section><section class="slide level2"><h2>Interaction (Lab 5)</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">m_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span></span>
 <span>  <span class="va">lrscale_clean</span> <span class="op">~</span> <span class="va">age</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">gndr</span><span class="op">)</span> <span class="op">*</span> <span class="va">edu</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cntry</span><span class="op">)</span>,</span>
@@ -713,6 +878,8 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 <pre><code>              edu factor(gndr)2:edu 
       -0.02166119       -0.01074850 </code></pre>
 </div>
+</div>
+<div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb57"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cf</span><span class="op">[</span><span class="st">"edu"</span><span class="op">]</span> <span class="op">+</span> <span class="va">cf</span><span class="op">[</span><span class="st">"factor(gndr)2:edu"</span><span class="op">]</span> <span class="co"># the education slope for women</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        edu 
@@ -722,7 +889,9 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 <div class="example-interp">
 <p>Men (reference): <code>edu</code>. Women: <code>edu</code> + interaction. The interaction is statistically significant at the 0.10 level only: weak evidence that gender moderates the effect of education.</p>
 </div>
-</section><section class="slide level2"><h2>easystats: a clean coefficient table</h2>
+</section><section class="slide level2"><h2>Interaction (Lab 5) – as a figure</h2>
+
+<img data-src="slides_files/figure-revealjs/plot-interaction-1.png" style="width:100.0%" class="r-stretch"></section><section class="slide level2"><h2>easystats: a clean coefficient table</h2>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/parameters/">parameters</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://easystats.github.io/parameters/reference/model_parameters.html">model_parameters</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -756,14 +925,29 @@ positive, statistically significant, and medium (difference = 0.40, 95% CI
 </div>
 </div>
 <p>A useful check of your own sentence. It labels effect sizes with Cohen’s d (“medium”), which the course doesn’t use: report the significance level and the direction in the course’s terms.</p>
-</section><section class="slide level2"><h2>easystats: diagnostics in words (Lab 4)</h2>
+</section><section class="slide level2"><h2>easystats: a correlation in words</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/performance/">performance</a></span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb64"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">anes</span><span class="op">$</span><span class="va">like_democrat</span>, <span class="va">anes</span><span class="op">$</span><span class="va">age</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Effect sizes were labelled following Funder's (2019) recommendations.
+
+The Pearson's product-moment correlation between anes$like_democrat and
+anes$age is positive, statistically not significant, and tiny (r = 0.03, 95% CI
+[-3.54e-03, 0.05], t(4487) = 1.72, p = 0.085)</code></pre>
+</div>
+</div>
+<p>report() labels strength after Funder (2019) and tests only at the 0.05 level. The course uses its own conventions, so in the exam write it the course’s way:</p>
+<ul>
+<li>Strength: <strong>negligible</strong> (bands 0.10 / 0.30 / 0.50 / 0.75, Lecture 4 <em>Measures of association</em>, slide 21)</li>
+<li>Significance: statistically significant at the 0.10 level, p = 0.085 (levels 0.10 / 0.05 / 0.01, lecture <em>Hypothesis testing</em>, slide 6)</li>
+</ul></section><section class="slide level2"><h2>easystats: diagnostics in words (Lab 4)</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://easystats.github.io/performance/">performance</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://easystats.github.io/performance/reference/check_heteroscedasticity.html">check_heteroscedasticity</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Warning: Heteroscedasticity (non-constant error variance) detected (p &lt; .001).</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb66"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/performance/reference/check_collinearity.html">check_collinearity</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/performance/reference/check_collinearity.html">check_collinearity</a></span><span class="op">(</span><span class="va">m_fe</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Check for Multicollinearity
 
@@ -779,7 +963,7 @@ Low Correlation
 <p>The same results as <code><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest()</a></code> and <code><a href="https://rdrr.io/pkg/car/man/vif.html">vif()</a></code>, with the conclusion spelled out: heteroskedasticity, and no multicollinearity.</p>
 </section><section class="slide level2"><h2>easystats: compare models (Lab 4)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb68"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/performance/reference/compare_performance.html">compare_performance</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m_fe</span>, metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"R2_adj"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://easystats.github.io/performance/reference/compare_performance.html">compare_performance</a></span><span class="op">(</span><span class="va">m</span>, <span class="va">m_fe</span>, metrics <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"R2"</span>, <span class="st">"R2_adj"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># Comparison of Model Performance Indices
 
@@ -790,9 +974,9 @@ m_fe |    lm | 0.033 |     0.032</code></pre>
 </div>
 </div>
 <p>Without (<code>m</code>) and with (<code>m_fe</code>) country fixed effects: the countries raise R² from 0.009 to 0.033.</p>
-</section><section class="slide level2"><h2>easystats: check the checker</h2>
+</section><section class="slide level2"><h2>easystats: summary</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb70"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://easystats.github.io/report/reference/report.html">report</a></span><span class="op">(</span><span class="va">m</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>We fitted a linear model to predict lrscale_clean with age, gndr and edu. The
 model's explanatory power is very weak (R2 = 8.61e-03, adj. R2 = 8.52e-03). The
@@ -853,7 +1037,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <p>Start with the last line of the message, then try <code>?function</code>. If you’re still stuck, give the AI your code together with the error.</p>
 </section><section class="slide level2"><h2>Check every step</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb72"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb74"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">lrscale_clean</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     0     1     2     3     4     5     6     7     8     9    10  &lt;NA&gt; 
@@ -960,7 +1144,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 </section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>6 · Why R Is Cool</h2>
 </section><section class="slide level2"><h2>Publication-ready figures (with the <a href="https://ggplot2.tidyverse.org">ggplot2</a> package)</h2>
 
-<img data-src="slides_files/figure-revealjs/unnamed-chunk-42-1.png" style="width:72.0%" class="r-stretch"><div class="fig-note">
+<img data-src="slides_files/figure-revealjs/plot-journal-1.png" style="width:72.0%" class="r-stretch"><div class="fig-note">
 <p>Figure: Mean satisfaction with democracy by country, with 95% confidence intervals. Data: European Social Survey, round 11 (unweighted).</p>
 </div>
 </section><section class="slide level2"><h2>Pretty regression tables</h2>
@@ -970,42 +1154,42 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 
     <script src="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.js"></script><script>
       // Create table-specific functions using external factory
-      const tableFns_qhbcda8m9zevh1l4d3hp = TinyTable.createTableFunctions("tinytable_qhbcda8m9zevh1l4d3hp");
+      const tableFns_m5k4ogwigjmju4qw0sxz = TinyTable.createTableFunctions("tinytable_m5k4ogwigjmju4qw0sxz");
       // tinytable span after
       window.addEventListener('load', function () {
           var cellsToStyle = [
             // tinytable style arrays after
-          { positions: [ { i: '9', j: 2 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_uc4u2olpe7lbvydrpvk3',}, 
-          { positions: [ { i: '6', j: 2 }, { i: '6', j: 3 } ], css_id: 'tinytable_css_az530qq394mxlf0tdz1p',}, 
-          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '7', j: 3 }, { i: '8', j: 3 } ], css_id: 'tinytable_css_zvqejjmbhfbrzowg55p3',}, 
-          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_v1m7outowp5il5e5k85v',}, 
-          { positions: [ { i: '9', j: 1 } ], css_id: 'tinytable_css_ic6ugvg3i6pj1vyqk5e2',}, 
-          { positions: [ { i: '6', j: 1 } ], css_id: 'tinytable_css_07478qdw59rn7szwt983',}, 
-          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 } ], css_id: 'tinytable_css_7s9p1hqxn8v8zy78kuv9',}, 
-          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_qpjhagvmhif8g73trv05',}, 
+          { positions: [ { i: '9', j: 2 }, { i: '9', j: 3 } ], css_id: 'tinytable_css_afk5np7k6ywt443a19x1',}, 
+          { positions: [ { i: '6', j: 2 }, { i: '6', j: 3 } ], css_id: 'tinytable_css_mpess4l0lcl5wnlw9i7b',}, 
+          { positions: [ { i: '1', j: 2 }, { i: '2', j: 2 }, { i: '3', j: 2 }, { i: '4', j: 2 }, { i: '5', j: 2 }, { i: '7', j: 2 }, { i: '8', j: 2 }, { i: '1', j: 3 }, { i: '2', j: 3 }, { i: '3', j: 3 }, { i: '4', j: 3 }, { i: '5', j: 3 }, { i: '7', j: 3 }, { i: '8', j: 3 } ], css_id: 'tinytable_css_2s4oudzjuc2ns9c59ihk',}, 
+          { positions: [ { i: '0', j: 2 }, { i: '0', j: 3 } ], css_id: 'tinytable_css_hxc35moflpd57kn2dqci',}, 
+          { positions: [ { i: '9', j: 1 } ], css_id: 'tinytable_css_7u4bt818lqmx201is4xb',}, 
+          { positions: [ { i: '6', j: 1 } ], css_id: 'tinytable_css_2emo0r8dufkbtl0brboo',}, 
+          { positions: [ { i: '1', j: 1 }, { i: '2', j: 1 }, { i: '3', j: 1 }, { i: '4', j: 1 }, { i: '5', j: 1 }, { i: '7', j: 1 }, { i: '8', j: 1 } ], css_id: 'tinytable_css_34zxpwigcz6l8vwrbtyp',}, 
+          { positions: [ { i: '0', j: 1 } ], css_id: 'tinytable_css_jknxj2jxetcfztsrc6h0',}, 
           ];
 
           // Loop over the arrays to style the cells
           cellsToStyle.forEach(function (group) {
               group.positions.forEach(function (cell) {
-                  tableFns_qhbcda8m9zevh1l4d3hp.styleCell(cell.i, cell.j, group.css_id);
+                  tableFns_m5k4ogwigjmju4qw0sxz.styleCell(cell.i, cell.j, group.css_id);
               });
           });
       });
     </script><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/vincentarelbundock/tinytable@main/inst/tinytable.css">
 <style>
     /* tinytable css entries after */
-    #tinytable_qhbcda8m9zevh1l4d3hp td.tinytable_css_uc4u2olpe7lbvydrpvk3, #tinytable_qhbcda8m9zevh1l4d3hp th.tinytable_css_uc4u2olpe7lbvydrpvk3 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_qhbcda8m9zevh1l4d3hp td.tinytable_css_az530qq394mxlf0tdz1p, #tinytable_qhbcda8m9zevh1l4d3hp th.tinytable_css_az530qq394mxlf0tdz1p {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_qhbcda8m9zevh1l4d3hp td.tinytable_css_zvqejjmbhfbrzowg55p3, #tinytable_qhbcda8m9zevh1l4d3hp th.tinytable_css_zvqejjmbhfbrzowg55p3 { text-align: center }
-    #tinytable_qhbcda8m9zevh1l4d3hp td.tinytable_css_v1m7outowp5il5e5k85v, #tinytable_qhbcda8m9zevh1l4d3hp th.tinytable_css_v1m7outowp5il5e5k85v {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
-    #tinytable_qhbcda8m9zevh1l4d3hp td.tinytable_css_ic6ugvg3i6pj1vyqk5e2, #tinytable_qhbcda8m9zevh1l4d3hp th.tinytable_css_ic6ugvg3i6pj1vyqk5e2 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_qhbcda8m9zevh1l4d3hp td.tinytable_css_07478qdw59rn7szwt983, #tinytable_qhbcda8m9zevh1l4d3hp th.tinytable_css_07478qdw59rn7szwt983 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
-    #tinytable_qhbcda8m9zevh1l4d3hp td.tinytable_css_7s9p1hqxn8v8zy78kuv9, #tinytable_qhbcda8m9zevh1l4d3hp th.tinytable_css_7s9p1hqxn8v8zy78kuv9 { text-align: left }
-    #tinytable_qhbcda8m9zevh1l4d3hp td.tinytable_css_qpjhagvmhif8g73trv05, #tinytable_qhbcda8m9zevh1l4d3hp th.tinytable_css_qpjhagvmhif8g73trv05 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_m5k4ogwigjmju4qw0sxz td.tinytable_css_afk5np7k6ywt443a19x1, #tinytable_m5k4ogwigjmju4qw0sxz th.tinytable_css_afk5np7k6ywt443a19x1 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_m5k4ogwigjmju4qw0sxz td.tinytable_css_mpess4l0lcl5wnlw9i7b, #tinytable_m5k4ogwigjmju4qw0sxz th.tinytable_css_mpess4l0lcl5wnlw9i7b {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_m5k4ogwigjmju4qw0sxz td.tinytable_css_2s4oudzjuc2ns9c59ihk, #tinytable_m5k4ogwigjmju4qw0sxz th.tinytable_css_2s4oudzjuc2ns9c59ihk { text-align: center }
+    #tinytable_m5k4ogwigjmju4qw0sxz td.tinytable_css_hxc35moflpd57kn2dqci, #tinytable_m5k4ogwigjmju4qw0sxz th.tinytable_css_hxc35moflpd57kn2dqci {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: center }
+    #tinytable_m5k4ogwigjmju4qw0sxz td.tinytable_css_7u4bt818lqmx201is4xb, #tinytable_m5k4ogwigjmju4qw0sxz th.tinytable_css_7u4bt818lqmx201is4xb {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.08em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_m5k4ogwigjmju4qw0sxz td.tinytable_css_2emo0r8dufkbtl0brboo, #tinytable_m5k4ogwigjmju4qw0sxz th.tinytable_css_2emo0r8dufkbtl0brboo {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 0; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.1em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
+    #tinytable_m5k4ogwigjmju4qw0sxz td.tinytable_css_34zxpwigcz6l8vwrbtyp, #tinytable_m5k4ogwigjmju4qw0sxz th.tinytable_css_34zxpwigcz6l8vwrbtyp { text-align: left }
+    #tinytable_m5k4ogwigjmju4qw0sxz td.tinytable_css_jknxj2jxetcfztsrc6h0, #tinytable_m5k4ogwigjmju4qw0sxz th.tinytable_css_jknxj2jxetcfztsrc6h0 {  position: relative; --border-bottom: 1; --border-left: 0; --border-right: 0; --border-top: 1; --line-color-bottom: var(--tt-line-color); --line-color-left: var(--tt-line-color); --line-color-right: var(--tt-line-color); --line-color-top: var(--tt-line-color); --line-width-bottom: 0.05em; --line-width-left: 0.1em; --line-width-right: 0.1em; --line-width-top: 0.08em; --trim-bottom-left: 0%; --trim-bottom-right: 0%; --trim-left-bottom: 0%; --trim-left-top: 0%; --trim-right-bottom: 0%; --trim-right-top: 0%; --trim-top-left: 0%; --trim-top-right: 0%; ; text-align: left }
     </style>
 <div class="container">
-      <table class="tinytable" id="tinytable_qhbcda8m9zevh1l4d3hp" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
+      <table class="tinytable" id="tinytable_m5k4ogwigjmju4qw0sxz" style="width: auto; margin-left: auto; margin-right: auto;" data-quarto-disable-processing="true">
 <thead><tr>
 <th scope="col" data-row="0" data-col="1"> </th>
                 <th scope="col" data-row="0" data-col="2">(1)</th>
@@ -1068,6 +1252,30 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 </div>
 </div>
 <p><span class="figure-credit">Made with the <a href="https://modelsummary.com">modelsummary</a> package, which also writes Word and LaTeX tables.</span></p>
+</section><section class="slide level2"><h2>These slides are made with R</h2>
+<p>This whole deck is one <a href="https://quarto.org">Quarto</a> file: Markdown text with R chunks that run every time on render. Every number, figure and table comes straight from the data.</p>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>What I write</strong></p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb76"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb76-1"><a aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb76-2"><a aria-hidden="true" tabindex="-1"></a>avg <span class="ot">&lt;-</span> <span class="fu">mean</span>(dataset<span class="sc">$</span>swd, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb76-3"><a aria-hidden="true" tabindex="-1"></a>avg</span>
+<span id="cb76-4"><a aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb76-5"><a aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb76-6"><a aria-hidden="true" tabindex="-1"></a>The mean is <span class="in">`r round(avg, 1)`</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div><div class="column" style="width:50%;">
+<p><strong>What you see</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb77"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">avg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">swd</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">avg</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.073292</code></pre>
+</div>
+</div>
+<p>The mean is 5.1.</p>
+</div></div>
+<p>Try it in RStudio: <em>File › New File › Quarto Presentation</em>. The same works for papers (Word, PDF) and websites. <a href="https://quant1.kleinbutsignificant.com/slides.qmd" download="">Source of these slides</a></p>
+</section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>7 · Practice</h2>
 </section><section class="slide level2 center"><h2>Tuesday</h2>
 <p>Expect the steps from the labs, applied to variables you haven’t seen: inspect, clean, check, describe, test, model, and interpret each result in your own words.</p>
 <p><a href="mock-exam.html">Mock exam</a> · <a href="cheatsheet.html">Cheat sheet</a></p>
@@ -1444,7 +1652,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 </div>
 </div></div>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="site_libs/revealjs/plugin/notes/notes.js"></script><script src="site_libs/revealjs/plugin/search/search.js"></script><script src="site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="site_libs/revealjs/dist/reveal.js"></script><!-- reveal.js plugins --><script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script><script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script><script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script><script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script><script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script><script src="site_libs/revealjs/plugin/reveal-pointer/pointer.js"></script><script src="site_libs/revealjs/plugin/quarto-support/support.js"></script><script src="site_libs/revealjs/plugin/notes/notes.js"></script><script src="site_libs/revealjs/plugin/search/search.js"></script><script src="site_libs/revealjs/plugin/zoom/zoom.js"></script><script src="site_libs/revealjs/plugin/math/math.js"></script><script>window.define = window.backupDefine; window.backupDefine = undefined;</script><script>
 
       // Full list of configuration options available at:
       // https://revealjs.com/config/
@@ -1457,7 +1665,9 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 'autoAnimateUnmatched': true,
 'jumpToSlide': true,
 'pdfMaxPagesPerSlide': 1,
-'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"\u003ci class=\"fas fa-gear\">\u003c/i>","content":"\u003cul class=\"slide-menu-items\">\n\u003cli class=\"slide-tool-item active\" data-item=\"0\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\">\u003ckbd>f\u003c/kbd> Fullscreen\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"1\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\">\u003ckbd>s\u003c/kbd> Speaker View\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"2\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\">\u003ckbd>o\u003c/kbd> Slide Overview\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"3\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\">\u003ckbd>e\u003c/kbd> PDF Export Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"4\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\">\u003ckbd>r\u003c/kbd> Scroll View Mode\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"5\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\">\u003ckbd>b\u003c/kbd> Toggle Chalkboard\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"6\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\">\u003ckbd>c\u003c/kbd> Toggle Notes Canvas\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"7\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\">\u003ckbd>d\u003c/kbd> Download Drawings\u003c/a>\u003c/li>\n\u003cli class=\"slide-tool-item\" data-item=\"8\">\u003ca href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\">\u003ckbd>?\u003c/kbd> Keyboard Help\u003c/a>\u003c/li>\n\u003c/ul>"}],"openButton":true,"openButtonLabel":"Slide menu"},
+'chalkboard': {"buttons":true},
+'pointer': {"key":"q","color":"red","pointerSize":16,"alwaysVisible":false},
 'smaller': false,
  
         // Display controls in the bottom right corner
@@ -1628,7 +1838,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
         },
 
         // reveal.js plugins
-        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, RevealPointer, QuartoSupport,
 
           RevealMath,
           RevealNotes,

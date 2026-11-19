@@ -5,6 +5,6 @@
 ## Pages
 
 - [R for the lab exam](https://quant1.kleinbutsignificant.com/index.llms.md)
-- [AI that helps you learn](https://quant1.kleinbutsignificant.com/ai-setup.llms.md)
+- [AI Setup](https://quant1.kleinbutsignificant.com/ai-setup.llms.md)
 - [Cheat sheet](https://quant1.kleinbutsignificant.com/cheatsheet.llms.md)
 - [Mock lab exam](https://quant1.kleinbutsignificant.com/mock-exam.llms.md)

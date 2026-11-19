@@ -24,7 +24,7 @@
     "href": "index.html#whats-here",
     "title": "R for the lab exam",
     "section": "What’s here",
-    "text": "What’s here\n\n\n\nSlides · PDF\nThe recap session: how R reads code, every lab calculation with its output and an example interpretation, fixing errors, using AI\n\n\nCheat sheet\nAll the commands and sentence templates on one page, to keep open during the exam\n\n\nMock lab exam\nPractice tasks in the style of the labs, with solutions\n\n\nAI that helps you learn\nFrom chat to an agent in your project folder, with setup steps",
+    "text": "What’s here\n\n\n\nSlides · PDF\nThe recap session: how R reads code, every lab calculation with its output and an example interpretation, fixing errors, using AI\n\n\nCheat sheet\nAll the commands and sentence templates on one page, to keep open during the exam\n\n\nMock lab exam\nPractice tasks in the style of the labs, with solutions\n\n\nAI Setup\nFrom chat to an agent in your project folder, with setup steps",
     "crumbs": [
       "Start here"
     ]
@@ -42,67 +42,67 @@
   {
     "objectID": "ai-setup.html",
     "href": "ai-setup.html",
-    "title": "AI that helps you learn",
+    "title": "AI Setup",
     "section": "",
     "text": "The syllabus allows “any resources” in the lab exam. Check the exact AI rules with the TAs. AI makes you faster, but you are graded: the code has to be right, and the interpretation has to be yours.",
     "crumbs": [
       "Recap session",
-      "AI that helps you learn"
+      "AI Setup"
     ]
   },
   {
     "objectID": "ai-setup.html#ground-rules-every-level",
     "href": "ai-setup.html#ground-rules-every-level",
-    "title": "AI that helps you learn",
+    "title": "AI Setup",
     "section": "Ground rules (every level)",
     "text": "Ground rules (every level)\n\nGive context: the task, the variable codes (paste the output of table()), your code, and the full error.\nRun it line by line, and check every step with table(), summary() and nobs().\nIf you can’t explain a line, don’t hand it in. Ask the AI to explain it until you can.\nWrite the interpretations yourself. AI prose looks the same for everyone who uses it.\nAgents: open only your project folder, and read every change before you accept it.",
     "crumbs": [
       "Recap session",
-      "AI that helps you learn"
+      "AI Setup"
     ]
   },
   {
     "objectID": "ai-setup.html#level-1-chat-everyone",
     "href": "ai-setup.html#level-1-chat-everyone",
-    "title": "AI that helps you learn",
+    "title": "AI Setup",
     "section": "Level 1 · Chat (everyone)",
     "text": "Level 1 · Chat (everyone)\nAny chat assistant you already use (ChatGPT, Claude, Gemini, …) in the browser or the app. You copy and paste between the chat and RStudio.",
     "crumbs": [
       "Recap session",
-      "AI that helps you learn"
+      "AI Setup"
     ]
   },
   {
     "objectID": "ai-setup.html#level-2-a-desktop-agent-in-your-project-folder",
     "href": "ai-setup.html#level-2-a-desktop-agent-in-your-project-folder",
-    "title": "AI that helps you learn",
+    "title": "AI Setup",
     "section": "Level 2 · A desktop agent in your project folder",
     "text": "Level 2 · A desktop agent in your project folder\nThe desktop apps can work on a folder on your computer: they read your script and data, write code, and run R for you. Point them at your labexam project folder, nothing else.\n\n\n\nApp\nHow\nPlans\n\n\n\n\nChatGPT desktop app (Codex)\nInstall, sign in, then “open a folder” and choose labexam (OpenAI docs)\nCodex is included in the ChatGPT plans, Plus and up; for Free and Go, check what your plan allows (pricing)\n\n\nClaude desktop app, Code tab (Claude Code)\nCode tab → project folder control → choose labexam (Anthropic docs)\nA paid Claude plan\n\n\n\nAsk it, for example: “Read my script Lastname_Firstname_labexam.R and the task. Run section 3 and explain any error.” Keep RStudio open next to it, and run the code there yourself too.",
     "crumbs": [
       "Recap session",
-      "AI that helps you learn"
+      "AI Setup"
     ]
   },
   {
     "objectID": "ai-setup.html#level-3-inside-rstudio-posit-assistant-with-codex",
     "href": "ai-setup.html#level-3-inside-rstudio-posit-assistant-with-codex",
-    "title": "AI that helps you learn",
+    "title": "AI Setup",
     "section": "Level 3 · Inside RStudio: Posit Assistant with Codex",
     "text": "Level 3 · Inside RStudio: Posit Assistant with Codex\nPosit Assistant is the AI sidebar in RStudio 2026.04 and later. Its Agent engines (a Preview feature) can run Codex using your ChatGPT sign-in, so you don’t need a paid API key. This is a one-time setup of about 10 minutes, and it needs a terminal. Do it before the exam.\n\nMac (tested)Windows (untested)\n\n\n\nUpdate RStudio if needed (Help &gt; Check for Updates), then click the Posit Assistant icon at the top right → Install Posit Assistant.\nOpen RStudio’s Terminal tab (next to the Console) and install the Codex command-line tool:\ncurl -fsSL https://chatgpt.com/codex/install.sh | sh\nSign in with ChatGPT into Posit’s engine folder. This exact line matters; a plain codex login doesn’t reach RStudio:\nCODEX_HOME=\"$HOME/.posit/assistant/engines/codex-agent\" codex login\nIf you get codex: command not found, open a new terminal tab and try again. A browser window opens: sign in with your ChatGPT account.\nIn the Posit Assistant sidebar: More actions (⋯) → Configure AI providers → Agent engines → Codex Agent → Connect.\nRestart RStudio and start a new conversation with the Codex Agent.\n\n\n\nNobody has tested this yet. If you try it, say whether it works so this page can be fixed.\n\nSame as on a Mac: update RStudio, then Install Posit Assistant.\nIn a new PowerShell window, install Codex:\npowershell -ExecutionPolicy ByPass -c \"irm https://chatgpt.com/codex/install.ps1 | iex\"\nIn a new PowerShell window, sign in into Posit’s engine folder:\n$env:CODEX_HOME = \"$HOME/.posit/assistant/engines/codex-agent\"\ncodex login\nIn the Posit Assistant sidebar: More actions → Configure AI providers → Agent engines → Codex Agent → Connect, then restart RStudio.\n\n\n\n\nSources: Posit Assistant agent engines, Codex CLI install.\n\n\n\n\n\n\nNoteWhat about a Claude subscription, GitHub Copilot or an API key?\n\n\n\n\n\n\nClaude Pro/Max doesn’t work inside Posit Assistant: its Claude Agent needs a paid Anthropic API key. Use the Claude desktop app (Level 2) instead.\nGitHub Copilot in RStudio (Tools &gt; Global Options &gt; Assistant) gives code completions as grey “ghost text”, but no chat.\nAPI keys (OpenAI, Anthropic) work everywhere, but you pay per use on top of any subscription.",
     "crumbs": [
       "Recap session",
-      "AI that helps you learn"
+      "AI Setup"
     ]
   },
   {
     "objectID": "ai-setup.html#level-4-no-terminal-posit-ai-pass",
     "href": "ai-setup.html#level-4-no-terminal-posit-ai-pass",
-    "title": "AI that helps you learn",
+    "title": "AI Setup",
     "section": "Level 4 · No terminal: Posit AI Pass",
     "text": "Level 4 · No terminal: Posit AI Pass\nIf you have no ChatGPT account or don’t want a terminal: Posit Assistant with Posit AI Pass. Sign in from the sidebar, with no installs beyond RStudio. It costs $5 for the first month, then $20/month, with no free trial and no student discount (Posit). Cancel it after the exam if you don’t need it.",
     "crumbs": [
       "Recap session",
-      "AI that helps you learn"
+      "AI Setup"
     ]
   },
   {

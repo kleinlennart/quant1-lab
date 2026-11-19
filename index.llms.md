@@ -20,7 +20,7 @@ You get a dataset and run an analysis from start to finish: clean the variables,
 | [Slides](slides.llms.md) · [PDF](slides.pdf) | The recap session: how R reads code, every lab calculation with its output and an example interpretation, fixing errors, using AI |
 | [Cheat sheet](cheatsheet.llms.md) | All the commands and sentence templates on one page, to keep open during the exam |
 | [Mock lab exam](mock-exam.llms.md) | Practice tasks in the style of the labs, with solutions |
-| [AI that helps you learn](ai-setup.llms.md) | From chat to an agent in your project folder, with setup steps |
+| [AI Setup](ai-setup.llms.md) | From chat to an agent in your project folder, with setup steps |
 
 ## The data
 
