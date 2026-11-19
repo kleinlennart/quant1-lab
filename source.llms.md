@@ -1,3 +1,8 @@
+# Source of the slides
+
+The [slides](slides.llms.md) are one Quarto file, `slides.qmd`, shown here as written. R chunks run when the file is rendered, and inline code like `` `r round(avg, 1)` `` puts results into the text. To render it yourself you would also need the data extracts and `_common.R` from this site.
+
+````` markdown
 ---
 pagetitle: "R Recap Before the Lab Exam"   # no built-in title slide: the first slide below is the cover
 author: "Lennart Klein"
@@ -58,6 +63,8 @@ dataset$edu <- ifelse(
 Introduction to Quantitative Methods · Sciences Po
 
 Lennart Klein · 19 November 2026
+
+[Unofficial: not official course material.]{.unofficial}
 
 ::: {.follow}
 **Follow along:**<br>[quant1.kleinbutsignificant.com/slides.html](https://quant1.kleinbutsignificant.com/slides.html) · [{{< fa file-pdf >}} PDF](slides.pdf){aria-label="Slides as PDF"}
@@ -1564,14 +1571,14 @@ dataset$swd <- ifelse(
 )
 ```
 
-## Publication-ready figures (with the [ggplot2](https://ggplot2.tidyverse.org) package)
+## Publication-ready figures (with the [ggplot2](https://ggplot2.tidyverse.org) package) {.nostretch}
 
 ```{r}
 #| label: plot-journal
 #| echo: false
 #| fig-width: 10
-#| fig-height: 5.4
-#| out-width: "72%"
+#| fig-asp: 0.53 # overrides the project-wide fig.asp
+#| out-width: "970px" # same scale as the other figures (about 97 px per inch)
 #| dev: "ragg_png"   # needed for the registered font
 countries <- c(
   AT = "Austria",
@@ -1617,13 +1624,14 @@ ggplot(by_country, aes(x = mean, y = reorder(country, mean))) +
     orientation = "y",
     linewidth = 0.5
   ) +
-  geom_point(size = 2.4) +
+  geom_point(size = 3) +
   scale_x_continuous(limits = c(3, 8), breaks = 3:8) +
   labs(x = "Mean satisfaction with democracy (0-10)", y = NULL) +
-  theme_minimal(base_size = 16, base_family = "Source Sans Static") +
+  theme_minimal(base_size = 21, base_family = "Source Sans Static") +
   theme(
     text = element_text(colour = "black"),
     axis.text = element_text(colour = "black"),
+    axis.text.y = element_text(size = rel(0.72)), # 23 countries
     axis.title.x = element_text(margin = margin(t = 8)),
     panel.grid.major.y = element_blank(),
     panel.grid.minor = element_blank(),
@@ -1683,10 +1691,10 @@ This whole deck is one [Quarto](https://quarto.org) file: Markdown text with R c
 
 :::: {.columns}
 ::: {.column width="50%"}
-**What I write**
+**Source Code**
 
 ````markdown
-```{{r}}
+```{r}
 avg <- mean(dataset$swd, na.rm = TRUE)
 avg
 ```
@@ -1696,7 +1704,7 @@ The mean is `r knitr::inline_expr("round(avg, 1)")`.
 :::
 
 ::: {.column width="50%"}
-**What you see**
+**Slides**
 
 ```{r}
 avg <- mean(dataset$swd, na.rm = TRUE)
@@ -1707,7 +1715,7 @@ The mean is `r round(avg, 1)`.
 :::
 ::::
 
-Try it in RStudio: *File › New File › Quarto Presentation*. The same works for papers (Word, PDF) and websites. <a href="https://quant1.kleinbutsignificant.com/slides.qmd" download>Source of these slides</a>
+Try it in RStudio: *File › New File › Quarto Presentation*. The same works for papers (Word, PDF) and websites. [Source of these slides](source.qmd)
 
 ## 7 · Practice {.center background-color="#1f3a5f"}
 
@@ -1785,3 +1793,6 @@ To keep learning (all free online): [Hands-On Programming with R](https://rstudi
 | `bptest()` | Breusch-Pagan test | `bptest(model2)` | H0: homoskedasticity; `library(lmtest)` |
 | `vif()` | multicollinearity | `vif(model2)` | below 10: not a concern; `library(car)` |
 | `plot(fitted, resid)` + `abline(h = 0)` | residual plot | `plot(m$fitted.values, m$residuals)` | look for a spread that changes |
+`````
+
+Back to top

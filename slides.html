@@ -103,7 +103,7 @@
     code span.vs { color: #008000; } /* VerbatimString */
     code span.wa { color: #696969; font-style: italic; } /* Warning */
   </style>
-<link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-125709d389f0f59e4896477dced3f296.css">
+<link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-caaf9b32548ff685f9666fc444f4bc98.css">
 <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
 <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
 <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -207,6 +207,7 @@
 <section class="slide level2 cover center"><h2>R Recap Before the Lab Exam</h2>
 <p>Introduction to Quantitative Methods · Sciences Po</p>
 <p>Lennart Klein · 19 November 2026</p>
+<p><span class="unofficial">Unofficial: not official course material.</span></p>
 <div class="follow">
 <p><strong>Follow along:</strong><br><a href="https://quant1.kleinbutsignificant.com/slides.html">quant1.kleinbutsignificant.com/slides.html</a> · <a href="slides.pdf" aria-label="Slides as PDF"><i class="fa-solid fa-file-pdf" aria-label="file-pdf"></i> PDF</a></p>
 </div>
@@ -1142,9 +1143,16 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 </table>
 <p>The <a href="ai-setup.html">AI setup page</a> has the steps. Give an agent only the project folder, and read every change it makes.</p>
 </section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>6 · Why R Is Cool</h2>
-</section><section class="slide level2"><h2>Publication-ready figures (with the <a href="https://ggplot2.tidyverse.org">ggplot2</a> package)</h2>
-
-<img data-src="slides_files/figure-revealjs/plot-journal-1.png" style="width:72.0%" class="r-stretch"><div class="fig-note">
+</section><section class="slide level2 nostretch"><h2>Publication-ready figures (with the <a href="https://ggplot2.tidyverse.org">ggplot2</a> package)</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure><p><img data-src="slides_files/figure-revealjs/plot-journal-1.png" width="970"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="fig-note">
 <p>Figure: Mean satisfaction with democracy by country, with 95% confidence intervals. Data: European Social Survey, round 11 (unweighted).</p>
 </div>
 </section><section class="slide level2"><h2>Pretty regression tables</h2>
@@ -1256,7 +1264,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <p>This whole deck is one <a href="https://quarto.org">Quarto</a> file: Markdown text with R chunks that run every time on render. Every number, figure and table comes straight from the data.</p>
 <div class="columns">
 <div class="column" style="width:50%;">
-<p><strong>What I write</strong></p>
+<p><strong>Source Code</strong></p>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb76"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb76-1"><a aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
 <span id="cb76-2"><a aria-hidden="true" tabindex="-1"></a>avg <span class="ot">&lt;-</span> <span class="fu">mean</span>(dataset<span class="sc">$</span>swd, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb76-3"><a aria-hidden="true" tabindex="-1"></a>avg</span>
@@ -1264,7 +1272,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <span id="cb76-5"><a aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb76-6"><a aria-hidden="true" tabindex="-1"></a>The mean is <span class="in">`r round(avg, 1)`</span>.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div><div class="column" style="width:50%;">
-<p><strong>What you see</strong></p>
+<p><strong>Slides</strong></p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb77"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">avg</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">swd</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="va">avg</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1274,7 +1282,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 </div>
 <p>The mean is 5.1.</p>
 </div></div>
-<p>Try it in RStudio: <em>File › New File › Quarto Presentation</em>. The same works for papers (Word, PDF) and websites. <a href="https://quant1.kleinbutsignificant.com/slides.qmd" download="">Source of these slides</a></p>
+<p>Try it in RStudio: <em>File › New File › Quarto Presentation</em>. The same works for papers (Word, PDF) and websites. <a href="./source.html">Source of these slides</a></p>
 </section><section class="slide level2 center" data-background-color="#1f3a5f"><h2>7 · Practice</h2>
 </section><section class="slide level2 center"><h2>Tuesday</h2>
 <p>Expect the steps from the labs, applied to variables you haven’t seen: inspect, clean, check, describe, test, model, and interpret each result in your own words.</p>

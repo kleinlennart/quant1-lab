@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://quant1.kleinbutsignificant.com/slides.html</loc>
-    <lastmod>2026-11-19T10:20:36.833Z</lastmod>
+    <loc>https://quant1.kleinbutsignificant.com/source.html</loc>
+    <lastmod>2026-11-19T10:28:33.572Z</lastmod>
   </url>
   <url>
-    <loc>https://quant1.kleinbutsignificant.com/index.html</loc>
-    <lastmod>2026-11-19T09:36:02.858Z</lastmod>
-  </url>
-  <url>
-    <loc>https://quant1.kleinbutsignificant.com/ai-setup.html</loc>
-    <lastmod>2026-11-19T09:35:55.074Z</lastmod>
+    <loc>https://quant1.kleinbutsignificant.com/mock-exam.html</loc>
+    <lastmod>2026-11-18T21:06:03.688Z</lastmod>
   </url>
   <url>
     <loc>https://quant1.kleinbutsignificant.com/cheatsheet.html</loc>
     <lastmod>2026-11-18T21:09:12.889Z</lastmod>
   </url>
   <url>
-    <loc>https://quant1.kleinbutsignificant.com/mock-exam.html</loc>
-    <lastmod>2026-11-18T21:06:03.688Z</lastmod>
+    <loc>https://quant1.kleinbutsignificant.com/ai-setup.html</loc>
+    <lastmod>2026-11-19T09:35:55.074Z</lastmod>
+  </url>
+  <url>
+    <loc>https://quant1.kleinbutsignificant.com/index.html</loc>
+    <lastmod>2026-11-19T10:37:05.955Z</lastmod>
+  </url>
+  <url>
+    <loc>https://quant1.kleinbutsignificant.com/slides.html</loc>
+    <lastmod>2026-11-19T10:36:44.833Z</lastmod>
   </url>
 </urlset>

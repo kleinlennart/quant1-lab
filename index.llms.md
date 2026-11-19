@@ -2,6 +2,8 @@
 
 Introduction to Quantitative Methods · Sciences Po · Autumn 2026
 
+Unofficial: not official course material.
+
 ## The lab exam
 
 |  |  |
