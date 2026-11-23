@@ -23,7 +23,7 @@ The desktop apps can work **on a folder on your computer**: they read your scrip
 
 | App | How | Plans |
 |---|---|---|
-| **ChatGPT desktop app** (Codex) | Install, sign in, then "open a folder" and choose `labexam` ([OpenAI docs](https://learn.chatgpt.com/codex/app)) | Codex is included in the ChatGPT plans, Plus and up; for Free and Go, check what your plan allows ([pricing](https://learn.chatgpt.com/docs/pricing)) |
+| **ChatGPT desktop app** (Codex) | Install, sign in, then "open a folder" and choose `labexam` ([OpenAI docs](https://learn.chatgpt.com/codex/app)) | Codex is included in the ChatGPT plans, Plus and up. For Free and Go, check what your plan allows ([pricing](https://learn.chatgpt.com/docs/pricing)) |
 | **Claude desktop app**, Code tab (Claude Code) | Code tab → project folder control → choose `labexam` ([Anthropic docs](https://code.claude.com/docs/en/desktop)) | A paid Claude plan |
 
 Ask it, for example: "Read my script `Lastname_Firstname_labexam.R` and the task. Run section 3 and explain any error." Keep RStudio open next to it, and run the code there yourself too.
@@ -42,7 +42,7 @@ Posit Assistant is the AI sidebar in RStudio 2026.04 and later. Its **Agent engi
    curl -fsSL https://chatgpt.com/codex/install.sh | sh
    ```
 
-3. Sign in with ChatGPT **into Posit's engine folder**. This exact line matters; a plain `codex login` doesn't reach RStudio:
+3. Sign in with ChatGPT **into Posit's engine folder**. This exact line matters: a plain `codex login` doesn't reach RStudio:
 
    ```bash
    CODEX_HOME="$HOME/.posit/assistant/engines/codex-agent" codex login

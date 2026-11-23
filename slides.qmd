@@ -20,6 +20,9 @@ format:
     width: 1280
     height: 720
     footer: "Quantitative Methods I · Quick R Recap"
+  gfm:
+    output-file: slides.md   # Markdown with the R output, for LLMs (listed in llms.txt)
+    variant: -raw_html       # plain Markdown: drop the layout <div>s and <span>s
 execute:
   echo: true
   freeze: auto
@@ -65,7 +68,7 @@ Lennart Klein · 19 November 2026
 [Unofficial: not official course material.]{.unofficial}
 
 ::: {.follow}
-**Follow along:**<br>[quant1.kleinbutsignificant.com/slides.html](https://quant1.kleinbutsignificant.com/slides.html) · [{{< fa file-pdf >}} PDF](slides.pdf){aria-label="Slides as PDF"}
+**Follow along:**<br> [quant1.kleinbutsignificant.com/slides.html](https://quant1.kleinbutsignificant.com/slides.html) · [{{< fa file-pdf >}} PDF](slides.pdf){aria-label="Slides as PDF"}
 :::
 
 ## Today {.center}
@@ -76,7 +79,7 @@ Lennart Klein · 19 November 2026
 
 - an **RStudio** project you can reuse<br> on Tuesday
 - a feel for how R reads a line of code
-- a routine for fixing errors, with or<br>without AI
+- a routine for fixing errors, with or<br> without AI
 :::
 ::: {.column width="50%"}
 **The idea of this session**
@@ -102,7 +105,7 @@ Lennart Klein · 19 November 2026
 **R** does the statistics. **RStudio** is where you write it.
 
 - **Editor:** your script, the file you hand in
-- **Console:** runs R.<br>`>` ready, `+` unfinished line
+- **Console:** runs R.<br> `>` ready, `+` unfinished line
 - **Terminal:** not R, only for setup
 - **Environment:** data objects & variables in memory
 - **Output:** plots, help, files
@@ -452,7 +455,7 @@ In the output: `[1]` only numbers the first value of the result. `na.rm = TRUE` 
 hist(dataset$like_democrat)
 ```
 
-The bars show the shape that the mean and median describe. The first bar counts the 0s and the 1s together; `breaks = seq(-0.5, 10.5, by = 1)` gives one bar per value.
+The bars show the shape that the mean and median describe. The first bar counts the 0s and the 1s together. `breaks = seq(-0.5, 10.5, by = 1)` gives one bar per value.
 
 ## Describe a variable (Lab 2) – as a figure
 
@@ -748,7 +751,7 @@ Voters are more often satisfied with democracy: `r pct["1", "1"]`% of voters aga
 :::
 
 ::: {.interp-note}
-In the output: rows = satisfied (1) or not (0), columns = voted (1) or not (0). The test gives significance only; the direction comes from the percentages, `prop.table(table(...), margin = 2)`. X-squared = `r round(chi$statistic, 1)`.
+In the output: rows = satisfied (1) or not (0), columns = voted (1) or not (0). The test gives significance only. The direction comes from the percentages, `prop.table(table(...), margin = 2)`. X-squared = `r round(chi$statistic, 1)`.
 :::
 
 ## Chi-square test (Lab 3) – as a figure
@@ -934,7 +937,7 @@ ggplot2::ggplot() +
 ::: {.column width="34%" .fe-note}
 - Dots: the average left-right position for each year of education.
 - Line: the regression's prediction. Its slope is the education coefficient, `r format(round(coef(model1)[["edu"]], 3), nsmall = 3)` per year, net of age and gender.
-- The line summarises the dots; it doesn't pass through each one.
+- The line summarises the dots. It doesn't pass through each one.
 :::
 :::
 
@@ -1304,7 +1307,7 @@ ggplot2::ggplot(vd, ggplot2::aes(x = vif, y = var)) +
 ::: {.column width="34%" .fe-note}
 - VIF: how much a variable is explained by the other independent variables.
 - Why it's bad: if variables overlap, the model can't tell their effects apart. The standard errors get large, so real effects can look not significant.
-- 1 means no overlap; below 10 is generally not a concern. All four are about 1: no multicollinearity.
+- 1 means no overlap. Below 10 is generally not a concern. All four are about 1: no multicollinearity.
 :::
 :::
 
@@ -1334,7 +1337,7 @@ dataset$far_right <- ifelse(
 )
 ```
 
-**Nested `ifelse()`:** if 8 to 10, then 1; otherwise, if 0 to 7, then 0; otherwise `NA`. The second `ifelse()` is the "no" of the first.
+**Nested `ifelse()`:** if 8 to 10, then 1. Otherwise, if 0 to 7, then 0. Otherwise `NA`. The second `ifelse()` is the "no" of the first.
 
 The next slide does the same with dplyr.
 
@@ -1390,7 +1393,7 @@ printCoefmat(cf1[1:6, ], digits = 3, signif.legend = FALSE)
 :::
 
 ::: {.interp-note}
-In the output: in a logit, only the sign of `Estimate` is interpreted; the size comes from the marginal effects. `factor(gndr)2` = women vs men (the reference has no row), `factor(cntry)BE` = Belgium vs Austria. Stars: R's `***` 0.001, `**` 0.01, `*` 0.05 are not the course's 0.01, 0.05, 0.10 (Lecture 8, slide 41): go by the p-value.
+In the output: in a logit, only the sign of `Estimate` is interpreted. The size comes from the marginal effects. `factor(gndr)2` = women vs men (the reference has no row), `factor(cntry)BE` = Belgium vs Austria. Stars: R's `***` 0.001, `**` 0.01, `*` 0.05 are not the course's 0.01, 0.05, 0.10 (Lecture 8, slide 41): go by the p-value.
 :::
 
 ## One effect, three numbers (Lab 5)
@@ -1405,21 +1408,21 @@ The same model, the same effect of being a woman, on three scales:
 
 :::: {.columns}
 ::: {.column width="33%"}
-**Log-odds**<br>`summary(logit1)`
+**Log-odds**<br> `summary(logit1)`
 
 [`r format(round(cf1["factor(gndr)2", 1], 2), nsmall = 2)`]{.big-number}
 
 Only the sign: women are less likely to be on the far right.
 :::
 ::: {.column width="33%"}
-**Odds ratio**<br>`exp(coef(logit1))`
+**Odds ratio**<br> `exp(coef(logit1))`
 
 [`r format(round(exp(cf1["factor(gndr)2", 1]), 2), nsmall = 2)`]{.big-number}
 
 Women's odds are `r round(100 * (1 - exp(cf1["factor(gndr)2", 1])))`% lower.
 :::
 ::: {.column width="33%"}
-**Marginal effect**<br>`summary(margins(logit1))`
+**Marginal effect**<br> `summary(margins(logit1))`
 
 [`r format(round(ame_women, 3), nsmall = 3)`]{.big-number}
 
@@ -1443,7 +1446,7 @@ or_w <- exp(coef(logit1))[["factor(gndr)2"]]
 ```
 
 - **`summary(logit1)` gives log-odds:** the change in log(p / (1 − p)) when X goes up by one. That is hard to read, so the course reads only the sign (Lecture 10).
-- **`exp()` turns them into odds ratios.** Above 1: higher odds; below 1: lower odds. Women: `r format(round(or_w, 2), nsmall = 2)`, so their odds of being on the far right are `r round(100 * (1 - or_w))`% lower than men's.
+- **`exp()` turns them into odds ratios.** Above 1: higher odds. Below 1: lower odds. Women: `r format(round(or_w, 2), nsmall = 2)`, so their odds of being on the far right are `r round(100 * (1 - or_w))`% lower than men's.
 - **Odds are not probabilities.** For the size, the course uses the marginal effects, in percentage points (the marginal effects slide).
 
 ## Logit output, the bottom (Lab 5, Step 2)
@@ -1931,7 +1934,7 @@ The more educated place themselves further left, and a little more so among wome
 :::
 
 ::: {.interp-note}
-In the output: `edu` = the slope for men (the reference). `factor(gndr)2:edu` = how much the slope differs for women; it is the last row of `summary()`, after the countries. `factor(gndr)2` = the gap at 0 years of education, not meaningful on its own.
+In the output: `edu` = the slope for men (the reference). `factor(gndr)2:edu` = how much the slope differs for women. It is the last row of `summary()`, after the countries. `factor(gndr)2` = the gap at 0 years of education, not meaningful on its own.
 :::
 
 ## Interaction (Lab 5) – as a figure
@@ -2221,8 +2224,8 @@ table(dataset$lrscale_clean, useNA = "ifany")
 
 | Element | What it is | For an R question |
 |---|---|---|
-| Instruction | "a specific task or instruction you want the model to perform" | fix this error; explain this output |
-| Context | "external information or additional context that can steer the model to better responses" | base R as in the labs; the variable codes from `table()` |
+| Instruction | "a specific task or instruction you want the model to perform" | fix this error, explain this output |
+| Context | "external information or additional context that can steer the model to better responses" | base R as in the labs, the variable codes from `table()` |
 | Input data | "the input or question that we are interested to find a response for" | your code and the full error message |
 | Output indicator | "the type or format of the output" | one sentence per line of code |
 
@@ -2246,7 +2249,7 @@ What you do with the answer:
 | | What | Works with |
 |-|----------|--------|
 | 1 | Chat in the browser, copy and paste | any account |
-| 2 | A desktop app opened on `labexam/`, which reads your files and runs R | ChatGPT app (Codex);<br>Claude app, Code tab (paid plan) |
+| 2 | A desktop app opened on `labexam/`, which reads your files and runs R | ChatGPT app (Codex),<br> Claude app, Code tab (paid plan) |
 | 3 | Inside **RStudio**: Posit Assistant, Agent engines, Codex Agent | ChatGPT sign-in, plus one terminal step |
 | 4 | Posit Assistant with Posit AI Pass | $5 for the first month, then $20 a month |
 
@@ -2430,7 +2433,7 @@ To keep learning (all free online): [Hands-On Programming with R](https://rstudi
 | Function | What it does | Example from the labs | Watch out |
 |---|---|---|---|
 | `install.packages()` | downloads a package, once per computer | `install.packages("car")` | in the console, not in the exam script |
-| `library()` | loads a package for this session | `library(car)` | every session; the stats package is always loaded |
+| `library()` | loads a package for this session | `library(car)` | every session (the stats package is always loaded) |
 | `getwd()` | shows the working directory | `getwd()` | with a project it's the project folder |
 | `list.files()` | lists the files in a folder | `list.files("data")` | the exact file name to use |
 | `read.csv()` | imports a comma-separated file | `read.csv("data/ess.csv")` | path relative to the project |
@@ -2484,9 +2487,9 @@ To keep learning (all free online): [Hands-On Programming with R](https://rstudi
 | `coef()` | the coefficients as numbers | `coef(m)["edu"]` | for interaction arithmetic |
 | `glm(…, family = binomial)` | logistic regression | `glm(far_right ~ …, family = binomial)` | only the sign of the coefficients |
 | `margins()` | average marginal effects | `summary(margins(logit1))` | × 100 = percentage points |
-| `multinom()` | multinomial logit | `multinom(y3 ~ …, data = d)` | reference = first level; `library(nnet)` |
+| `multinom()` | multinomial logit | `multinom(y3 ~ …, data = d)` | reference = first level, `library(nnet)` |
 | `x1 * x2` | interaction | `factor(gndr) * eduyrs` | slope for group 2 = `b_x` + `b_int` |
-| `bptest()` | Breusch-Pagan test | `bptest(model2)` | H0: homoskedasticity; `library(lmtest)` |
-| `vif()` | multicollinearity | `vif(model2)` | below 10: not a concern; `library(car)` |
+| `bptest()` | Breusch-Pagan test | `bptest(model2)` | H0: homoskedasticity, `library(lmtest)` |
+| `vif()` | multicollinearity | `vif(model2)` | below 10: not a concern, `library(car)` |
 | `plot(fitted, resid)` + `abline(h = 0)` | residual plot | `plot(m$fitted.values, m$residuals)` | look for a spread that changes |
 

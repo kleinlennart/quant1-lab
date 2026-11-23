@@ -1,6 +1,6 @@
 ---
 title: "Cheat sheet"
-description: "Every recipe on one page, plus sentence templates for the interpretation, common errors and an exam checklist. Keep it open during the exam."
+description: "Every recipe on one page, plus which test or model to use, sentence templates for the interpretation, common errors and an exam checklist."
 code-link: true          # function names link to their help pages
 execute:
   eval: false
@@ -11,68 +11,194 @@ Replace `dataset`, `y`, `x`, `z` and `group` with your own names. The [slides](s
 ## Start
 
 ```{r}
-# install.packages(c("dplyr", "lmtest", "car", "margins", "nnet"))   # once per computer
-library(dplyr); library(lmtest); library(car); library(margins); library(nnet)
-getwd()                               # where R is looking
-list.files()                          # is the data file there?
-dataset <- read.csv("file.csv")       # read.csv2() if the columns are separated by ;
+# Install once per computer, then put the # back in front
+# install.packages(c("dplyr", "lmtest", "car", "margins", "nnet"))
+
+# Load the packages, in every new session
+library(dplyr) # mutate(), case_when()
+library(lmtest) # bptest()
+library(car) # vif()
+library(margins) # margins()
+library(nnet) # multinom()
+
+# Where is R looking, and is the data file there?
+getwd()
+list.files()
+
+# Read the data (all in one column? use read.csv2() instead)
+dataset <- read.csv("file.csv")
 ```
 
 ## Inspect
 
 ```{r}
-names(dataset); dim(dataset); str(dataset); head(dataset)
-table(dataset$x, useNA = "ifany")     # every value with its count, including NA
-summary(dataset$x)                    # a max of 99 or 999 is a missing-value code
+# Variable names, rows and columns, types, first rows
+names(dataset)
+dim(dataset)
+str(dataset)
+head(dataset)
+
+# Every value with its count, NA included
+table(dataset$x, useNA = "ifany")
+
+# A max of 99 or 999 is a missing-value code
+summary(dataset$x)
+
+# All the distinct values, sorted
 sort(unique(dataset$x))
 ```
 
 ## Clean (always into a new variable, then check it)
 
 ```{r}
-# keep a valid range
-dataset$x_clean <- ifelse(dataset$x >= 0 & dataset$x <= 10, dataset$x, NA)
-# set special codes to missing
+# Keep a valid range (here 0 to 10), everything else becomes NA
+dataset$x_clean <- ifelse(
+  dataset$x >= 0 & dataset$x <= 10,
+  dataset$x,
+  NA
+)
+
+# Set the missing-value codes to NA
 dataset$x_clean <- ifelse(dataset$x %in% c(77, 88, 99), NA, dataset$x)
-# binary from codes
-dataset$x_bin <- ifelse(dataset$x == 4, 1, ifelse(dataset$x %in% c(1, 2, 3), 0, NA))
-# several categories, base R
+
+# Binary: 4 becomes 1, 1 to 3 become 0, anything else NA
+dataset$x_bin <- ifelse(
+  dataset$x == 4,
+  1,
+  ifelse(dataset$x %in% c(1, 2, 3), 0, NA)
+)
+
+# Several categories, base R: start with NA, then fill each range
 dataset$x_cat <- NA
 dataset$x_cat[dataset$x >= 0 & dataset$x <= 3] <- 1
 dataset$x_cat[dataset$x >= 4 & dataset$x <= 6] <- 2
-# several categories, dplyr
-dataset <- dataset |> mutate(x_cat = case_when(x <= 3 ~ 1, x >= 4 & x <= 6 ~ 2, TRUE ~ NA_real_))
-# categories with labels
-dataset$x_f <- factor(dataset$x, levels = c(1, 2), labels = c("Man", "Woman"))
-# one group only
+
+# Several categories, dplyr: TRUE ~ NA_real_ = everything else is NA
+dataset <- dataset |>
+  mutate(
+    x_cat = case_when(
+      x <= 3 ~ 1,
+      x >= 4 & x <= 6 ~ 2,
+      TRUE ~ NA_real_
+    )
+  )
+
+# Categories with labels (the first level is the reference in models)
+dataset$x_f <- factor(
+  dataset$x,
+  levels = c(1, 2),
+  labels = c("Man", "Woman")
+)
+
+# Keep one group only
 dataset_fr <- subset(dataset, cntry == "FR")
-# check
+
+# Check: old values in the rows, new values in the columns
 table(dataset$x, dataset$x_clean, useNA = "ifany")
 ```
+
+## Which test or model?
+
+Start from the question, then look at the type of each variable. Y is the dependent variable (what you explain), X the independent variable.
+
+### 1. What type is each variable?
+
+| Type | Values | Examples from the labs |
+|---|---|---|
+| Nominal | categories without an order (2 categories = **binary**, or dummy) | `gndr`, `cntry`, `voted_2024`, `far_right` |
+| Ordinal | categories that follow an order | `hincfel` (1–4), `swd` (1, 2, 4, 5) |
+| Continuous | values that mean something in reality | `agea`, `eduyrs`, `lrscale` (0–10) |
+
+An ordinal variable can be treated as nominal or as continuous (Lectures 2 and 4). The labs treat a 0–10 scale as continuous and recode it into categories when a model needs them (`left_right_3cat`).
+
+### 2. One variable
+
+| Type | Describe with |
+|---|---|
+| Nominal or ordinal | `table()`, `prop.table(table()) * 100`, `barplot()` |
+| Continuous | `mean()`, `median()`, `sd()`, `summary()`, `hist()` |
+| Is the mean different from a value? | one-sample t-test: `t.test(dataset$x, mu = 0.4)` (Lecture 6) |
+| How precise is the sample mean? | 95% confidence interval: `t.test(dataset$x)$conf.int` |
+
+### 3. Two variables
+
+| Y | X | Show | Test | R |
+|---|---|---|---|---|
+| nominal | nominal | crosstab with row or column % | chi-square | `chisq.test(table(dataset$x, dataset$y))` |
+| continuous | binary | the two group means, `boxplot()` | t-test | `t.test(y ~ x, data = dataset)` |
+| continuous | 3+ categories | group means with `aggregate()` | OLS with a factor | `lm(y ~ factor(x), data = dataset)` |
+| continuous | continuous | scatter plot | correlation, or OLS | `cor.test(dataset$x, dataset$y)`, `lm(y ~ x, data = dataset)` |
+| binary | continuous | mean of X in each group of Y | t-test, with the roles swapped | `t.test(x ~ y, data = dataset)` (Lab 3: age by satisfaction) |
+
+- `t.test()` needs a group with **exactly 2 values**. With 3 or more categories, use `lm()` with `factor()`: each coefficient compares a category with the reference category.
+- An OLS on a binary `factor()` gives the same difference in means as the t-test (Lecture 8: "similar to a t-test"). The p-values differ a little because `t.test()` doesn't assume equal variances.
+- A chi-square test gives no direction: read the percentages for that.
+- Bivariate tests are a first look, not enough for robust conclusions. To take other causes into account, use a regression with control variables (Lectures 4 and 9).
+
+### 4. Several independent variables: which regression?
+
+Choose by the type of **Y**:
+
+| Y | Model | R | Interpret |
+|---|---|---|---|
+| continuous (incl. a 0–10 scale) | OLS | `lm(y ~ x1 + x2, data = dataset)` | coefficient = change in Y when X increases by one unit |
+| binary (0/1) | logistic regression (logit) | `glm(y ~ x1 + x2, data = dataset, family = binomial)` | sign only, size from `summary(margins(logit))` in percentage points |
+| nominal, 3+ categories | multinomial logit | `multinom(y ~ x1 + x2, data = dataset, trace = FALSE)` | sign only, each category against the reference category |
+
+A ranking such as `hincfel` as Y: treat it as continuous (OLS) or recode it into categories (logit or multinomial logit).
+
+### 5. What to add to the model
+
+| If … | Add | R |
+|---|---|---|
+| X is categorical | dummies against a reference category | `factor(x)` |
+| a third variable could cause both X and Y (spurious effect) | control variables | `+ z1 + z2` |
+| observations are grouped (respondents in countries) | fixed effects: estimates within groups | `+ factor(cntry)` |
+| the effect of X depends on Z (moderation) | interaction | `x * z` |
+| one group only (e.g. France) | a subsample | `subset(dataset, cntry == "FR")` |
+| floor or ceiling effect (Lecture 8, not in the labs) | log of X (X > 0) | `log(x)` |
+| the effect changes direction as X grows (Lecture 8, not in the labs) | X and X squared | `x + I(x^2)` |
+
+### 6. Checks after an OLS (Lecture 9)
+
+| Problem | Check | If it is there |
+|---|---|---|
+| Outliers | `hist()`, `plot()`, `summary()` | remove them |
+| Heteroskedasticity | `plot(model$fitted.values, model$residuals)`, `bptest(model)` | robust standard errors, e.g. `coeftest(model, vcov = hccm(model))` (not in the labs) |
+| Multicollinearity | `vif(model)` | below 10: not a concern (the course does nothing about it) |
 
 ## Describe one variable
 
 ```{r}
-table(dataset$x)                         # categorical: counts
-prop.table(table(dataset$x)) * 100       # percentages
+# Categorical: counts, percentages, bar chart
+table(dataset$x)
+prop.table(table(dataset$x)) * 100
 barplot(table(dataset$x))
-mean(dataset$x, na.rm = TRUE); median(dataset$x, na.rm = TRUE); sd(dataset$x, na.rm = TRUE)
+
+# Continuous: centre and spread (na.rm = TRUE skips the NAs)
+mean(dataset$x, na.rm = TRUE)
+median(dataset$x, na.rm = TRUE)
+sd(dataset$x, na.rm = TRUE)
 summary(dataset$x)
-hist(dataset$x, breaks = seq(-0.5, 10.5, by = 1))   # one bar per value on a 0-10 scale
+
+# Histogram with one bar per value on a 0-10 scale
+hist(dataset$x, breaks = seq(-0.5, 10.5, by = 1))
 ```
 
 ## Two variables
 
 ```{r}
-# categorical x categorical
+# Categorical x categorical: crosstab, row %, chi-square test
 tab <- table(dataset$x, dataset$y)
-prop.table(tab, margin = 1) * 100        # row % (margin = 2: column %)
+prop.table(tab, margin = 1) * 100 # margin = 2: column %
 chisq.test(tab)
-# continuous y by a binary group
+
+# Continuous y by a binary group: group means, t-test, box plot
 aggregate(y ~ group, data = dataset, FUN = mean)
 t.test(y ~ group, data = dataset)
 boxplot(y ~ group, data = dataset)
-# continuous x continuous
+
+# Continuous x continuous: r, r with its p-value, scatter plot
 cor(dataset$x, dataset$y, use = "complete.obs")
 cor.test(dataset$x, dataset$y)
 plot(dataset$x, dataset$y)
@@ -81,23 +207,45 @@ plot(dataset$x, dataset$y)
 ## Models
 
 ```{r}
-# OLS (continuous y); factor() for categorical predictors; + factor(cntry) = country fixed effects
+# OLS (continuous y): factor() for categorical predictors,
+# + factor(cntry) = country fixed effects
 model <- lm(y ~ x1 + factor(x2) + x3 + factor(cntry), data = dataset)
-summary(model); confint(model); nobs(model)
-# diagnostics
-plot(model$fitted.values, model$residuals); abline(h = 0)
-bptest(model)                            # H0: homoskedasticity
-vif(model)                               # multicollinearity
-# logit (binary y)
-logit <- glm(y ~ x1 + factor(x2) + x3, data = dataset, family = binomial)
+summary(model) # coefficients, p-values, R-squared
+confint(model) # 95% confidence intervals
+nobs(model) # N the model used (rows with NA are dropped)
+
+# Heteroskedasticity: residuals against fitted values, then the test
+plot(model$fitted.values, model$residuals)
+abline(h = 0)
+bptest(model) # H0: homoskedasticity
+
+# Multicollinearity: below 10 is not a concern
+vif(model)
+
+# Logit (binary y): read only the sign of the coefficients
+logit <- glm(
+  y ~ x1 + factor(x2) + x3,
+  data = dataset,
+  family = binomial
+)
 summary(logit)
-summary(margins(logit))                  # average marginal effects (changes in probability)
-# multinomial logit (3+ categories); reference = first level
-mlogit <- multinom(y ~ x1 + factor(x2) + x3, data = dataset, trace = FALSE)
-round(coef(mlogit), 3)
-# interaction
+
+# Average marginal effects: change in probability (x 100 = points)
+summary(margins(logit))
+
+# Multinomial logit (3+ categories): reference = first level
+mlogit <- multinom(
+  y ~ x1 + factor(x2) + x3,
+  data = dataset,
+  trace = FALSE
+)
+round(coef(mlogit), 3) # one row per category against the reference
+
+# Interaction: does the effect of x depend on z?
 model_int <- lm(y ~ factor(z) * x + controls, data = dataset)
-coef(model_int)[["x"]] + coef(model_int)[["factor(z)2:x"]]    # effect of x when z = 2
+
+# Slope of x when z = 2: b_x + b_interaction
+coef(model_int)[["x"]] + coef(model_int)[["factor(z)2:x"]]
 ```
 
 ## Sentence templates
@@ -131,14 +279,14 @@ A statistically significant effect is not always strong: also give the size.
 
 | Message | Likely cause | Fix |
 |---|---|---|
-| `object 'x' not found` | spelling or capitals; you never ran the line that creates it | `names(dataset)`; run the script from the top |
+| `object 'x' not found` | spelling or capitals, or you never ran the line that creates it | `names(dataset)`, then run the script from the top |
 | `could not find function "x"` | package not loaded | `library(package)` |
 | `there is no package called 'x'` | package not installed | `install.packages("x")` |
 | `unexpected symbol`, `unexpected ')'` | a missing comma, quote or parenthesis | match every `(` and `"` |
 | The result is `NA` | missing values in the calculation | `na.rm = TRUE`, or `use = "complete.obs"` for `cor()` |
 | One column after importing | wrong separator | the other one of `read.csv()` and `read.csv2()` |
 | `replacement has 0 rows` | the variable on the right doesn't exist (often after a wrong import) | `names(dataset)` |
-| `grouping factor must have exactly 2 levels` | the `t.test()` group doesn't have exactly two values | `table(dataset$group)`; check the recode |
+| `grouping factor must have exactly 2 levels` | the `t.test()` group doesn't have exactly two values | `table(dataset$group)`, then check the recode |
 | `Chi-squared approximation may be incorrect` | small expected counts | `chisq.test(tab)$expected` |
 | `(… observations deleted due to missingness)` | not an error: rows with `NA` are left out | report N with `nobs(model)` |
 

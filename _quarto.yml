@@ -6,10 +6,13 @@
 project:
   type: website
   output-dir: _site
+  post-render: tools/llms_extra.R   # adds slides.md and the .qmd sources to llms.txt
   resources:
     - "data/*.csv"    # the data extracts (not make_data.R, not other data/ folders)
     - slides.pdf      # printed from _site/slides.html?print-pdf (re-print after changing the slides)
     - CNAME           # custom domain for GitHub Pages; must be in every publish
+    - cheatsheet.qmd  # the sources, for LLMs and anyone who wants the raw Quarto files
+    - slides.qmd
     # - downloads/labexam.zip   # starter project: hidden for now (page + zip kept in downloads/)
   render:
     - "*.qmd"         # only the site pages (not downloads/labexam/README.txt etc.)

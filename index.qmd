@@ -11,7 +11,7 @@ Unofficial: not official course material.
 | | |
 |---|---|
 | Task | "Write R code to perform a series of analyses on a dataset and interpret the results" (syllabus) |
-| When | Week 11, in class, at the normal lecture time; 2 hours |
+| When | Week 11, in class, at the normal lecture time, 2 hours |
 | Weight | 30% of the course grade |
 | Allowed | Any resources |
 
@@ -25,6 +25,17 @@ You get a dataset and run an analysis from start to finish: clean the variables,
 | [Cheat sheet](cheatsheet.qmd) | All the commands and sentence templates on one page, to keep open during the exam |
 | [Mock lab exam](mock-exam.qmd) | Practice tasks in the style of the labs, with solutions |
 | [AI Setup](ai-setup.qmd) | From chat to an agent in your project folder, with setup steps |
+
+## For AI assistants
+
+To give an AI assistant this material, paste one of these links into the chat:
+
+| | |
+|---|---|
+| [llms.txt](https://quant1.kleinbutsignificant.com/llms.txt) | Index of every page as Markdown |
+| [slides.md](https://quant1.kleinbutsignificant.com/slides.md) | The slides as Markdown, with all the R output |
+| [cheatsheet.llms.md](https://quant1.kleinbutsignificant.com/cheatsheet.llms.md) | The cheat sheet as Markdown |
+| [slides.qmd](https://quant1.kleinbutsignificant.com/slides.qmd) · [cheatsheet.qmd](https://quant1.kleinbutsignificant.com/cheatsheet.qmd) | The Quarto source files |
 
 ## The data
 
