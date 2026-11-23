@@ -4,10 +4,10 @@ Practice exam in the style of the lab exercises: ESS round 11, satisfaction with
 
 > **NOTE:**
 >
-> - This is **not** the real exam; nobody has seen that yet. The tasks follow the lab exercises (Labs 2–5) with variables the labs didn’t use.
+> - This is **not** the real exam. Nobody has seen that yet. The tasks follow the lab exercises (Labs 2–5) with variables the labs didn’t use.
 > - Set a timer for 90 minutes. Work in your own project, in a script named `Lastname_Firstname_mock.R`.
 > - Write a `# Interpretation:` comment in your own words after every result.
-> - Then open the solutions and compare. The numbers should match; your sentences don’t need to.
+> - Then open the solutions and compare. The numbers should match, your sentences don’t need to.
 
 ## The data
 
@@ -15,9 +15,9 @@ The European Social Survey, round 11 (`ess.csv` from the labs). Each row is one 
 
 | Variable | Question | Codes |
 |----|----|----|
-| `stfdem` | How satisfied with the way democracy works in your country? | 0 = extremely dissatisfied … 10 = extremely satisfied; 77, 88, 99 = missing |
-| `vote` | Voted in the last national election? | 1 = yes, 2 = no, 3 = not eligible to vote; 7, 8, 9 = missing |
-| `polintr` | How interested in politics? | 1 = very, 2 = quite, 3 = hardly, 4 = not at all interested; 7, 8, 9 = missing |
+| `stfdem` | How satisfied with the way democracy works in your country? | 0 = extremely dissatisfied … 10 = extremely satisfied, 77, 88, 99 = missing |
+| `vote` | Voted in the last national election? | 1 = yes, 2 = no, 3 = not eligible to vote, 7, 8, 9 = missing |
+| `polintr` | How interested in politics? | 1 = very, 2 = quite, 3 = hardly, 4 = not at all interested, 7, 8, 9 = missing |
 | `agea` | Age | 999 = missing |
 | `gndr` | Gender | 1 = male, 2 = female |
 | `eduyrs` | Years of full-time education | 77, 88, 99 = missing |
@@ -25,7 +25,7 @@ The European Social Survey, round 11 (`ess.csv` from the labs). Each row is one 
 
 ## Tasks
 
-1.  **Clean** `stfdem` into `swd` (0–10), `vote` into `voted` (1 = voted, 0 = didn’t vote; not eligible and the missing codes become `NA`), and `polintr` into `interested` (1 = very or quite interested, 0 = hardly or not at all). Also clean `agea` and `eduyrs`. Check every new variable.
+1.  **Clean** `stfdem` into `swd` (0–10), `vote` into `voted` (1 = voted, 0 = didn’t vote, not eligible and the missing codes become `NA`), and `polintr` into `interested` (1 = very or quite interested, 0 = hardly or not at all). Also clean `agea` and `eduyrs`. Check every new variable.
 2.  **Describe** `swd`: mean, median, standard deviation and a histogram. What percentage of respondents voted?
 3.  Is political interest **associated** with voting? Give the percentages and the test.
 4.  Is satisfaction with democracy **different** for voters and non-voters?
@@ -88,9 +88,10 @@ Open them only after you’ve tried.
 >
 > dataset$age <- ifelse(dataset$agea == 999, NA, dataset$agea)
 > dataset$edu <- ifelse(dataset$eduyrs %in% c(77, 88, 99), NA, dataset$eduyrs)
-> summary(dataset$age); summary(dataset$edu)
+> summary(dataset$age)
 > #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs 
 > #>   15.00   37.00   53.00   51.86   67.00   90.00     258
+> summary(dataset$edu)
 > #>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs 
 > #>    0.00   11.00   13.00   13.19   16.00   69.00     494
 > ```

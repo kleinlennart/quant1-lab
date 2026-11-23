@@ -266,10 +266,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="callout-body-container callout-body">
 <ul>
-<li>This is <strong>not</strong> the real exam; nobody has seen that yet. The tasks follow the lab exercises (Labs 2–5) with variables the labs didn’t use.</li>
+<li>This is <strong>not</strong> the real exam. Nobody has seen that yet. The tasks follow the lab exercises (Labs 2–5) with variables the labs didn’t use.</li>
 <li>Set a timer for 90 minutes. Work in your own project, in a script named <code>Lastname_Firstname_mock.R</code>.</li>
 <li>Write a <code># Interpretation:</code> comment in your own words after every result.</li>
-<li>Then open the solutions and compare. The numbers should match; your sentences don’t need to.</li>
+<li>Then open the solutions and compare. The numbers should match, your sentences don’t need to.</li>
 </ul>
 </div>
 </div>
@@ -293,17 +293,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td><code>stfdem</code></td>
 <td>How satisfied with the way democracy works in your country?</td>
-<td>0 = extremely dissatisfied … 10 = extremely satisfied; 77, 88, 99 = missing</td>
+<td>0 = extremely dissatisfied … 10 = extremely satisfied, 77, 88, 99 = missing</td>
 </tr>
 <tr class="even">
 <td><code>vote</code></td>
 <td>Voted in the last national election?</td>
-<td>1 = yes, 2 = no, 3 = not eligible to vote; 7, 8, 9 = missing</td>
+<td>1 = yes, 2 = no, 3 = not eligible to vote, 7, 8, 9 = missing</td>
 </tr>
 <tr class="odd">
 <td><code>polintr</code></td>
 <td>How interested in politics?</td>
-<td>1 = very, 2 = quite, 3 = hardly, 4 = not at all interested; 7, 8, 9 = missing</td>
+<td>1 = very, 2 = quite, 3 = hardly, 4 = not at all interested, 7, 8, 9 = missing</td>
 </tr>
 <tr class="even">
 <td><code>agea</code></td>
@@ -331,7 +331,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="tasks" class="level2">
 <h2 class="anchored" data-anchor-id="tasks">Tasks</h2>
 <ol type="1">
-<li><strong>Clean</strong> <code>stfdem</code> into <code>swd</code> (0–10), <code>vote</code> into <code>voted</code> (1 = voted, 0 = didn’t vote; not eligible and the missing codes become <code>NA</code>), and <code>polintr</code> into <code>interested</code> (1 = very or quite interested, 0 = hardly or not at all). Also clean <code>agea</code> and <code>eduyrs</code>. Check every new variable.</li>
+<li><strong>Clean</strong> <code>stfdem</code> into <code>swd</code> (0–10), <code>vote</code> into <code>voted</code> (1 = voted, 0 = didn’t vote, not eligible and the missing codes become <code>NA</code>), and <code>polintr</code> into <code>interested</code> (1 = very or quite interested, 0 = hardly or not at all). Also clean <code>agea</code> and <code>eduyrs</code>. Check every new variable.</li>
 <li><strong>Describe</strong> <code>swd</code>: mean, median, standard deviation and a histogram. What percentage of respondents voted?</li>
 <li>Is political interest <strong>associated</strong> with voting? Give the percentages and the test.</li>
 <li>Is satisfaction with democracy <strong>different</strong> for voters and non-voters?</li>
@@ -404,11 +404,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>age <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(dataset<span class="sc">$</span>agea <span class="sc">==</span> <span class="dv">999</span>, <span class="cn">NA</span>, dataset<span class="sc">$</span>agea)</span>
 <span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>dataset<span class="sc">$</span>edu <span class="ot">&lt;-</span> <span class="fu">ifelse</span>(dataset<span class="sc">$</span>eduyrs <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">77</span>, <span class="dv">88</span>, <span class="dv">99</span>), <span class="cn">NA</span>, dataset<span class="sc">$</span>eduyrs)</span>
-<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataset<span class="sc">$</span>age); <span class="fu">summary</span>(dataset<span class="sc">$</span>edu)</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataset<span class="sc">$</span>age)</span>
 <span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs </span></span>
 <span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;   15.00   37.00   53.00   51.86   67.00   90.00     258</span></span>
-<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs </span></span>
-<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    0.00   11.00   13.00   13.19   16.00   69.00     494</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(dataset<span class="sc">$</span>edu)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs </span></span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt;    0.00   11.00   13.00   13.19   16.00   69.00     494</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>The traps:</strong></p>
 <ul>

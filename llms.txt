@@ -9,3 +9,9 @@
 - [Cheat sheet](https://quant1.kleinbutsignificant.com/cheatsheet.llms.md)
 - [AI Setup](https://quant1.kleinbutsignificant.com/ai-setup.llms.md)
 - [R for the lab exam](https://quant1.kleinbutsignificant.com/index.llms.md)
+
+## Slides and Quarto sources
+
+- [Slides as Markdown, with the R output](https://quant1.kleinbutsignificant.com/slides.md)
+- [Slides, Quarto source](https://quant1.kleinbutsignificant.com/slides.qmd)
+- [Cheat sheet, Quarto source](https://quant1.kleinbutsignificant.com/cheatsheet.qmd)

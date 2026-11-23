@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.11.9">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<meta name="description" content="Every recipe on one page, plus sentence templates for the interpretation, common errors and an exam checklist. Keep it open during the exam.">
+<meta name="description" content="Every recipe on one page, plus which test or model to use, sentence templates for the interpretation, common errors and an exam checklist.">
 <title>Cheat sheet – QM1 Lab Exam: R Guide</title>
 <style>
 /* Default styles provided by pandoc.
@@ -205,8 +205,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="#start" id="toc-start" class="nav-link active" data-scroll-target="#start">Start</a></li>
   <li><a href="#inspect" id="toc-inspect" class="nav-link" data-scroll-target="#inspect">Inspect</a></li>
   <li><a href="#clean-always-into-a-new-variable-then-check-it" id="toc-clean-always-into-a-new-variable-then-check-it" class="nav-link" data-scroll-target="#clean-always-into-a-new-variable-then-check-it">Clean (always into a new variable, then check it)</a></li>
+  <li>
+<a href="#which-test-or-model" id="toc-which-test-or-model" class="nav-link" data-scroll-target="#which-test-or-model">Which test or model?</a>
+  <ul class="collapse">
+<li><a href="#what-type-is-each-variable" id="toc-what-type-is-each-variable" class="nav-link" data-scroll-target="#what-type-is-each-variable">1. What type is each variable?</a></li>
+  <li><a href="#one-variable" id="toc-one-variable" class="nav-link" data-scroll-target="#one-variable">2. One variable</a></li>
+  <li><a href="#two-variables" id="toc-two-variables" class="nav-link" data-scroll-target="#two-variables">3. Two variables</a></li>
+  <li><a href="#several-independent-variables-which-regression" id="toc-several-independent-variables-which-regression" class="nav-link" data-scroll-target="#several-independent-variables-which-regression">4. Several independent variables: which regression?</a></li>
+  <li><a href="#what-to-add-to-the-model" id="toc-what-to-add-to-the-model" class="nav-link" data-scroll-target="#what-to-add-to-the-model">5. What to add to the model</a></li>
+  <li><a href="#checks-after-an-ols-lecture-9" id="toc-checks-after-an-ols-lecture-9" class="nav-link" data-scroll-target="#checks-after-an-ols-lecture-9">6. Checks after an OLS (Lecture 9)</a></li>
+  </ul>
+</li>
   <li><a href="#describe-one-variable" id="toc-describe-one-variable" class="nav-link" data-scroll-target="#describe-one-variable">Describe one variable</a></li>
-  <li><a href="#two-variables" id="toc-two-variables" class="nav-link" data-scroll-target="#two-variables">Two variables</a></li>
+  <li><a href="#two-variables-1" id="toc-two-variables-1" class="nav-link" data-scroll-target="#two-variables-1">Two variables</a></li>
   <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models">Models</a></li>
   <li><a href="#sentence-templates" id="toc-sentence-templates" class="nav-link" data-scroll-target="#sentence-templates">Sentence templates</a></li>
   <li><a href="#errors-and-fixes" id="toc-errors-and-fixes" class="nav-link" data-scroll-target="#errors-and-fixes">Errors and fixes</a></li>
@@ -220,7 +231,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    Every recipe on one page, plus sentence templates for the interpretation, common errors and an exam checklist. Keep it open during the exam.
+    Every recipe on one page, plus which test or model to use, sentence templates for the interpretation, common errors and an exam checklist.
   </div>
 </div>
 
@@ -237,83 +248,415 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header><p>Replace <code>dataset</code>, <code>y</code>, <code>x</code>, <code>z</code> and <code>group</code> with your own names. The <a href="./slides.html">slides</a> have worked examples with their output.</p>
 <section id="start" class="level2"><h2 class="anchored" data-anchor-id="start">Start</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages(c("dplyr", "lmtest", "car", "margins", "nnet"))   # once per computer</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">lmtest</span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bprice2652/car_repo">car</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bbolker/margins">margins</a></span><span class="op">)</span>; <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span>                               <span class="co"># where R is looking</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="op">)</span>                          <span class="co"># is the data file there?</span></span>
-<span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"file.csv"</span><span class="op">)</span>       <span class="co"># read.csv2() if the columns are separated by ;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Install once per computer, then put the # back in front</span></span>
+<span><span class="co"># install.packages(c("dplyr", "lmtest", "car", "margins", "nnet"))</span></span>
+<span></span>
+<span><span class="co"># Load the packages, in every new session</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span> <span class="co"># mutate(), case_when()</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">lmtest</span><span class="op">)</span> <span class="co"># bptest()</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bprice2652/car_repo">car</a></span><span class="op">)</span> <span class="co"># vif()</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/bbolker/margins">margins</a></span><span class="op">)</span> <span class="co"># margins()</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://www.stats.ox.ac.uk/pub/MASS4/">nnet</a></span><span class="op">)</span> <span class="co"># multinom()</span></span>
+<span></span>
+<span><span class="co"># Where is R looking, and is the data file there?</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/getwd.html">getwd</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/list.files.html">list.files</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Read the data (all in one column? use read.csv2() instead)</span></span>
+<span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"file.csv"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="inspect" class="level2"><h2 class="anchored" data-anchor-id="inspect">Inspect</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span>     <span class="co"># every value with its count, including NA</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span>                    <span class="co"># a max of 99 or 999 is a missing-value code</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Variable names, rows and columns, types, first rows</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/dim.html">dim</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Every value with its count, NA included</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># A max of 99 or 999 is a missing-value code</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># All the distinct values, sorted</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/sort.html">sort</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="clean-always-into-a-new-variable-then-check-it" class="level2"><h2 class="anchored" data-anchor-id="clean-always-into-a-new-variable-then-check-it">Clean (always into a new variable, then check it)</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># keep a valid range</span></span>
-<span><span class="va">dataset</span><span class="op">$</span><span class="va">x_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">10</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, <span class="cn">NA</span><span class="op">)</span></span>
-<span><span class="co"># set special codes to missing</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Keep a valid range (here 0 to 10), everything else becomes NA</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">x_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">10</span>,</span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">x</span>,</span>
+<span>  <span class="cn">NA</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Set the missing-value codes to NA</span></span>
 <span><span class="va">dataset</span><span class="op">$</span><span class="va">x_clean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">77</span>, <span class="fl">88</span>, <span class="fl">99</span><span class="op">)</span>, <span class="cn">NA</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="co"># binary from codes</span></span>
-<span><span class="va">dataset</span><span class="op">$</span><span class="va">x_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">==</span> <span class="fl">4</span>, <span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># several categories, base R</span></span>
+<span></span>
+<span><span class="co"># Binary: 4 becomes 1, 1 to 3 become 0, anything else NA</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">x_bin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">==</span> <span class="fl">4</span>,</span>
+<span>  <span class="fl">1</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fl">0</span>, <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Several categories, base R: start with NA, then fill each range</span></span>
 <span><span class="va">dataset</span><span class="op">$</span><span class="va">x_cat</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
 <span><span class="va">dataset</span><span class="op">$</span><span class="va">x_cat</span><span class="op">[</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">3</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
 <span><span class="va">dataset</span><span class="op">$</span><span class="va">x_cat</span><span class="op">[</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">4</span> <span class="op">&amp;</span> <span class="va">dataset</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">6</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">2</span></span>
-<span><span class="co"># several categories, dplyr</span></span>
-<span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="va">dataset</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>x_cat <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">3</span> <span class="op">~</span> <span class="fl">1</span>, <span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">4</span> <span class="op">&amp;</span> <span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">6</span> <span class="op">~</span> <span class="fl">2</span>, <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># categories with labels</span></span>
-<span><span class="va">dataset</span><span class="op">$</span><span class="va">x_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Man"</span>, <span class="st">"Woman"</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># one group only</span></span>
+<span></span>
+<span><span class="co"># Several categories, dplyr: TRUE ~ NA_real_ = everything else is NA</span></span>
+<span><span class="va">dataset</span> <span class="op">&lt;-</span> <span class="va">dataset</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span></span>
+<span>    x_cat <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case-and-replace-when.html">case_when</a></span><span class="op">(</span></span>
+<span>      <span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">3</span> <span class="op">~</span> <span class="fl">1</span>,</span>
+<span>      <span class="va">x</span> <span class="op">&gt;=</span> <span class="fl">4</span> <span class="op">&amp;</span> <span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">6</span> <span class="op">~</span> <span class="fl">2</span>,</span>
+<span>      <span class="cn">TRUE</span> <span class="op">~</span> <span class="cn">NA_real_</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Categories with labels (the first level is the reference in models)</span></span>
+<span><span class="va">dataset</span><span class="op">$</span><span class="va">x_f</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span></span>
+<span>  <span class="va">dataset</span><span class="op">$</span><span class="va">x</span>,</span>
+<span>  levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>,</span>
+<span>  labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"Man"</span>, <span class="st">"Woman"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Keep one group only</span></span>
 <span><span class="va">dataset_fr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html">subset</a></span><span class="op">(</span><span class="va">dataset</span>, <span class="va">cntry</span> <span class="op">==</span> <span class="st">"FR"</span><span class="op">)</span></span>
-<span><span class="co"># check</span></span>
+<span></span>
+<span><span class="co"># Check: old values in the rows, new values in the columns</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">x_clean</span>, useNA <span class="op">=</span> <span class="st">"ifany"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="describe-one-variable" class="level2"><h2 class="anchored" data-anchor-id="describe-one-variable">Describe one variable</h2>
+</section><section id="which-test-or-model" class="level2"><h2 class="anchored" data-anchor-id="which-test-or-model">Which test or model?</h2>
+<p>Start from the question, then look at the type of each variable. Y is the dependent variable (what you explain), X the independent variable.</p>
+<section id="what-type-is-each-variable" class="level3"><h3 class="anchored" data-anchor-id="what-type-is-each-variable">1. What type is each variable?</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Type</th>
+<th>Values</th>
+<th>Examples from the labs</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Nominal</td>
+<td>categories without an order (2 categories = <strong>binary</strong>, or dummy)</td>
+<td>
+<code>gndr</code>, <code>cntry</code>, <code>voted_2024</code>, <code>far_right</code>
+</td>
+</tr>
+<tr class="even">
+<td>Ordinal</td>
+<td>categories that follow an order</td>
+<td>
+<code>hincfel</code> (1–4), <code>swd</code> (1, 2, 4, 5)</td>
+</tr>
+<tr class="odd">
+<td>Continuous</td>
+<td>values that mean something in reality</td>
+<td>
+<code>agea</code>, <code>eduyrs</code>, <code>lrscale</code> (0–10)</td>
+</tr>
+</tbody>
+</table>
+<p>An ordinal variable can be treated as nominal or as continuous (Lectures 2 and 4). The labs treat a 0–10 scale as continuous and recode it into categories when a model needs them (<code>left_right_3cat</code>).</p>
+</section><section id="one-variable" class="level3"><h3 class="anchored" data-anchor-id="one-variable">2. One variable</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead><tr class="header">
+<th>Type</th>
+<th>Describe with</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Nominal or ordinal</td>
+<td>
+<code><a href="https://rdrr.io/r/base/table.html">table()</a></code>, <code>prop.table(table()) * 100</code>, <code><a href="https://rdrr.io/r/graphics/barplot.html">barplot()</a></code>
+</td>
+</tr>
+<tr class="even">
+<td>Continuous</td>
+<td>
+<code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/stats/median.html">median()</a></code>, <code><a href="https://rdrr.io/r/stats/sd.html">sd()</a></code>, <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>, <code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code>
+</td>
+</tr>
+<tr class="odd">
+<td>Is the mean different from a value?</td>
+<td>one-sample t-test: <code>t.test(dataset$x, mu = 0.4)</code> (Lecture 6)</td>
+</tr>
+<tr class="even">
+<td>How precise is the sample mean?</td>
+<td>95% confidence interval: <code>t.test(dataset$x)$conf.int</code>
+</td>
+</tr>
+</tbody>
+</table></section><section id="two-variables" class="level3"><h3 class="anchored" data-anchor-id="two-variables">3. Two variables</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 20%">
+</colgroup>
+<thead><tr class="header">
+<th>Y</th>
+<th>X</th>
+<th>Show</th>
+<th>Test</th>
+<th>R</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>nominal</td>
+<td>nominal</td>
+<td>crosstab with row or column %</td>
+<td>chi-square</td>
+<td><code>chisq.test(table(dataset$x, dataset$y))</code></td>
+</tr>
+<tr class="even">
+<td>continuous</td>
+<td>binary</td>
+<td>the two group means, <code><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot()</a></code>
+</td>
+<td>t-test</td>
+<td><code>t.test(y ~ x, data = dataset)</code></td>
+</tr>
+<tr class="odd">
+<td>continuous</td>
+<td>3+ categories</td>
+<td>group means with <code><a href="https://rdrr.io/r/stats/aggregate.html">aggregate()</a></code>
+</td>
+<td>OLS with a factor</td>
+<td><code>lm(y ~ factor(x), data = dataset)</code></td>
+</tr>
+<tr class="even">
+<td>continuous</td>
+<td>continuous</td>
+<td>scatter plot</td>
+<td>correlation, or OLS</td>
+<td>
+<code>cor.test(dataset$x, dataset$y)</code>, <code>lm(y ~ x, data = dataset)</code>
+</td>
+</tr>
+<tr class="odd">
+<td>binary</td>
+<td>continuous</td>
+<td>mean of X in each group of Y</td>
+<td>t-test, with the roles swapped</td>
+<td>
+<code>t.test(x ~ y, data = dataset)</code> (Lab 3: age by satisfaction)</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>
+<code><a href="https://rdrr.io/r/stats/t.test.html">t.test()</a></code> needs a group with <strong>exactly 2 values</strong>. With 3 or more categories, use <code><a href="https://rdrr.io/r/stats/lm.html">lm()</a></code> with <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code>: each coefficient compares a category with the reference category.</li>
+<li>An OLS on a binary <code><a href="https://rdrr.io/r/base/factor.html">factor()</a></code> gives the same difference in means as the t-test (Lecture 8: “similar to a t-test”). The p-values differ a little because <code><a href="https://rdrr.io/r/stats/t.test.html">t.test()</a></code> doesn’t assume equal variances.</li>
+<li>A chi-square test gives no direction: read the percentages for that.</li>
+<li>Bivariate tests are a first look, not enough for robust conclusions. To take other causes into account, use a regression with control variables (Lectures 4 and 9).</li>
+</ul></section><section id="several-independent-variables-which-regression" class="level3"><h3 class="anchored" data-anchor-id="several-independent-variables-which-regression">4. Several independent variables: which regression?</h3>
+<p>Choose by the type of <strong>Y</strong>:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead><tr class="header">
+<th>Y</th>
+<th>Model</th>
+<th>R</th>
+<th>Interpret</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>continuous (incl.&nbsp;a 0–10 scale)</td>
+<td>OLS</td>
+<td><code>lm(y ~ x1 + x2, data = dataset)</code></td>
+<td>coefficient = change in Y when X increases by one unit</td>
+</tr>
+<tr class="even">
+<td>binary (0/1)</td>
+<td>logistic regression (logit)</td>
+<td><code>glm(y ~ x1 + x2, data = dataset, family = binomial)</code></td>
+<td>sign only, size from <code>summary(margins(logit))</code> in percentage points</td>
+</tr>
+<tr class="odd">
+<td>nominal, 3+ categories</td>
+<td>multinomial logit</td>
+<td><code>multinom(y ~ x1 + x2, data = dataset, trace = FALSE)</code></td>
+<td>sign only, each category against the reference category</td>
+</tr>
+</tbody>
+</table>
+<p>A ranking such as <code>hincfel</code> as Y: treat it as continuous (OLS) or recode it into categories (logit or multinomial logit).</p>
+</section><section id="what-to-add-to-the-model" class="level3"><h3 class="anchored" data-anchor-id="what-to-add-to-the-model">5. What to add to the model</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>If …</th>
+<th>Add</th>
+<th>R</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>X is categorical</td>
+<td>dummies against a reference category</td>
+<td><code>factor(x)</code></td>
+</tr>
+<tr class="even">
+<td>a third variable could cause both X and Y (spurious effect)</td>
+<td>control variables</td>
+<td><code>+ z1 + z2</code></td>
+</tr>
+<tr class="odd">
+<td>observations are grouped (respondents in countries)</td>
+<td>fixed effects: estimates within groups</td>
+<td><code>+ factor(cntry)</code></td>
+</tr>
+<tr class="even">
+<td>the effect of X depends on Z (moderation)</td>
+<td>interaction</td>
+<td><code>x * z</code></td>
+</tr>
+<tr class="odd">
+<td>one group only (e.g.&nbsp;France)</td>
+<td>a subsample</td>
+<td><code>subset(dataset, cntry == "FR")</code></td>
+</tr>
+<tr class="even">
+<td>floor or ceiling effect (Lecture 8, not in the labs)</td>
+<td>log of X (X &gt; 0)</td>
+<td><code>log(x)</code></td>
+</tr>
+<tr class="odd">
+<td>the effect changes direction as X grows (Lecture 8, not in the labs)</td>
+<td>X and X squared</td>
+<td><code>x + I(x^2)</code></td>
+</tr>
+</tbody>
+</table></section><section id="checks-after-an-ols-lecture-9" class="level3"><h3 class="anchored" data-anchor-id="checks-after-an-ols-lecture-9">6. Checks after an OLS (Lecture 9)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead><tr class="header">
+<th>Problem</th>
+<th>Check</th>
+<th>If it is there</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Outliers</td>
+<td>
+<code><a href="https://rdrr.io/r/graphics/hist.html">hist()</a></code>, <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code>, <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>
+</td>
+<td>remove them</td>
+</tr>
+<tr class="even">
+<td>Heteroskedasticity</td>
+<td>
+<code>plot(model$fitted.values, model$residuals)</code>, <code>bptest(model)</code>
+</td>
+<td>robust standard errors, e.g.&nbsp;<code>coeftest(model, vcov = hccm(model))</code> (not in the labs)</td>
+</tr>
+<tr class="odd">
+<td>Multicollinearity</td>
+<td><code>vif(model)</code></td>
+<td>below 10: not a concern (the course does nothing about it)</td>
+</tr>
+</tbody>
+</table></section></section><section id="describe-one-variable" class="level2"><h2 class="anchored" data-anchor-id="describe-one-variable">Describe one variable</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span>                         <span class="co"># categorical: counts</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>       <span class="co"># percentages</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Categorical: counts, percentages, bar chart</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/barplot.html">barplot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Continuous: centre and spread (na.rm = TRUE skips the NAs)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/median.html">median</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">10.5</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span>   <span class="co"># one bar per value on a 0-10 scale</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span></span>
+<span><span class="co"># Histogram with one bar per value on a 0-10 scale</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, breaks <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">0.5</span>, <span class="fl">10.5</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</section><section id="two-variables" class="level2"><h2 class="anchored" data-anchor-id="two-variables">Two variables</h2>
+</section><section id="two-variables-1" class="level2"><h2 class="anchored" data-anchor-id="two-variables-1">Two variables</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># categorical x categorical</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Categorical x categorical: crosstab, row %, chi-square test</span></span>
 <span><span class="va">tab</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/table.html">table</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="va">tab</span>, margin <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span>        <span class="co"># row % (margin = 2: column %)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/proportions.html">prop.table</a></span><span class="op">(</span><span class="va">tab</span>, margin <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="fl">100</span> <span class="co"># margin = 2: column %</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/chisq.test.html">chisq.test</a></span><span class="op">(</span><span class="va">tab</span><span class="op">)</span></span>
-<span><span class="co"># continuous y by a binary group</span></span>
+<span></span>
+<span><span class="co"># Continuous y by a binary group: group means, t-test, box plot</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html">aggregate</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">dataset</span>, FUN <span class="op">=</span> <span class="va">mean</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/t.test.html">t.test</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/boxplot.html">boxplot</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">group</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
-<span><span class="co"># continuous x continuous</span></span>
+<span></span>
+<span><span class="co"># Continuous x continuous: r, r with its p-value, scatter plot</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">y</span>, use <span class="op">=</span> <span class="st">"complete.obs"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/cor.test.html">cor.test</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">x</span>, <span class="va">dataset</span><span class="op">$</span><span class="va">y</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="models" class="level2"><h2 class="anchored" data-anchor-id="models">Models</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># OLS (continuous y); factor() for categorical predictors; + factor(cntry) = country fixed effects</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># OLS (continuous y): factor() for categorical predictors,</span></span>
+<span><span class="co"># + factor(cntry) = country fixed effects</span></span>
 <span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">+</span> <span class="va">x3</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cntry</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/stats/nobs.html">nobs</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
-<span><span class="co"># diagnostics</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model</span><span class="op">$</span><span class="va">fitted.values</span>, <span class="va">model</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>                            <span class="co"># H0: homoskedasticity</span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/vif.html">vif</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span>                               <span class="co"># multicollinearity</span></span>
-<span><span class="co"># logit (binary y)</span></span>
-<span><span class="va">logit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">+</span> <span class="va">x3</span>, data <span class="op">=</span> <span class="va">dataset</span>, family <span class="op">=</span> <span class="va">binomial</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="co"># coefficients, p-values, R-squared</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html">confint</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="co"># 95% confidence intervals</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/nobs.html">nobs</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="co"># N the model used (rows with NA are dropped)</span></span>
+<span></span>
+<span><span class="co"># Heteroskedasticity: residuals against fitted values, then the test</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">model</span><span class="op">$</span><span class="va">fitted.values</span>, <span class="va">model</span><span class="op">$</span><span class="va">residuals</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span> <span class="co"># H0: homoskedasticity</span></span>
+<span></span>
+<span><span class="co"># Multicollinearity: below 10 is not a concern</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/car/man/vif.html">vif</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Logit (binary y): read only the sign of the coefficients</span></span>
+<span><span class="va">logit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/glm.html">glm</a></span><span class="op">(</span></span>
+<span>  <span class="va">y</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">+</span> <span class="va">x3</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">dataset</span>,</span>
+<span>  family <span class="op">=</span> <span class="va">binomial</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">logit</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/margins/man/margins.html">margins</a></span><span class="op">(</span><span class="va">logit</span><span class="op">)</span><span class="op">)</span>                  <span class="co"># average marginal effects (changes in probability)</span></span>
-<span><span class="co"># multinomial logit (3+ categories); reference = first level</span></span>
-<span><span class="va">mlogit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">+</span> <span class="va">x3</span>, data <span class="op">=</span> <span class="va">dataset</span>, trace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mlogit</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="co"># interaction</span></span>
+<span></span>
+<span><span class="co"># Average marginal effects: change in probability (x 100 = points)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/pkg/margins/man/margins.html">margins</a></span><span class="op">(</span><span class="va">logit</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Multinomial logit (3+ categories): reference = first level</span></span>
+<span><span class="va">mlogit</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom</a></span><span class="op">(</span></span>
+<span>  <span class="va">y</span> <span class="op">~</span> <span class="va">x1</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span> <span class="op">+</span> <span class="va">x3</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">dataset</span>,</span>
+<span>  trace <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">mlogit</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span> <span class="co"># one row per category against the reference</span></span>
+<span></span>
+<span><span class="co"># Interaction: does the effect of x depend on z?</span></span>
 <span><span class="va">model_int</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html">lm</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">z</span><span class="op">)</span> <span class="op">*</span> <span class="va">x</span> <span class="op">+</span> <span class="va">controls</span>, data <span class="op">=</span> <span class="va">dataset</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model_int</span><span class="op">)</span><span class="op">[[</span><span class="st">"x"</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model_int</span><span class="op">)</span><span class="op">[[</span><span class="st">"factor(z)2:x"</span><span class="op">]</span><span class="op">]</span>    <span class="co"># effect of x when z = 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span></span>
+<span><span class="co"># Slope of x when z = 2: b_x + b_interaction</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model_int</span><span class="op">)</span><span class="op">[[</span><span class="st">"x"</span><span class="op">]</span><span class="op">]</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html">coef</a></span><span class="op">(</span><span class="va">model_int</span><span class="op">)</span><span class="op">[[</span><span class="st">"factor(z)2:x"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section><section id="sentence-templates" class="level2"><h2 class="anchored" data-anchor-id="sentence-templates">Sentence templates</h2>
 <p>Wording from Prof.&nbsp;Bol’s slides and his correction of the sample midterm.</p>
@@ -420,9 +763,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tbody>
 <tr class="odd">
 <td><code>object 'x' not found</code></td>
-<td>spelling or capitals; you never ran the line that creates it</td>
+<td>spelling or capitals, or you never ran the line that creates it</td>
 <td>
-<code>names(dataset)</code>; run the script from the top</td>
+<code>names(dataset)</code>, then run the script from the top</td>
 </tr>
 <tr class="even">
 <td><code>could not find function "x"</code></td>
@@ -465,7 +808,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><code>grouping factor must have exactly 2 levels</code></td>
 <td>the <code><a href="https://rdrr.io/r/stats/t.test.html">t.test()</a></code> group doesn’t have exactly two values</td>
 <td>
-<code>table(dataset$group)</code>; check the recode</td>
+<code>table(dataset$group)</code>, then check the recode</td>
 </tr>
 <tr class="odd">
 <td><code>Chi-squared approximation may be incorrect</code></td>

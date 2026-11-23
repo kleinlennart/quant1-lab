@@ -218,7 +218,7 @@
 <ul>
 <li>an <strong>RStudio</strong> project you can reuse<br> on Tuesday</li>
 <li>a feel for how R reads a line of code</li>
-<li>a routine for fixing errors, with or<br>without AI</li>
+<li>a routine for fixing errors, with or<br> without AI</li>
 </ul>
 </div><div class="column" style="width:50%;">
 <p><strong>The idea of this session</strong></p>
@@ -565,7 +565,7 @@
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">dataset</span><span class="op">$</span><span class="va">like_democrat</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 </div>
-<img data-src="slides_files/figure-revealjs/plot-histogram-1.png" style="width:78.0%" class="r-stretch"><p>The bars show the shape that the mean and median describe. The first bar counts the 0s and the 1s together; <code>breaks = seq(-0.5, 10.5, by = 1)</code> gives one bar per value.</p>
+<img data-src="slides_files/figure-revealjs/plot-histogram-1.png" style="width:78.0%" class="r-stretch"><p>The bars show the shape that the mean and median describe. The first bar counts the 0s and the 1s together. <code>breaks = seq(-0.5, 10.5, by = 1)</code> gives one bar per value.</p>
 </section><section class="slide level2"><h2>Describe a variable (Lab 2) – as a figure</h2>
 <div class="columns">
 <div class="column" style="width:66%;">
@@ -712,7 +712,7 @@ X-squared = 71.87, df = 1, p-value &lt; 2.2e-16</code></pre>
 <p>Voters are more often satisfied with democracy: 69% of voters against 53% of non-voters. The association is statistically significant at the 0.01 level: we reject the null hypothesis of no association between voting and satisfaction.</p>
 </div>
 <div class="interp-note">
-<p>In the output: rows = satisfied (1) or not (0), columns = voted (1) or not (0). The test gives significance only; the direction comes from the percentages, <code>prop.table(table(...), margin = 2)</code>. X-squared = 71.9.</p>
+<p>In the output: rows = satisfied (1) or not (0), columns = voted (1) or not (0). The test gives significance only. The direction comes from the percentages, <code>prop.table(table(...), margin = 2)</code>. X-squared = 71.9.</p>
 </div>
 </section><section class="slide level2"><h2>Chi-square test (Lab 3) – as a figure</h2>
 <div class="columns">
@@ -776,7 +776,7 @@ edu           -0.030211   0.003079   -9.81  &lt; 2e-16 ***</code></pre>
 <ul>
 <li>Dots: the average left-right position for each year of education.</li>
 <li>Line: the regression’s prediction. Its slope is the education coefficient, -0.030 per year, net of age and gender.</li>
-<li>The line summarises the dots; it doesn’t pass through each one.</li>
+<li>The line summarises the dots. It doesn’t pass through each one.</li>
 </ul>
 </div></div>
 </section><section class="slide level2"><h2>Country fixed effects (Lab 4)</h2>
@@ -921,7 +921,7 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 <ul>
 <li>VIF: how much a variable is explained by the other independent variables.</li>
 <li>Why it’s bad: if variables overlap, the model can’t tell their effects apart. The standard errors get large, so real effects can look not significant.</li>
-<li>1 means no overlap; below 10 is generally not a concern. All four are about 1: no multicollinearity.</li>
+<li>1 means no overlap. Below 10 is generally not a concern. All four are about 1: no multicollinearity.</li>
 </ul>
 </div></div>
 </section><section class="slide level2 center" data-background-color="#dce6f2"><h2>Lab 5</h2>
@@ -939,7 +939,7 @@ factor(cntry) 1.106917 22        1.002311</code></pre>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p><strong>Nested <code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code>:</strong> if 8 to 10, then 1; otherwise, if 0 to 7, then 0; otherwise <code>NA</code>. The second <code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code> is the “no” of the first.</p>
+<p><strong>Nested <code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code>:</strong> if 8 to 10, then 1. Otherwise, if 0 to 7, then 0. Otherwise <code>NA</code>. The second <code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code> is the “no” of the first.</p>
 <p>The next slide does the same with dplyr.</p>
 </section><section class="slide level2"><h2>The same thing but tidier: Recoding with dplyr</h2>
 <div class="columns">
@@ -998,7 +998,7 @@ factor(cntry)BG  1.340284   0.110387   12.14  &lt; 2e-16 ***</code></pre>
 </ul>
 </div>
 <div class="interp-note">
-<p>In the output: in a logit, only the sign of <code>Estimate</code> is interpreted; the size comes from the marginal effects. <code>factor(gndr)2</code> = women vs men (the reference has no row), <code>factor(cntry)BE</code> = Belgium vs Austria. Stars: R’s <code>***</code> 0.001, <code>**</code> 0.01, <code>*</code> 0.05 are not the course’s 0.01, 0.05, 0.10 (Lecture 8, slide 41): go by the p-value.</p>
+<p>In the output: in a logit, only the sign of <code>Estimate</code> is interpreted. The size comes from the marginal effects. <code>factor(gndr)2</code> = women vs men (the reference has no row), <code>factor(cntry)BE</code> = Belgium vs Austria. Stars: R’s <code>***</code> 0.001, <code>**</code> 0.01, <code>*</code> 0.05 are not the course’s 0.01, 0.05, 0.10 (Lecture 8, slide 41): go by the p-value.</p>
 </div>
 </section><section class="slide level2"><h2>One effect, three numbers (Lab 5)</h2>
 <p>The same model, the same effect of being a woman, on three scales:</p>
@@ -1031,7 +1031,7 @@ factor(cntry)BG  1.340284   0.110387   12.14  &lt; 2e-16 ***</code></pre>
 <li>
 <strong><code>summary(logit1)</code> gives log-odds:</strong> the change in log(p / (1 − p)) when X goes up by one. That is hard to read, so the course reads only the sign (Lecture 10).</li>
 <li>
-<strong><code><a href="https://rdrr.io/r/base/Log.html">exp()</a></code> turns them into odds ratios.</strong> Above 1: higher odds; below 1: lower odds. Women: 0.67, so their odds of being on the far right are 33% lower than men’s.</li>
+<strong><code><a href="https://rdrr.io/r/base/Log.html">exp()</a></code> turns them into odds ratios.</strong> Above 1: higher odds. Below 1: lower odds. Women: 0.67, so their odds of being on the far right are 33% lower than men’s.</li>
 <li>
 <strong>Odds are not probabilities.</strong> For the size, the course uses the marginal effects, in percentage points (the marginal effects slide).</li>
 </ul></section><section class="slide level2"><h2>Logit output, the bottom (Lab 5, Step 2)</h2>
@@ -1357,7 +1357,7 @@ factor(gndr)2:edu -0.01075    0.00598   -1.80    0.072 .  </code></pre>
 <p>The more educated place themselves further left, and a little more so among women: -0.022 points per year of education for men, -0.032 for women. The interaction is statistically significant at the 0.10 level only: weak evidence that gender moderates the effect of education.</p>
 </div>
 <div class="interp-note">
-<p>In the output: <code>edu</code> = the slope for men (the reference). <code>factor(gndr)2:edu</code> = how much the slope differs for women; it is the last row of <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>, after the countries. <code>factor(gndr)2</code> = the gap at 0 years of education, not meaningful on its own.</p>
+<p>In the output: <code>edu</code> = the slope for men (the reference). <code>factor(gndr)2:edu</code> = how much the slope differs for women. It is the last row of <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code>, after the countries. <code>factor(gndr)2</code> = the gap at 0 years of education, not meaningful on its own.</p>
 </div>
 </section><section class="slide level2"><h2>Interaction (Lab 5) – as a figure</h2>
 
@@ -1627,12 +1627,12 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <tr class="odd">
 <td>Instruction</td>
 <td>“a specific task or instruction you want the model to perform”</td>
-<td>fix this error; explain this output</td>
+<td>fix this error, explain this output</td>
 </tr>
 <tr class="even">
 <td>Context</td>
 <td>“external information or additional context that can steer the model to better responses”</td>
-<td>base R as in the labs; the variable codes from <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>
+<td>base R as in the labs, the variable codes from <code><a href="https://rdrr.io/r/base/table.html">table()</a></code>
 </td>
 </tr>
 <tr class="odd">
@@ -1684,7 +1684,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <tr class="even">
 <td>2</td>
 <td>A desktop app opened on <code>labexam/</code>, which reads your files and runs R</td>
-<td>ChatGPT app (Codex);<br>Claude app, Code tab (paid plan)</td>
+<td>ChatGPT app (Codex),<br> Claude app, Code tab (paid plan)</td>
 </tr>
 <tr class="odd">
 <td>3</td>
@@ -1871,7 +1871,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <td><code><a href="https://rdrr.io/r/base/library.html">library()</a></code></td>
 <td>loads a package for this session</td>
 <td><code><a href="https://github.com/bprice2652/car_repo">library(car)</a></code></td>
-<td>every session; the stats package is always loaded</td>
+<td>every session (the stats package is always loaded)</td>
 </tr>
 <tr class="odd">
 <td><code><a href="https://rdrr.io/r/base/getwd.html">getwd()</a></code></td>
@@ -2173,7 +2173,7 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <td><code><a href="https://rdrr.io/pkg/nnet/man/multinom.html">multinom()</a></code></td>
 <td>multinomial logit</td>
 <td><code>multinom(y3 ~ …, data = d)</code></td>
-<td>reference = first level; <code><a href="http://www.stats.ox.ac.uk/pub/MASS4/">library(nnet)</a></code>
+<td>reference = first level, <code><a href="http://www.stats.ox.ac.uk/pub/MASS4/">library(nnet)</a></code>
 </td>
 </tr>
 <tr class="odd">
@@ -2187,14 +2187,14 @@ model's intercept is at 5.52 (95% CI [5.40, 5.64]). Within this model:
 <td><code><a href="https://rdrr.io/pkg/lmtest/man/bptest.html">bptest()</a></code></td>
 <td>Breusch-Pagan test</td>
 <td><code>bptest(model2)</code></td>
-<td>H0: homoskedasticity; <code><a href="https://rdrr.io/r/base/library.html">library(lmtest)</a></code>
+<td>H0: homoskedasticity, <code><a href="https://rdrr.io/r/base/library.html">library(lmtest)</a></code>
 </td>
 </tr>
 <tr class="odd">
 <td><code><a href="https://rdrr.io/pkg/car/man/vif.html">vif()</a></code></td>
 <td>multicollinearity</td>
 <td><code>vif(model2)</code></td>
-<td>below 10: not a concern; <code><a href="https://github.com/bprice2652/car_repo">library(car)</a></code>
+<td>below 10: not a concern, <code><a href="https://github.com/bprice2652/car_repo">library(car)</a></code>
 </td>
 </tr>
 <tr class="even">
