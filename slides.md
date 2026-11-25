@@ -546,6 +546,8 @@ of the variance.
 - Line: the regression’s prediction. Its slope is the education
   coefficient, -0.030 per year, net of age and gender.
 - The line summarises the dots. It doesn’t pass through each one.
+- [How this plot is built, layer by layer](animations/ggplot2-ols.html)
+  (animated)
 
 ## Country fixed effects (Lab 4)
 
@@ -1250,10 +1252,10 @@ check_collinearity(m_fe)
     Low Correlation
 
               Term  VIF   VIF 95% CI adj. VIF Tolerance Tolerance 95% CI
-               age 1.07 [1.06, 1.08]     1.04      0.93     [0.92, 0.94]
-      factor(gndr) 1.01 [1.00, 1.03]     1.00      0.99     [0.97, 1.00]
-               edu 1.14 [1.13, 1.15]     1.07      0.88     [0.87, 0.89]
-     factor(cntry) 1.11 [1.09, 1.12]     1.00      0.90     [0.89, 0.91]
+               age 1.07 [1.06, 1.08]     1.04      0.93     [0.93, 0.94]
+      factor(gndr) 1.01 [1.00, 1.01]     1.00      0.99     [0.99, 1.00]
+               edu 1.14 [1.13, 1.15]     1.07      0.88     [0.87, 0.88]
+     factor(cntry) 1.11 [1.10, 1.11]     1.00      0.90     [0.90, 0.91]
 
 The same results as `bptest()` and `vif()`, with the conclusion spelled
 out: heteroskedasticity, and no multicollinearity.

@@ -943,6 +943,7 @@ ggplot2::ggplot() +
 - Dots: the average left-right position for each year of education.
 - Line: the regression's prediction. Its slope is the education coefficient, `r format(round(coef(model1)[["edu"]], 3), nsmall = 3)` per year, net of age and gender.
 - The line summarises the dots. It doesn't pass through each one.
+- [How this plot is built, layer by layer](animations/ggplot2-ols.html) (animated)
 :::
 :::
 
