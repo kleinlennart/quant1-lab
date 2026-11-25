@@ -23,7 +23,8 @@
 .reveal .pub-slide pre code { overflow: visible; max-height: none; white-space: pre; }
 .reveal .pub-slide pre code > span { transition: background-color 0.35s; border-radius: 3px; }
 .reveal .pub-slide pre code > span.ol-hot { background-color: #fff1a8; }
-.reveal .pub-slide .pub-captions { font-size: 0.62em; min-height: 2.8em; }
+/* fixed height (4 lines, the longest caption), so the plot below never moves */
+.reveal .pub-slide .pub-captions { font-size: 0.62em; line-height: 1.35; height: 5.4em; overflow: visible; }
 .reveal .pub-slide .pub-cap { display: none; }
 .reveal .pub-slide .pub-cap.on { display: block; }
 #pub-stage { position: relative; width: 540px; height: 419px; margin: 0.2em 0 0; }
@@ -31,6 +32,10 @@
 .reveal .pub-slide .pub-figcap.on { opacity: 1; }
 #pub-stage img { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; max-width: none; max-height: none; opacity: 0; transition: opacity 0.6s; }
 #pub-stage img.on { opacity: 1; }
+/* the export slide: the code fits without scrolling */
+.reveal .export-slide pre { font-size: 0.5em; }
+.reveal .export-slide pre code { max-height: none; }
+.reveal .export-slide .fe-note { font-size: 0.75em; }
 /* the Learn more slide */
 .reveal .ol-links { font-size: 0.7em; }
 .reveal .ol-links li { margin-bottom: 0.4em; }
@@ -191,8 +196,13 @@
     ['size = 3', 'colour = "grey55"'],
     ['colour = "black")'],
     ['theme(', 'panel.grid', 'axis.line'],
-    []
+    ['coord_cartesian'],
+    [],
+    ['base_family']
   ]
+  // which image each stage shows (stage 5 adds the figure caption, stage 6 the font)
+  const IMAGE_AT = [0, 1, 2, 3, 4, 4, 5]
+  const FIGCAP_FROM = 5
   let imgs = null
 
   function render() {
@@ -210,8 +220,8 @@
       })
     }
     const s = Math.min(slide.querySelectorAll('.pub-frag.visible').length, CHANGED.length - 1)
-    imgs.forEach((img, k) => img.classList.toggle('on', k === Math.min(s, IMAGES.length - 1)))
-    slide.querySelectorAll('.pub-figcap').forEach(c => c.classList.toggle('on', s === CHANGED.length - 1))
+    imgs.forEach((img, k) => img.classList.toggle('on', k === IMAGE_AT[s]))
+    slide.querySelectorAll('.pub-figcap').forEach(c => c.classList.toggle('on', s >= FIGCAP_FROM))
     slide.querySelectorAll('pre code > span').forEach(line => {
       const text = line.textContent
       line.classList.toggle('ol-hot', CHANGED[s].some(m => text.includes(m)))

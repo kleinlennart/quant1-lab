@@ -122,6 +122,8 @@ printCoefmat(coef(summary(model)), digits = 3, signif.legend = FALSE)
 
 ```{r}
 #| echo: true
+#| include: false # hidden for now
+#| eval: false
 # the same as a table, with 95% confidence intervals
 parameters::model_parameters(model)
 ```
@@ -259,13 +261,13 @@ Lay the plot down…
 `labs()`: the axis titles.
 :::
 ::: {.ol-cap data-stage="8"}
-`theme_minimal()`: the look. Here: no grey background, light grid lines, text size 21.
+`theme_minimal()`: the look. Here: no grey background, light grid lines, and text size 21.
 :::
 ::: {.ol-cap data-stage="9"}
 Stack the cards again…
 :::
 ::: {.ol-cap data-stage="10"}
-…and it is one plot. Mind the y axis: it shows only `r y_axis[1]` to `r y_axis[2]` of the 0 to 10 scale, which makes the slope look steep.
+…and it is one plot.
 :::
 ::::
 :::::
@@ -297,7 +299,7 @@ cat(
 
 ```{r}
 #| include: false
-# the step 4 plot with the first `step` changes (0 = none, 3 = all)
+# the step 4 plot with the first `step` changes (0 = none, 5 = all)
 pub_plot <- function(step) {
   p <- dataset |>
     ggplot(aes(x = edu, y = lrscale_clean)) +
@@ -316,7 +318,13 @@ pub_plot <- function(step) {
       x = "Years of education",
       y = "Left-right (0 = left, 10 = right)"
     ) +
-    theme_minimal(base_size = 21, base_family = "Source Sans Static")
+    theme_minimal(
+      base_size = 21,
+      base_family = if (step >= 5) "serif" else "Source Sans Static"
+    )
+  if (step >= 4) {
+    p <- p + coord_cartesian(ylim = c(0, 10))
+  }
   if (step >= 3) {
     p <- p +
       theme(
@@ -336,7 +344,7 @@ pub_uri <- function(step) {
   dev.off()
   knitr::image_uri(f)
 }
-pub_images <- lapply(0:3, pub_uri)
+pub_images <- lapply(0:5, pub_uri)
 ```
 
 :::::: {.columns}
@@ -354,11 +362,15 @@ dataset |>
   ) +
   geom_smooth(method = "lm", colour = "black") +
   scale_x_continuous(breaks = seq(4, 24, 4)) +
+  coord_cartesian(ylim = c(0, 10)) +
   labs(
     x = "Years of education",
     y = "Left-right (0 = left, 10 = right)"
   ) +
-  theme_minimal(base_size = 21) +
+  theme_minimal(
+    base_size = 21,
+    base_family = "serif" # optional: a Times-like font
+  ) +
   theme(
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
@@ -370,19 +382,25 @@ dataset |>
 ::::: {.column width="50%"}
 :::: {.pub-captions}
 ::: {.pub-cap data-stage="0"}
-The plot from step 4. Three small changes:
+We can make a couple of small fixes:
 :::
 ::: {.pub-cap data-stage="1"}
-1\. Data in the background: bigger grey dots
+**1\.** Data in the background: bigger grey dots
 :::
 ::: {.pub-cap data-stage="2"}
-2\. The result in front: a black line (prints in greyscale too)
+**2\.** The result in front: a black line (prints in greyscale too)
 :::
 ::: {.pub-cap data-stage="3"}
-3\. Less ink: only horizontal grid lines, and a baseline
+**3\.** Less ink: only horizontal grid lines, and a baseline
 :::
 ::: {.pub-cap data-stage="4"}
+**4\.** The whole 0 to 10 scale: from 4 to 24 years, the line drops only `r format(round(20 * abs(coef(model)[["edu"]]), 1), nsmall = 1)` points. Significant, but small. `coord_cartesian()` zooms without dropping data.
+:::
+::: {.pub-cap data-stage="5"}
 No title inside the figure: in a journal, it goes in the caption.
+:::
+::: {.pub-cap data-stage="6"}
+**5\.** Optional: `base_family = "serif"` for a Times-like font, to match a paper in Times New Roman. Many journals want sans serif in figures: check their guidelines.
 :::
 ::::
 
@@ -407,9 +425,48 @@ cat(
 )
 ```
 
-[]{.fragment .pub-frag}[]{.fragment .pub-frag}[]{.fragment .pub-frag}[]{.fragment .pub-frag}
+[]{.fragment .pub-frag}[]{.fragment .pub-frag}[]{.fragment .pub-frag}[]{.fragment .pub-frag}[]{.fragment .pub-frag}[]{.fragment .pub-frag}
 
-## Learn more
+## 6. Export {.export-slide}
+
+:::: {.columns}
+::: {.column width="55%"}
+```{r}
+#| echo: true
+#| eval: false
+# the plot from step 5 in an object,
+# with print-size text (11 pt)
+p <- dataset |>
+  ggplot(aes(x = edu, y = lrscale_clean)) +
+  # ... the other layers from step 5 ...
+  theme_minimal(base_size = 11)
+
+# for the paper: PDF (vector, sharp at any zoom),
+# with the fonts embedded
+ggsave(
+  "figure1.pdf",
+  p,
+  width = 16,
+  height = 11,
+  units = "cm",
+  device = cairo_pdf
+)
+
+# for Word or slides: PNG
+ggsave("figure1.png", p, width = 16, height = 11, units = "cm")
+```
+:::
+
+::: {.column width="45%" .fe-note}
+- Save at the size it will be printed: one column is about 8 cm, a full page about 16 cm. Then 11 pt in R is 11 pt in the paper
+- PDF for the paper: lines and text stay sharp. `cairo_pdf` embeds the fonts, so it looks the same on every machine and printer
+- PNG (300 dpi by default) for Word and slides
+- Not the Export button of the Plots pane: the size depends on your window
+- Check the journal's guidelines: some ask for TIFF or EPS
+:::
+::::
+
+## Getting started
 
 :::: {.columns}
 ::: {.column width="40%"}
@@ -431,7 +488,7 @@ library(ggplot2)
 :::
 
 ::: {.column width="60%" .ol-links}
-**Free online**
+**Learn more**
 
 - [ggplot2 website](https://ggplot2.tidyverse.org/): reference for every function, and [where to start learning](https://ggplot2.tidyverse.org/#learning-ggplot2)
 - [Cheat sheet: Data visualization with ggplot2](https://rstudio.github.io/cheatsheets/html/data-visualization.html)
@@ -441,6 +498,6 @@ library(ggplot2)
 
 **The theory**
 
-- [*The Grammar of Graphics*](https://link.springer.com/book/10.1007/0-387-28695-0) (Leland Wilkinson, 2005): the idea behind ggplot2's layers (a book, not free)
+- [*The Grammar of Graphics*](https://link.springer.com/book/10.1007/0-387-28695-0) (Leland Wilkinson, 2005): the idea behind ggplot2's layers
 :::
 ::::

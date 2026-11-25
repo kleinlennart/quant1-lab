@@ -57,6 +57,10 @@ website:
             href: slides.pdf
           - ai-setup.qmd
           # - downloads.qmd   # hidden for now
+      - section: "Animations"   # experimental animated explainers (animations/)
+        contents:
+          - text: "From data to plot"
+            href: animations/ggplot2-ols.qmd
   page-footer:
     center: "Unofficial: not official course material."
     left: "Data: ANES 2024 Time Series Study; European Social Survey round 11 (CC BY-NC-SA 4.0)."
