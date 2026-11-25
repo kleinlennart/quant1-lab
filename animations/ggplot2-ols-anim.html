@@ -1,0 +1,233 @@
+<!-- Animation for ggplot2-ols.qmd: the plot lays down, splits into one card per block
+     of code, walks up the code (focused card turns head-on, the others part), then
+     stacks and flattens again. Stage = number of visible .ol-frag fragments.
+     render() sets the target state for the stage, so forward, back and direct
+     arrival all end in the same picture. Card images come from window.OL_CARDS (R).
+     Not named ggplot2-ols.html: that is the deck's render output, and the render would delete it. -->
+<style>
+.reveal .ol-slide .ol-frag { position: absolute; opacity: 0 !important; pointer-events: none; }
+/* short lines (longest 46 characters), so the listing never scrolls */
+.reveal .ol-slide pre { font-size: 0.54em; margin-top: 0.2em; }
+.reveal .ol-slide pre code { overflow: visible; max-height: none; white-space: pre; }
+.reveal .ol-slide pre code > span { transition: background-color 0.35s; border-radius: 3px; }
+.reveal .ol-slide pre code > span.ol-hot { background-color: #fff1a8; }
+.reveal .ol-slide .ol-captions { font-size: 0.62em; min-height: 4.5em; }
+.reveal .ol-slide .ol-cap { display: none; }
+.reveal .ol-slide .ol-cap.on { display: block; }
+/* clip only top and bottom, so parted cards vanish but the tilted fan keeps its sides */
+.reveal .ol-slide .ol-stage-wrap { position: relative; height: 600px; clip-path: inset(0 -400px 0 -400px); }
+#ol-stage { position: absolute; inset: 0; }
+/* the publication-ready slide: the plot images cross-fade, the changed lines light up */
+.reveal .pub-slide .pub-frag { position: absolute; opacity: 0 !important; pointer-events: none; }
+.reveal .pub-slide pre { font-size: 0.5em; margin-top: 0; }
+.reveal .pub-slide pre code { overflow: visible; max-height: none; white-space: pre; }
+.reveal .pub-slide pre code > span { transition: background-color 0.35s; border-radius: 3px; }
+.reveal .pub-slide pre code > span.ol-hot { background-color: #fff1a8; }
+.reveal .pub-slide .pub-captions { font-size: 0.62em; min-height: 2.8em; }
+.reveal .pub-slide .pub-cap { display: none; }
+.reveal .pub-slide .pub-cap.on { display: block; }
+#pub-stage { position: relative; width: 540px; height: 419px; margin: 0.2em 0 0; }
+.reveal .pub-slide .pub-figcap { font-size: 0.5em; line-height: 1.35; color: #333; max-width: 540px; opacity: 0; transition: opacity 0.6s; }
+.reveal .pub-slide .pub-figcap.on { opacity: 1; }
+#pub-stage img { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; max-width: none; max-height: none; opacity: 0; transition: opacity 0.6s; }
+#pub-stage img.on { opacity: 1; }
+/* the Learn more slide */
+.reveal .ol-links { font-size: 0.7em; }
+.reveal .ol-links li { margin-bottom: 0.4em; }
+#ol-stage .ol-plane {
+  position: absolute; left: 50%; top: 50%;
+  width: 540px; height: 419px; margin-left: -270px; margin-top: -210px;
+  perspective: 1500px;
+}
+#ol-stage .ol-tilt { position: absolute; inset: 0; transform-origin: 50% 50%; }
+#ol-stage .ol-card {
+  position: absolute; inset: 0; border-radius: 6px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(31, 58, 95, 0.25);
+  box-shadow: 0 4px 14px rgba(31, 58, 95, 0.12);
+  opacity: 0;
+}
+#ol-stage img { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; max-width: none; max-height: none; }
+#ol-stage .ol-name {
+  position: absolute; right: 10px; top: 6px; margin: 0;
+  font-family: "Source Code Pro", monospace; font-size: 17px; color: #1f6fb2;
+  opacity: 0;
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script>
+(() => {
+  const C = window.OL_CARDS
+  const N = C.names.length
+  const N_STAGES = N + 4               // lay, explode, one focus per card, collapse, unrotate
+  const SPREAD = 50                    // gap between cards in the fan (px)
+  const PART = 470                     // how far the other cards move away from the focused one
+  const ROT_X = 56
+  const ROT_Z = 20
+  const THEME = C.names.indexOf('theme_minimal')
+  // listing lines (1-based) of each card's block of code
+  const LINES = {
+    ggplot: [3, 4], stat_summary: [5], geom_smooth: [6], scale_x_continuous: [7],
+    labs: [8, 9, 10, 11], theme_minimal: [12]
+  }
+
+  let planes = null
+  let cur = null
+
+  function build() {
+    if (planes) return true
+    const stage = document.getElementById('ol-stage')
+    if (!stage) return false
+    planes = C.names.map((name, i) => {
+      const plane = document.createElement('div')
+      plane.className = 'ol-plane'
+      const tilt = document.createElement('div')
+      tilt.className = 'ol-tilt'
+      const card = document.createElement('div')
+      card.className = 'ol-card'
+      const img = document.createElement('img')
+      img.src = C.images[i]
+      img.alt = name + ' layer'
+      const label = document.createElement('p')
+      label.className = 'ol-name'
+      label.textContent = name + '()'
+      tilt.append(card, img, label)
+      plane.append(tilt)
+      stage.append(plane)
+      return { plane, tilt, card, label }
+    })
+    return true
+  }
+
+  // target state of card i at stage s
+  function target(i, s) {
+    const flat = s >= N + 4
+    const collapsed = s >= N + 3
+    const laid = s >= 1 && !flat
+    const exploded = s >= 2 && !collapsed
+    const f = s >= 3 && s <= N + 2 && !collapsed ? s - 3 : -1
+    const focused = f === i
+    let ty = exploded ? ((N - 1) / 2 - i) * SPREAD : 0
+    if (f >= 0 && i < f) ty += PART
+    if (f >= 0 && i > f) ty -= PART
+    if (focused) ty = 0
+    return {
+      ty,
+      // the parted cards move away and fade out
+      opacity: f >= 0 && !focused ? 0 : 1,
+      rx: laid && !focused ? ROT_X : 0,
+      rz: laid && !focused ? ROT_Z : 0,
+      scale: focused ? 1.12 : 1,
+      card: exploded ? 1 : 0,
+      label: exploded && (f < 0 || focused) ? 1 : 0,
+      // the theme's grid lines sit under everything while the cards lie on top of each other
+      z: focused ? N + 1 : (i === THEME && !exploded ? 0 : i + 1)
+    }
+  }
+
+  function highlight(s) {
+    const f = s >= 3 && s <= N + 2 ? s - 3 : -1
+    const hot = f >= 0 ? LINES[C.names[f]] : []
+    document.querySelectorAll('.ol-slide pre code > span').forEach((line, k) => {
+      line.classList.toggle('ol-hot', hot.includes(k + 1))
+    })
+    document.querySelectorAll('.ol-slide .ol-cap').forEach(c => {
+      c.classList.toggle('on', Number(c.dataset.stage) === s)
+    })
+  }
+
+  function stageNow() {
+    const slide = Reveal.getCurrentSlide()
+    if (!slide || !slide.classList.contains('ol-slide')) return null
+    return Math.min(slide.querySelectorAll('.ol-frag.visible').length, N_STAGES)
+  }
+
+  function render() {
+    const s = stageNow()
+    if (s === null) {
+      cur = null
+      return
+    }
+    if (!build()) return
+    if (s === cur) return
+    const prev = cur
+    cur = s
+    const oneStep = prev !== null && Math.abs(s - prev) === 1
+    const dur = oneStep ? 1100 : 0
+    highlight(s)
+    planes.forEach((p, i) => {
+      anime.remove([p.plane, p.tilt, p.card, p.label])
+      const t = target(i, s)
+      // z order: raise at once, lower only after the move (so a card never pops under another mid-move)
+      const zNow = Number(p.plane.style.zIndex || 0)
+      if (!dur || t.z >= zNow) p.plane.style.zIndex = t.z
+      else setTimeout(() => { if (cur === s) p.plane.style.zIndex = t.z }, dur)
+      anime({ targets: p.plane, translateY: t.ty, opacity: t.opacity, duration: dur, easing: 'easeInOutCubic' })
+      anime({ targets: p.tilt, rotateX: t.rx, rotateZ: t.rz, scale: t.scale, duration: dur, easing: 'easeInOutCubic' })
+      anime({ targets: p.card, opacity: t.card, duration: dur ? 500 : 0, easing: 'linear' })
+      anime({ targets: p.label, opacity: t.label, duration: dur ? 400 : 0, easing: 'linear' })
+    })
+  }
+
+  function hook() {
+    // run after Reveal has set the .visible classes (the events fire just before)
+    for (const ev of ['slidechanged', 'fragmentshown', 'fragmenthidden']) Reveal.on(ev, () => setTimeout(render, 0))
+    render()
+  }
+
+  if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook()
+  else if (window.Reveal) Reveal.on('ready', hook)
+  else window.addEventListener('load', hook)
+})()
+</script>
+
+<script>
+// publication-ready slide: stage = number of visible .pub-frag fragments
+(() => {
+  const IMAGES = window.PUB_IMAGES
+  // the listing lines changed in each step (a line lights up if it contains one of these)
+  const CHANGED = [
+    [],
+    ['size = 3', 'colour = "grey55"'],
+    ['colour = "black")'],
+    ['theme(', 'panel.grid', 'axis.line'],
+    []
+  ]
+  let imgs = null
+
+  function render() {
+    const slide = Reveal.getCurrentSlide()
+    if (!slide || !slide.classList.contains('pub-slide')) return
+    const stage = document.getElementById('pub-stage')
+    if (!stage) return
+    if (!imgs) {
+      imgs = IMAGES.map((src, k) => {
+        const img = document.createElement('img')
+        img.src = src
+        img.alt = 'the plot after step ' + k
+        stage.append(img)
+        return img
+      })
+    }
+    const s = Math.min(slide.querySelectorAll('.pub-frag.visible').length, CHANGED.length - 1)
+    imgs.forEach((img, k) => img.classList.toggle('on', k === Math.min(s, IMAGES.length - 1)))
+    slide.querySelectorAll('.pub-figcap').forEach(c => c.classList.toggle('on', s === CHANGED.length - 1))
+    slide.querySelectorAll('pre code > span').forEach(line => {
+      const text = line.textContent
+      line.classList.toggle('ol-hot', CHANGED[s].some(m => text.includes(m)))
+    })
+    slide.querySelectorAll('.pub-cap').forEach(c => {
+      c.classList.toggle('on', Number(c.dataset.stage) === s)
+    })
+  }
+
+  function hook() {
+    for (const ev of ['slidechanged', 'fragmentshown', 'fragmenthidden']) Reveal.on(ev, () => setTimeout(render, 0))
+    render()
+  }
+
+  if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook()
+  else if (window.Reveal) Reveal.on('ready', hook)
+  else window.addEventListener('load', hook)
+})()
+</script>

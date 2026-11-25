@@ -1,0 +1,446 @@
+---
+pagetitle: "From Data to Plot"
+# Experimental animated explainer: read, clean, model, plot. The plot slide is animated in
+# the style of Emil Hvitfeldt's ggplot2-deconstructed (tidy-animations).
+# One deck per animation: the animation code is in ggplot2-ols-anim.html.
+format:
+  revealjs:
+    theme: [default, ../slides.scss]
+    width: 1280
+    height: 720
+    slide-number: false
+    hash-type: number
+    code-overflow: wrap
+    code-line-numbers: false
+    footer: "Quantitative Methods I · From data to plot · experimental"
+    include-after-body:
+      - ggplot2-ols-anim.html   # not ggplot2-ols.html: that name is the render output
+execute:
+  echo: false
+knitr:
+  opts_chunk:
+    comment: ""      # results print plainly, as in the Console (like the recap slides)
+    collapse: false  # each result appears below the code that produced it
+---
+
+```{r}
+#| include: false
+source("../_common.R") # b(), sig(): the course's wording for coefficients and significance
+
+# the slide font, so the plot looks like the recap slides
+systemfonts::register_font(
+  name = "Source Sans Static",
+  plain = "../fonts/SourceSans3-Regular.ttf",
+  bold = "../fonts/SourceSans3-Semibold.ttf"
+)
+```
+
+## 1. Read the data
+
+:::: {.columns}
+::: {.column width="55%"}
+```{r}
+#| echo: true
+#| eval: false
+library(dplyr)
+
+dataset <- read.csv("data/ess_lab.csv")
+
+# the two variables we need
+dataset |>
+  select(eduyrs, lrscale) |>
+  head()
+```
+
+```{r}
+suppressMessages(library(dplyr))
+dataset <- read.csv("../data/ess_lab.csv")
+dataset |>
+  select(eduyrs, lrscale) |>
+  head()
+```
+:::
+
+::: {.column width="45%" .fe-note}
+- European Social Survey, round 11: one row per respondent, `r format(nrow(dataset), big.mark = ",")` rows
+- `eduyrs`: years of education
+- `lrscale`: left-right self-placement, 0 = left, 10 = right
+- Both use 77, 88, 99 for missing answers
+:::
+::::
+
+## 2. Clean
+
+:::: {.columns}
+::: {.column width="58%"}
+```{r}
+#| echo: true
+# missing codes become NA
+dataset$lrscale_clean <- ifelse(
+  dataset$lrscale %in% c(77, 88, 99),
+  NA,
+  dataset$lrscale
+)
+
+# keep 4 to 24 years (the rest becomes NA)
+dataset$edu <- ifelse(
+  dataset$eduyrs >= 4 & dataset$eduyrs <= 24,
+  dataset$eduyrs,
+  NA
+)
+```
+:::
+
+::: {.column width="42%"}
+```{r}
+#| echo: true
+# check
+range(dataset$lrscale_clean, na.rm = TRUE)
+range(dataset$edu, na.rm = TRUE)
+```
+
+::: {.fe-note}
+- Always check after cleaning: 0 to 10, and 4 to 24
+- Outside 4 to 24 years: `r round(100 * mean(dataset$eduyrs < 4 | (dataset$eduyrs > 24 & !dataset$eduyrs %in% c(77, 88, 99))), 1)`% of respondents. Dropping them keeps the plot readable
+:::
+:::
+::::
+
+## 3. Model
+
+```{r}
+#| echo: true
+#| eval: false
+model <- lm(lrscale_clean ~ edu, data = dataset)
+summary(model)
+```
+
+```{r}
+model <- lm(lrscale_clean ~ edu, data = dataset)
+printCoefmat(coef(summary(model)), digits = 3, signif.legend = FALSE)
+```
+
+```{r}
+#| echo: true
+# the same as a table, with 95% confidence intervals
+parameters::model_parameters(model)
+```
+
+```{r}
+#| include: false
+library(ggplot2)
+
+# the plot in the listing, with every part switched on or off:
+# a part that is off is drawn transparent, so it still takes its space
+# and every card lines up exactly with the others
+card_plot <- function(on) {
+  col <- function(part, colour) {
+    if (part %in% on) colour else "transparent"
+  }
+  dataset |>
+    ggplot(aes(x = edu, y = lrscale_clean)) +
+    stat_summary(
+      fun = mean,
+      geom = "point",
+      colour = col("points", "black")
+    ) +
+    geom_smooth(
+      method = "lm",
+      colour = col("line", "#3366FF"),
+      fill = col("line", "grey60")
+    ) +
+    scale_x_continuous(breaks = seq(4, 24, 4)) +
+    labs(
+      x = "Years of education",
+      y = "Left-right (0 = left, 10 = right)"
+    ) +
+    theme_minimal(
+      base_size = 21,
+      base_family = "Source Sans Static"
+    ) +
+    theme(
+      panel.grid = element_line(colour = col("grid", "grey92")),
+      axis.text.y = element_text(colour = col("y_text", "grey30")),
+      axis.text.x = element_text(colour = col("x_text", "grey30")),
+      axis.title = element_text(colour = col("titles", "black")),
+      # transparent card: ggplot2 4 gives theme_minimal() a white background
+      plot.background = element_rect(
+        fill = "transparent",
+        colour = NA
+      )
+    )
+}
+
+# check: geom_smooth(method = "lm") draws the model from step 3
+smooth <- suppressMessages(suppressWarnings(
+  ggplot_build(card_plot("line"))$data[[2]]
+))
+smooth_slope <- diff(range(smooth$y)) / diff(range(smooth$x))
+
+# the y axis range ggplot chooses (for the last caption)
+y_axis <- suppressMessages(suppressWarnings(
+  ggplot_build(card_plot("line"))$layout$panel_params[[1]]$y.range
+))
+y_axis <- format(round(y_axis, 1), nsmall = 1)
+stopifnot(abs(smooth_slope - abs(coef(model)[["edu"]])) < 1e-9)
+
+# one card per block of code, in code order (bottom to top of the stack)
+cards <- list(
+  ggplot = "y_text",
+  stat_summary = "points",
+  geom_smooth = "line",
+  scale_x_continuous = "x_text",
+  labs = "titles",
+  theme_minimal = "grid"
+)
+
+# draw each card as a transparent PNG and keep it as a data URI
+card_uri <- function(on) {
+  f <- tempfile(fileext = ".png")
+  ragg::agg_png(
+    f,
+    width = 7,
+    height = 5.425,
+    units = "in",
+    res = 170,
+    background = "transparent"
+  )
+  suppressMessages(suppressWarnings(print(card_plot(on))))
+  dev.off()
+  knitr::image_uri(f)
+}
+card_images <- lapply(cards, card_uri)
+```
+
+## 4. Plot: how a ggplot is built {.ol-slide}
+
+:::::: {.columns}
+::::: {.column width="50%"}
+```{r}
+#| echo: true
+#| eval: false
+library(ggplot2)
+
+dataset |>
+  ggplot(aes(x = edu, y = lrscale_clean)) +
+  stat_summary(fun = mean, geom = "point") +
+  geom_smooth(method = "lm") +
+  scale_x_continuous(breaks = seq(4, 24, 4)) +
+  labs(
+    x = "Years of education",
+    y = "Left-right (0 = left, 10 = right)"
+  ) +
+  theme_minimal(base_size = 21)
+```
+
+:::: {.ol-captions}
+::: {.ol-cap data-stage="0"}
+Each `+` adds one piece.
+:::
+::: {.ol-cap data-stage="1"}
+Lay the plot down…
+:::
+::: {.ol-cap data-stage="2"}
+…and pull it apart: one card per block of code.
+:::
+::: {.ol-cap data-stage="3"}
+`dataset |> ggplot(aes(...))`: the data and the mapping, `edu` on x and `lrscale_clean` on y. This sets up the axes.
+:::
+::: {.ol-cap data-stage="4"}
+`stat_summary(fun = mean, geom = "point")`: one dot per year of education, the mean left-right position of everyone with that many years.
+:::
+::: {.ol-cap data-stage="5"}
+`geom_smooth(method = "lm")`: the regression line from step 3 (slope `r format(b(model, "edu"), nsmall = 3)`), fitted on all respondents, not on the dots. Grey band: its 95% confidence interval.
+:::
+::: {.ol-cap data-stage="6"}
+`scale_x_continuous()`: puts the x axis numbers at 4, 8, …, 24.
+:::
+::: {.ol-cap data-stage="7"}
+`labs()`: the axis titles.
+:::
+::: {.ol-cap data-stage="8"}
+`theme_minimal()`: the look. Here: no grey background, light grid lines, text size 21.
+:::
+::: {.ol-cap data-stage="9"}
+Stack the cards again…
+:::
+::: {.ol-cap data-stage="10"}
+…and it is one plot. Mind the y axis: it shows only `r y_axis[1]` to `r y_axis[2]` of the 0 to 10 scale, which makes the slope look steep.
+:::
+::::
+:::::
+
+::::: {.column width="50%"}
+```{=html}
+<div class="ol-stage-wrap"><div id="ol-stage"></div></div>
+```
+:::::
+::::::
+
+```{r}
+#| output: asis
+# hand the card images to the animation (ggplot2-ols-anim.html)
+cat(
+  "<script>window.OL_CARDS = ",
+  jsonlite::toJSON(
+    list(names = names(cards), images = unname(unlist(card_images))),
+    auto_unbox = TRUE
+  ),
+  "</script>",
+  sep = ""
+)
+```
+
+[]{.fragment .ol-frag}[]{.fragment .ol-frag}[]{.fragment .ol-frag}[]{.fragment .ol-frag}[]{.fragment .ol-frag}[]{.fragment .ol-frag}[]{.fragment .ol-frag}[]{.fragment .ol-frag}[]{.fragment .ol-frag}[]{.fragment .ol-frag}
+
+## 5. Make it publication ready {.pub-slide}
+
+```{r}
+#| include: false
+# the step 4 plot with the first `step` changes (0 = none, 3 = all)
+pub_plot <- function(step) {
+  p <- dataset |>
+    ggplot(aes(x = edu, y = lrscale_clean)) +
+    stat_summary(
+      fun = mean,
+      geom = "point",
+      size = if (step >= 1) 3 else 1.5,
+      colour = if (step >= 1) "grey55" else "black"
+    ) +
+    geom_smooth(
+      method = "lm",
+      colour = if (step >= 2) "black" else "#3366FF"
+    ) +
+    scale_x_continuous(breaks = seq(4, 24, 4)) +
+    labs(
+      x = "Years of education",
+      y = "Left-right (0 = left, 10 = right)"
+    ) +
+    theme_minimal(base_size = 21, base_family = "Source Sans Static")
+  if (step >= 3) {
+    p <- p +
+      theme(
+        panel.grid.minor = element_blank(),
+        panel.grid.major.x = element_blank(),
+        axis.line.x = element_line(colour = "black")
+      )
+  }
+  p
+}
+
+# one image per step, as data URIs
+pub_uri <- function(step) {
+  f <- tempfile(fileext = ".png")
+  ragg::agg_png(f, width = 7, height = 5.425, units = "in", res = 170)
+  suppressMessages(suppressWarnings(print(pub_plot(step))))
+  dev.off()
+  knitr::image_uri(f)
+}
+pub_images <- lapply(0:3, pub_uri)
+```
+
+:::::: {.columns}
+::::: {.column width="50%"}
+```{r}
+#| echo: true
+#| eval: false
+dataset |>
+  ggplot(aes(x = edu, y = lrscale_clean)) +
+  stat_summary(
+    fun = mean,
+    geom = "point",
+    size = 3,
+    colour = "grey55"
+  ) +
+  geom_smooth(method = "lm", colour = "black") +
+  scale_x_continuous(breaks = seq(4, 24, 4)) +
+  labs(
+    x = "Years of education",
+    y = "Left-right (0 = left, 10 = right)"
+  ) +
+  theme_minimal(base_size = 21) +
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.line.x = element_line(colour = "black")
+  )
+```
+:::::
+
+::::: {.column width="50%"}
+:::: {.pub-captions}
+::: {.pub-cap data-stage="0"}
+The plot from step 4. Three small changes:
+:::
+::: {.pub-cap data-stage="1"}
+1\. Data in the background: bigger grey dots
+:::
+::: {.pub-cap data-stage="2"}
+2\. The result in front: a black line (prints in greyscale too)
+:::
+::: {.pub-cap data-stage="3"}
+3\. Less ink: only horizontal grid lines, and a baseline
+:::
+::: {.pub-cap data-stage="4"}
+No title inside the figure: in a journal, it goes in the caption.
+:::
+::::
+
+```{=html}
+<div id="pub-stage"></div>
+```
+
+::: {.pub-figcap}
+**Figure 1.** Left-right self-placement by years of education. Dots: mean per year. Line: OLS fit with 95% confidence interval (N = `r format(nobs(model), big.mark = ",")`). Data: European Social Survey, round 11.
+:::
+:::::
+::::::
+
+```{r}
+#| output: asis
+# hand the images to the animation (ggplot2-ols-anim.html)
+cat(
+  "<script>window.PUB_IMAGES = ",
+  jsonlite::toJSON(unlist(pub_images)),
+  "</script>",
+  sep = ""
+)
+```
+
+[]{.fragment .pub-frag}[]{.fragment .pub-frag}[]{.fragment .pub-frag}[]{.fragment .pub-frag}
+
+## Learn more
+
+:::: {.columns}
+::: {.column width="40%"}
+**Install** (once per computer)
+
+```{r}
+#| echo: true
+#| eval: false
+install.packages("ggplot2")
+```
+
+**Load** (every session)
+
+```{r}
+#| echo: true
+#| eval: false
+library(ggplot2)
+```
+:::
+
+::: {.column width="60%" .ol-links}
+**Free online**
+
+- [ggplot2 website](https://ggplot2.tidyverse.org/): reference for every function, and [where to start learning](https://ggplot2.tidyverse.org/#learning-ggplot2)
+- [Cheat sheet: Data visualization with ggplot2](https://rstudio.github.io/cheatsheets/html/data-visualization.html)
+- *R for Data Science* (2e): [Data visualization](https://r4ds.hadley.nz/data-visualize) and [Communication](https://r4ds.hadley.nz/communication) (titles, labels, themes)
+- [*R Graphics Cookbook*, 2nd edition](https://r-graphics.org/) (Winston Chang): one recipe per plot problem
+- [*ggplot2: Elegant Graphics for Data Analysis*](https://ggplot2-book.org/) (3e): how ggplot2 works inside
+
+**The theory**
+
+- [*The Grammar of Graphics*](https://link.springer.com/book/10.1007/0-387-28695-0) (Leland Wilkinson, 2005): the idea behind ggplot2's layers (a book, not free)
+:::
+::::

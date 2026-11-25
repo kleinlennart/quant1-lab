@@ -1,0 +1,261 @@
+<!-- Animation for ci.qmd: repeated-sample confidence intervals.
+     Driven by the invisible .ci-frag fragments: stage = number of visible fragments.
+     render(stage) sets the target state for that stage, so forward, back and direct
+     arrival all end in the same picture. Data comes from window.CI_DATA (R chunk).
+     Not named ci.html: that is the deck's render output, and the render would delete it. -->
+<style>
+.reveal .ci-slide .ci-frag { position: absolute; opacity: 0 !important; pointer-events: none; }
+.reveal .ci-slide #ci-stage { width: 100%; height: auto; display: block; }
+.reveal .ci-slide .ci-captions { font-size: 0.66em; padding-left: 0.6em; }
+.reveal .ci-slide .ci-cap { display: none; }
+.reveal .ci-slide .ci-cap.on { display: block; }
+.reveal .ci-slide .ci-cap ul { margin-left: 1em; }
+.reveal .ci-slide .ci-cap li { margin-bottom: 0.45em; }
+.reveal .ci-slide .ci-cap .example-interp { font-size: 1em; }
+.reveal .ci-slide .ci-cap .example-interp::before { content: "In one sentence"; }
+.reveal .ci-slide .ci-cap .interp-note { font-size: 0.8em; }
+#ci-stage text { font-family: "Source Sans Pro", "Source Sans 3", Helvetica, sans-serif; }
+#ci-stage .tick { font-size: 17px; fill: #555; }
+#ci-stage .note { font-size: 17px; fill: #777; }
+#ci-stage .mu-label { font-size: 21px; fill: #c46210; font-weight: 600; }
+#ci-stage .w-label { font-size: 20px; fill: #1f3a5f; }
+#ci-stage .ci-int line { stroke: #1f6fb2; stroke-linecap: round; transition: stroke 0.4s; }
+#ci-stage .ci-int circle { fill: #1f6fb2; transition: fill 0.4s; }
+#ci-stage .ci-int.miss line { stroke: #c0392b; }
+#ci-stage .ci-int.miss circle { fill: #c0392b; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+<script>
+(() => {
+  const D = window.CI_DATA
+  const NS = 'http://www.w3.org/2000/svg'
+  const BLUE = '#1f6fb2'
+  const ORANGE = '#e67e22'
+  const N_STAGES = 6
+
+  // coordinates (viewBox 820 x 580)
+  const xh = v => 60 + v * 70                         // histogram axis, 0 to 10
+  const HIST_BASE = 100
+  const maxCount = Math.max(...D.counts)
+  const barH = v => (D.counts[v] / maxCount) * 72
+  const xm = v => 60 + (v - D.axis_lo) / (D.axis_hi - D.axis_lo) * 700   // zoomed axis
+  const AXIS_Y = 525
+  const y20 = i => 182 + i * 17
+  const y100 = i => 174 + i * 3.45
+  const yW = [250, 310, 370, 455]
+
+  let svg = null
+  let ints = []
+  let wRows = []
+  let dots = []
+  let travel = null
+  let timeline = null
+  let cur = null
+
+  function el(name, attrs, parent) {
+    const e = document.createElementNS(NS, name)
+    for (const k in attrs) e.setAttribute(k, attrs[k])
+    if (parent) parent.appendChild(e)
+    return e
+  }
+
+  function text(str, attrs, parent) {
+    const t = el('text', attrs, parent)
+    t.textContent = str
+    return t
+  }
+
+  function build() {
+    if (svg) return true
+    svg = document.getElementById('ci-stage')
+    if (!svg) return false
+
+    // population histogram
+    for (let v = 0; v <= 10; v++) {
+      el('rect', { x: xh(v) - 26, y: HIST_BASE - barH(v), width: 52, height: barH(v), fill: '#c9d8e8' }, svg)
+      text(String(v), { x: xh(v), y: HIST_BASE + 20, 'text-anchor': 'middle', class: 'tick' }, svg)
+    }
+    el('line', { x1: xh(0) - 30, x2: xh(10) + 30, y1: HIST_BASE, y2: HIST_BASE, stroke: '#999' }, svg)
+    el('line', { x1: xh(D.mu), x2: xh(D.mu), y1: 18, y2: HIST_BASE, stroke: ORANGE, 'stroke-width': 3 }, svg)
+    text('μ = ' + D.mu.toFixed(2), { x: xh(D.mu) + 8, y: 22, class: 'mu-label' }, svg)
+    text('population', { x: 812, y: 60, 'text-anchor': 'end', class: 'note' }, svg)
+
+    // zoom band from the histogram axis to the interval panel
+    el('polygon', {
+      points: [xh(D.axis_lo), HIST_BASE + 26, xh(D.axis_hi), HIST_BASE + 26, 760, 158, 60, 158].join(' '),
+      fill: '#eef2f7'
+    }, svg)
+    text('zoomed in', { x: 812, y: 150, 'text-anchor': 'end', class: 'note' }, svg)
+
+    // zoomed axis and the true mean
+    el('line', { x1: 60, x2: 760, y1: AXIS_Y, y2: AXIS_Y, stroke: '#999' }, svg)
+    for (let v = D.axis_lo; v <= D.axis_hi + 1e-9; v += 0.5) {
+      el('line', { x1: xm(v), x2: xm(v), y1: AXIS_Y, y2: AXIS_Y + 6, stroke: '#999' }, svg)
+      text(v.toFixed(1), { x: xm(v), y: AXIS_Y + 26, 'text-anchor': 'middle', class: 'tick' }, svg)
+    }
+    text('satisfaction with democracy', { x: 410, y: AXIS_Y + 50, 'text-anchor': 'middle', class: 'note' }, svg)
+    el('line', {
+      x1: xm(D.mu), x2: xm(D.mu), y1: 162, y2: AXIS_Y,
+      stroke: ORANGE, 'stroke-width': 2.5, 'stroke-dasharray': '7 5'
+    }, svg)
+    text('μ', { x: xm(D.mu) + 8, y: 178, class: 'mu-label' }, svg)
+
+    // the 100 sample intervals
+    for (let i = 0; i < D.means.length; i++) {
+      const g = el('g', { class: 'ci-int' + (D.hit[i] ? '' : ' miss'), opacity: 0 }, svg)
+      const y = i < 20 ? y20(i) : y100(i)
+      const line = el('line', { x1: xm(D.lower[i]), x2: xm(D.upper[i]), y1: y, y2: y, 'stroke-width': 4 }, g)
+      const dot = el('circle', { cx: xm(D.means[i]), cy: y, r: 5 }, g)
+      ints.push({ g, line, dot })
+    }
+
+    // the confidence-level and sample-size rows
+    for (let j = 0; j < 4; j++) {
+      const g = el('g', { class: 'ci-int', opacity: 0 }, svg)
+      const line = el('line', { x1: xm(D.w_mean[j]), x2: xm(D.w_mean[j]), y1: yW[j], y2: yW[j], 'stroke-width': 7 }, g)
+      const dot = el('circle', { cx: xm(D.w_mean[j]), cy: yW[j], r: 7 }, g)
+      const label = text(D.w_label[j], { x: xm(D.w_upper[j]) + 14, y: yW[j] + 7, class: 'w-label', opacity: 0 }, svg)
+      wRows.push({ g, line, dot, label })
+    }
+
+    // sample 1 as dots inside the histogram bars, and the dot that carries its mean down
+    for (let k = 0; k < D.s1.length; k++) {
+      const v = D.s1[k]
+      dots.push(el('circle', {
+        cx: xh(v) + D.jx[k] * 22,
+        cy: HIST_BASE - D.jy[k] * barH(v),
+        r: 3.2, fill: BLUE, opacity: 0
+      }, svg))
+    }
+    travel = el('circle', { cx: xh(D.means[0]), cy: HIST_BASE, r: 6, fill: BLUE, opacity: 0 }, svg)
+    return true
+  }
+
+  // target state of interval i at stage s
+  function intTarget(i, s) {
+    const shown = (s === 1 && i === 0) || (s === 2 && i < 20) || s === 3
+    const y = (s >= 3 || i >= 20) ? y100(i) : y20(i)
+    return {
+      opacity: shown ? 1 : 0,
+      y,
+      sw: s >= 3 ? 1.7 : 4,
+      r: s >= 3 ? 1.9 : 5
+    }
+  }
+
+  // target state of confidence-level row j at stage s
+  function wTarget(j, s) {
+    const shown = (s >= 4 && j < 3) || (s >= 5 && j === 3)
+    const dim = s >= 5 && (j === 0 || j === 2)
+    return {
+      opacity: shown ? (dim ? 0.3 : 1) : 0,
+      x1: shown ? xm(D.w_lower[j]) : xm(D.w_mean[j]),
+      x2: shown ? xm(D.w_upper[j]) : xm(D.w_mean[j])
+    }
+  }
+
+  function stopAll() {
+    if (timeline) timeline.pause()
+    timeline = null
+    const all = [travel, ...dots]
+    for (const it of ints) all.push(it.g, it.line, it.dot)
+    for (const w of wRows) all.push(w.g, w.line, w.dot, w.label)
+    anime.remove(all)
+  }
+
+  function showCaption(s) {
+    document.querySelectorAll('.ci-slide .ci-cap').forEach(c => {
+      c.classList.toggle('on', Number(c.dataset.stage) === s)
+    })
+  }
+
+  // move every element to its target for stage s (dur 0 = jump)
+  function setState(s, prev, dur, skipFirst) {
+    let rank = 0
+    for (let i = 0; i < ints.length; i++) {
+      if (skipFirst && i === 0) continue
+      const t = intTarget(i, s)
+      const before = prev === null ? t : intTarget(i, prev)
+      const appearing = t.opacity === 1 && before.opacity === 0
+      const delay = dur && appearing ? 300 + rank++ * (s === 2 ? 70 : 14) : 0
+      const it = ints[i]
+      anime({ targets: it.g, opacity: t.opacity, duration: dur ? 450 : 0, delay, easing: 'easeOutQuad' })
+      anime({
+        targets: it.line, x1: xm(D.lower[i]), x2: xm(D.upper[i]), y1: t.y, y2: t.y, 'stroke-width': t.sw,
+        duration: dur, easing: 'easeInOutQuad'
+      })
+      anime({ targets: it.dot, cy: t.y, r: t.r, duration: dur, easing: 'easeInOutQuad' })
+    }
+    for (let j = 0; j < wRows.length; j++) {
+      const t = wTarget(j, s)
+      const before = prev === null ? t : wTarget(j, prev)
+      const appearing = t.opacity > 0 && before.opacity === 0
+      const delay = dur && appearing ? 500 + (j % 3) * 450 : 0
+      const w = wRows[j]
+      anime({ targets: w.g, opacity: t.opacity, duration: dur ? 350 : 0, delay, easing: 'easeOutQuad' })
+      anime({ targets: w.line, x1: t.x1, x2: t.x2, duration: dur ? 600 : 0, delay, easing: 'easeOutCubic' })
+      anime({ targets: w.label, opacity: t.opacity, duration: dur ? 350 : 0, delay: delay + (dur ? 450 : 0), easing: 'linear' })
+    }
+    anime.set(dots, { opacity: 0 })
+    anime.set(travel, { opacity: 0 })
+  }
+
+  // stage 0 to 1: draw the sample from the population, its mean drops into the panel, the CI grows
+  function playSampling() {
+    const first = ints[0]
+    const t = intTarget(0, 1)
+    anime.set(first.g, { opacity: 0 })
+    anime.set(first.line, { x1: xm(D.means[0]), x2: xm(D.means[0]), y1: t.y, y2: t.y, 'stroke-width': t.sw })
+    anime.set(first.dot, { cy: t.y, r: t.r })
+    dots.forEach((d, k) => anime.set(d, { cx: xh(D.s1[k]) + D.jx[k] * 22, cy: HIST_BASE - D.jy[k] * barH(D.s1[k]) }))
+    anime.set(travel, { cx: xh(D.means[0]), cy: HIST_BASE, opacity: 0 })
+
+    timeline = anime.timeline({ easing: 'easeInOutQuad' })
+    timeline
+      .add({ targets: dots, opacity: [0, 1], duration: 250, delay: anime.stagger(14) })
+      .add({ targets: dots, cx: xh(D.means[0]), cy: HIST_BASE, opacity: 0, duration: 800, delay: anime.stagger(3) }, '+=500')
+      .add({ targets: travel, opacity: [0, 1], duration: 200 }, '-=250')
+      .add({ targets: travel, cx: xm(D.means[0]), cy: t.y, duration: 800 })
+      .add({ targets: first.g, opacity: 1, duration: 1 })
+      .add({ targets: travel, opacity: 0, duration: 1 })
+      .add({ targets: first.line, x1: xm(D.lower[0]), x2: xm(D.upper[0]), duration: 700, easing: 'easeOutCubic' })
+  }
+
+  function stageNow() {
+    const slide = Reveal.getCurrentSlide()
+    if (!slide || !slide.classList.contains('ci-slide')) return null
+    return Math.min(slide.querySelectorAll('.ci-frag.visible').length, N_STAGES)
+  }
+
+  function render() {
+    const s = stageNow()
+    if (s === null) {
+      cur = null
+      return
+    }
+    if (!build()) return
+    if (s === cur) return
+    const prev = cur
+    cur = s
+    stopAll()
+    showCaption(s)
+    const oneStep = prev !== null && Math.abs(s - prev) === 1
+    if (oneStep && prev === 0 && s === 1) {
+      setState(1, 0, 600, true)
+      playSampling()
+    } else {
+      setState(s, oneStep ? prev : null, oneStep ? 900 : 0, false)
+    }
+  }
+
+  function hook() {
+    // run after Reveal has set the .visible classes (the events fire just before)
+    for (const ev of ['slidechanged', 'fragmentshown', 'fragmenthidden']) Reveal.on(ev, () => setTimeout(render, 0))
+    render()
+  }
+
+  if (window.Reveal && Reveal.isReady && Reveal.isReady()) hook()
+  else if (window.Reveal) Reveal.on('ready', hook)
+  else window.addEventListener('load', hook)
+})()
+</script>

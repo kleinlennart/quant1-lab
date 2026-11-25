@@ -1,0 +1,181 @@
+---
+pagetitle: "What 95% Confidence Means"
+# Experimental animated explainer (inspired by Emil Hvitfeldt's tidy-animations).
+# One deck per animation: the animation code is in ci-anim.html next to this file.
+# Every number on the slide comes from the R chunk below.
+format:
+  revealjs:
+    theme: [default, ../slides.scss]
+    width: 1280
+    height: 720
+    slide-number: false
+    hash-type: number
+    footer: "Quantitative Methods I · Confidence intervals (L6 s8–s11) · experimental"
+    include-after-body:
+      - ci-anim.html   # not ci.html: that name is the render output
+execute:
+  echo: false
+---
+
+```{r}
+#| include: false
+# the "population": every valid stfdem answer in the ESS extract (all countries, unweighted)
+dataset <- read.csv("../data/ess_lab.csv")
+pop <- dataset$stfdem[dataset$stfdem >= 0 & dataset$stfdem <= 10]
+mu <- mean(pop)
+
+# 1,000 random samples of n = 100 (drawn with replacement: independent draws from the population)
+set.seed(2026)
+n <- 100
+samples <- replicate(1000, sample(pop, n, replace = TRUE))
+
+# each sample's mean, standard error and 95% CI = mean ± 1.96 × se (L6 s9)
+means <- colMeans(samples)
+ses <- apply(samples, 2, sd) / sqrt(n)
+lower <- means - 1.96 * ses
+upper <- means + 1.96 * ses
+hit <- lower <= mu & upper >= mu
+
+# sample 1 at the three confidence levels (critical z values from L6 s10)
+z <- c(1.645, 1.96, 2.576)
+w_lower <- means[1] - z * ses[1]
+w_upper <- means[1] + z * ses[1]
+
+# one bigger sample, n = 400
+x400 <- sample(pop, 400, replace = TRUE)
+se400 <- sd(x400) / sqrt(400)
+m400 <- mean(x400)
+
+# where each dot of sample 1 sits inside its histogram bar (fixed, so every reload looks the same)
+jx <- runif(n, -1, 1)
+jy <- runif(n, 0.08, 0.92)
+
+# checks
+stopifnot(
+  length(pop) == sum(!is.na(pop)),
+  all(diff(w_upper - w_lower) > 0),
+  abs(se400 / ses[1] - 0.5) < 0.15,
+  abs(mean(hit) - 0.95) < 0.02
+)
+
+# zoomed axis for the intervals: every bound shown, padded to the next 0.5
+shown <- c(lower[1:100], upper[1:100], w_lower, w_upper, m400 + c(-1, 1) * 1.96 * se400)
+axis_lo <- floor(min(shown) * 2) / 2
+axis_hi <- ceiling(max(shown) * 2) / 2
+
+# numbers for the text
+f2 <- function(x) formatC(x, format = "f", digits = 2)
+miss20 <- sum(!hit[1:20])
+hits100 <- sum(hit[1:100])
+pct1000 <- formatC(100 * mean(hit), format = "f", digits = 1)
+cover20 <- if (miss20 == 0) {
+  "This time all 20 contain μ"
+} else {
+  paste(20 - miss20, "of 20 contain μ (red = misses μ)")
+}
+```
+
+## What does "95% confident" mean? {.ci-slide}
+
+:::::: {.columns}
+::: {.column width="64%"}
+```{=html}
+<svg id="ci-stage" viewBox="0 0 820 580" role="img" aria-label="Animated confidence intervals from repeated samples"></svg>
+```
+:::
+
+::::: {.column width="36%" .ci-captions}
+:::: {.ci-cap data-stage="0"}
+**The population** (a teaching device)
+
+- Treat all `r format(length(pop), big.mark = ",")` ESS respondents as the population
+- Satisfaction with democracy, 0 to 10
+- True mean: μ = `r f2(mu)`
+- In real research μ is unknown
+::::
+
+:::: {.ci-cap data-stage="1"}
+**One sample**, n = `r n`
+
+- $\bar{x}$ = `r f2(means[1])`, $se = s / \sqrt{n}$ = `r f2(ses[1])`
+- 95% CI = $\bar{x} \pm 1.96 \times se$
+- = [`r f2(lower[1])`, `r f2(upper[1])`]: contains μ
+::::
+
+:::: {.ci-cap data-stage="2"}
+**20 samples**
+
+- New sample, new mean, new interval
+- `r cover20`
+- Misses are rare: about 1 in 20
+::::
+
+:::: {.ci-cap data-stage="3"}
+**100 samples**
+
+- `r hits100` of 100 intervals contain μ (red = misses μ)
+- Over 1,000 samples: `r pct1000`%
+- The 95% describes the method, not one interval
+::::
+
+:::: {.ci-cap data-stage="4"}
+**Confidence level** (same sample)
+
+- 90%: $\bar{x} \pm 1.645 \times se$
+- 95%: $\bar{x} \pm 1.96 \times se$
+- 99%: $\bar{x} \pm 2.576 \times se$
+- More confidence → wider interval
+::::
+
+:::: {.ci-cap data-stage="5"}
+**Sample size**
+
+- n = 400: se = `r f2(se400)` (n = 100: `r f2(ses[1])`)
+- 4 × n → se about halves
+- Larger sample → narrower interval
+::::
+
+:::: {.ci-cap data-stage="6"}
+**Takeaway**
+
+::: {.example-interp}
+- About 95% of intervals built this way contain μ
+- One interval either contains μ or it does not
+:::
+
+::: {.interp-note}
+Course wording (L6 s8): the "value in population likely to be within these bounds".
+:::
+::::
+:::::
+::::::
+
+```{r}
+#| output: asis
+# hand the numbers to the animation (ci.html)
+ci_data <- list(
+  mu = mu,
+  counts = as.vector(table(factor(pop, levels = 0:10))),
+  means = means[1:100],
+  lower = lower[1:100],
+  upper = upper[1:100],
+  hit = hit[1:100],
+  s1 = samples[, 1],
+  jx = jx,
+  jy = jy,
+  w_mean = c(rep(means[1], 3), m400),
+  w_lower = c(w_lower, m400 - 1.96 * se400),
+  w_upper = c(w_upper, m400 + 1.96 * se400),
+  w_label = c("90%", "95%", "99%", "95%, n = 400"),
+  axis_lo = axis_lo,
+  axis_hi = axis_hi
+)
+cat(
+  "<script>window.CI_DATA = ",
+  jsonlite::toJSON(ci_data, digits = NA, auto_unbox = TRUE),
+  "</script>",
+  sep = ""
+)
+```
+
+[]{.fragment .ci-frag}[]{.fragment .ci-frag}[]{.fragment .ci-frag}[]{.fragment .ci-frag}[]{.fragment .ci-frag}[]{.fragment .ci-frag}

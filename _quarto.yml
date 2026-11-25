@@ -19,6 +19,7 @@ project:
     - "!downloads.qmd"  # hidden for now; remove this line and the two "# -" comments to bring it back
     - "!0[1-5]-*.qmd"   # the guide pages: hidden for now (being aligned with the slides)
     - "!guide-index.qmd" # the guide's old home page, kept for when the guide comes back
+    - "!animations/ci.qmd" # experimental confidence-interval animation: unfinished
 
 website:
   title: "QM1 Lab Exam: R Guide"
